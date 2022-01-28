@@ -1,0 +1,26 @@
+{
+  "name": "@hexlet/code",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/kolesnikova9292/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/kolesnikova9292/frontend-project-lvl2/actions)",
+  "main": "gendiff.js",
+  "scripts": {
+    "test": "gendiff -h"
+  },
+  "bin": {
+    "gendiff": "./gendiff.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolesnikova9292/frontend-project-lvl2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kolesnikova9292/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/kolesnikova9292/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^8.3.0"
+  }
+}
