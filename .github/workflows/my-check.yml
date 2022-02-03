@@ -25,4 +25,4 @@ jobs:
 
       - name: make lint
         # Run Linter
-        run: make lint
+        run: npx eslint .
