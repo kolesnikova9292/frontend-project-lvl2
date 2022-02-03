@@ -23,7 +23,6 @@ jobs:
       - uses: actions/checkout@v2
 
 
-      - name: npm install
+      - name: make lint
         # Run Linter
-        run: |
-          make lint
+        run: make lint
