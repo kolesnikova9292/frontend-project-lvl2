@@ -26,3 +26,5 @@ jobs:
       - name: make lint
         # Run Linter
         run: npx eslint .
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
