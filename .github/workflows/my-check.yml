@@ -27,4 +27,4 @@ jobs:
         # Run Linter
         run: npx eslint .
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          persist-credentials: false
