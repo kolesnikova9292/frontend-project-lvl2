@@ -1,0 +1,84 @@
+env:
+  es2021: true
+  node: true
+
+parserOptions:
+  sourceType: module
+
+plugins:
+  - import
+
+extends:
+  - eslint:recommended
+  - airbnb-base
+  - plugin:import/recommended
+
+rules:
+  no-console: 0
+  import/extensions: 0
+  linebreak-style: 0
+
+#env:
+#  browser: true
+#  es6: true
+#  node: true
+#extends:
+#  - 'eslint:recommended'
+#parserOptions:
+#  ecmaVersion: 6
+#  sourceType: 'module'
+#plugins: ['import']
+#rules:
+#  brace-style:
+#    - warn
+#    - 1tbs
+#  camelcase: warn
+#  comma-dangle:
+#    - warn
+#    - always-multiline
+#  comma-style:
+#    - error
+#    - last
+#  complexity: error
+#  curly: warn
+#  eol-last:
+#    - error
+#    - always
+#  id-length: error
+#  max-lines: error
+#  max-params:
+#    - error
+#    - 4
+#  no-duplicate-imports: error
+#  no-eq-null: error
+#  no-implied-eval: error
+#  no-invalid-this: error
+#  no-shadow: error
+#  no-undefined: error
+#  no-warning-comments:
+#    - warn
+#    - location: anywhere
+#      terms:
+#        - todo
+#        - fixme
+#  prefer-promise-reject-errors: error
+#  semi: error
+#  object-curly-spacing: [2, "always"]
+#  quotes: [2, "single"]
+#  indent: [2, 2, {"SwitchCase": 1}]
+#  keyword-spacing: "error"
+#  no-plusplus: "error"
+#  prefer-template: "error"
+#  no-eval: 2
+#  space-infix-ops: "error"
+#  operator-assignment: ["error", "always"]
+#  semi-spacing: [2, { "before": false, "after": true }]
+#  padded-blocks: ["error",  { "blocks": "never" }]
+#  no-useless-return: "error"
+#  spaced-comment: ["error", "always"]
+#  no-else-return: "error"
+#  default-case: "error"
+#  no-use-before-define: "error"
+#  object-curly-newline: ["error",   { "ImportDeclaration": "never", "ExportDeclaration": "always" }]
+#  import/prefer-default-export: "error"
+#  consistent-return: "error"
