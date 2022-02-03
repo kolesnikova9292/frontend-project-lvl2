@@ -24,7 +24,9 @@ jobs:
 
 
       - name: make lint
+        uses: hexlet/project-action@release
+        with:
+          hexlet-id: ${{ secrets.HEXLET_ID }}
         # Run Linter
         run: npx eslint .
-        with:
-          persist-credentials: false
+
