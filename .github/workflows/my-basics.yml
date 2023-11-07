@@ -31,5 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [my_testiong]
     steps:
-      - name: Print Hello
+      - uses: actions/checkout@v2
+      - name: Run linter
         run: make lint
