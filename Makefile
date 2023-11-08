@@ -3,4 +3,4 @@ install:
 
 
 lint:
-		sudo npx eslint .
+		npx eslint .

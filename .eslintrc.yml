@@ -1,22 +1,53 @@
-env:
-  es2021: true
-  node: true
-
-parserOptions:
-  sourceType: module
+---
 
 plugins:
-  - import
+  - jest
+
+# https://eslint.org/docs/user-guide/configuring#specifying-environments
+env:
+  node: true
 
 extends:
-  - eslint:recommended
-  - airbnb-base
-  - plugin:import/recommended
+  - 'airbnb-base'
+  - 'plugin:jest/recommended'
+
+parserOptions:
+  ecmaVersion: latest
 
 rules:
   no-console: 0
-  import/extensions: 0
-  linebreak-style: 0
+  import/extensions: # FIXME: remove when rule will be adjusted for new nodejs version
+    - error
+    - ignorePackages
+    - js: always
+  no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
+
+
+
+
+
+
+
+
+#env:
+#  es2021: true
+#  node: true
+#
+#parserOptions:
+#  sourceType: module
+#
+#plugins:
+#  - import
+#
+#extends:
+#  - eslint:recommended
+#  - airbnb-base
+#  - plugin:import/recommended
+#
+#rules:
+#  no-console: 0
+#  import/extensions: 0
+#  linebreak-style: 0
 
 #env:
 #  browser: true
