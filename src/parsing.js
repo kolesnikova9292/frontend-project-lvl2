@@ -30,7 +30,7 @@ const parsing = (json1, json2) => {
             && Object.prototype.hasOwnProperty.call(json2, x.key)
             && json1[x.key] !== json2[x.key]) {
             if (x.obj === 'json1') {
-                currentSign = '=';
+                currentSign = '-';
             } else {
                 currentSign = '+';
             }
