@@ -5,8 +5,8 @@
   "description": "[![Actions Status](https://github.com/kolesnikova9292/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/kolesnikova9292/frontend-project-lvl2/actions)",
   "main": "gendiff.js",
   "scripts": {
-    "test": "gendiff -h",
-    "make lint": "npx eslint ."
+    "make lint": "npx eslint .",
+    "test": "npx jest"
   },
   "bin": {
     "gendiff": "./gendiff.js"
