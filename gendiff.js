@@ -45,9 +45,11 @@ program
 
             const resultObject = parsing(json1, json2);
 
-            console.log('{');
-            Object.entries(resultObject).forEach((e) => console.log(`    ${e[0]}: ${e[1]}`));
-            console.log('}');
+            console.log(resultObject)
+
+            //console.log('{');
+            //Object.entries(resultObject).forEach((e) => console.log(`    ${e[0]}: ${e[1]}`));
+            //console.log('}');
 
         }
 

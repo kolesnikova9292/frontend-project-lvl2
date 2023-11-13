@@ -6,7 +6,8 @@
   "main": "gendiff.js",
   "scripts": {
     "make lint": "npx eslint .",
-    "test": "npx jest"
+    "test": "npx jest",
+    "run": "node gendiff file1.json file2.json"
   },
   "bin": {
     "gendiff": "./gendiff.js"
