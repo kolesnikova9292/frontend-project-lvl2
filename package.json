@@ -8,7 +8,8 @@
     "make lint": "npx eslint .",
     "test": "npx jest",
     "run": "node gendiff file1.json file2.json",
-    "run3": "node ../stringify3.js"
+    "run3": "node ../stringify3.js",
+    "start" : "make gendiff"
   },
   "bin": {
     "gendiff": "./gendiff.js"

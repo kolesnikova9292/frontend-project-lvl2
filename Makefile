@@ -7,3 +7,6 @@ lint:
 
 test:
 		npm test
+
+gendiff:
+		node gendiff.js
