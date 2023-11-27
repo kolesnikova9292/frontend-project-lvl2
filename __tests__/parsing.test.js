@@ -204,3 +204,83 @@ test('parsing5', () => {
 
     expect(parsing(json1, json2, 'plain')).toStrictEqual(result);
 });
+
+test('parsing', () => {
+
+
+    const data = fs.readFileSync('__tests__/__fixtures__/json/file1.json', 'utf8');
+    const data1 = fs.readFileSync('__tests__/__fixtures__/json/file2.json', 'utf8');
+    const json1 = JSON.parse(data);
+    const json2 = JSON.parse(data1);
+
+    const result = {
+        "-follow": false,
+        " host": "hexlet.io",
+        "-proxy": "123.234.53.22",
+        "-timeout": 50,
+        "+timeout": 20,
+        "+verbose": true,
+    };
+
+
+    expect(parsing(json1, json2, 'json')).toStrictEqual(result);
+    expect(parsing(json1, json2, 'json')["-follow"]).toStrictEqual(false);
+});
+
+test('parsing', () => {
+
+
+    const data = fs.readFileSync('__tests__/__fixtures__/json2/file1.json', 'utf8');
+    const data1 = fs.readFileSync('__tests__/__fixtures__/json2/file2.json', 'utf8');
+    const json1 = JSON.parse(data);
+    const json2 = JSON.parse(data1);
+
+    const result = {
+        " common": {
+            "+follow": false,
+    " setting1": "Value 1",
+    "-setting2": 200,
+    "-setting3": true,
+    "+setting3": "null",
+    "+setting4": "blah blah",
+    "+setting5": {
+        " key5": "value5",
+    },
+    " setting6": {
+        " doge": {
+            "-wow": "",
+            "+wow": "so much",
+        },
+        " key": "value",
+        "+ops": "vops",
+    },
+},
+    " group1": {
+        "-baz": "bas",
+        "+baz": "bars",
+        " foo": "bar",
+        "-nest": {
+            " key": "value",
+        },
+        "+nest": "str",
+    },
+    "-group2": {
+        " abc": 12345,
+        " deep": {
+            " id": 45,
+        }
+    },
+    "+group3": {
+        " deep": {
+            " id": {
+                " number": 45
+            },
+        },
+        " fee": 100500
+    }
+    };
+
+
+    expect(parsing(json1, json2, 'json')).toStrictEqual(result);
+    expect(parsing(json1, json2, 'json')[" common"]["+follow"]).toStrictEqual(false);
+});
