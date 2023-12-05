@@ -80,4 +80,5 @@ program
     }
   });
 
-program.parse(process.argv);
+//использую для тестирования
+//program.parse(process.argv);
