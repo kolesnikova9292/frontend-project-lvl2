@@ -1,11 +1,11 @@
 const addPlainFormatter = (variable, valueOfVariable, addedOrRemovedOrTheSame, updated) =>{
 
     if(updated === 'old') {
-        return `Property \'${variable ?? ''}\' was updated. From \'${valueOfVariable ?? ''}\'`;
+        return `Property \'${variable ?? ''}\' was updated. From ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]'  ? `'${valueOfVariable}'` : valueOfVariable}`;
     }
 
     if(updated === 'new') {
-        return ` to \'${valueOfVariable ?? ''}\'\n`;
+        return ` to ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]'  ? `'${valueOfVariable}'` : valueOfVariable}\n`;
     }
 
     if(addedOrRemovedOrTheSame === '-') {
