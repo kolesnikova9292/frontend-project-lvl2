@@ -60,10 +60,11 @@ const endResult = (formatter = 'stylish',
                    stylish = { replacer: ' ', spacesCount: 1, step: 1 }) => {
     if(formatter === 'stylish') {
         //return result + stylish.replacer.repeat((stylish.step-1) * stylish.spacesCount) + '}';
-        return result + stylish.replacer.repeat((stylish.step-1) * (stylish.spacesCount)) + '}';
+       // return result + stylish.replacer.repeat((stylish.step-1) * (stylish.spacesCount)) + '}';
 
 
       //  ${stylish.replacer.repeat((stylish.step-1) * (stylish.spacesCount + 2))}${stylish.replacer.repeat(stylish.step * stylish.spacesCount)} ${addedOrRemovedOrTheSame}
+        return result + stylish.replacer.repeat(4 * stylish.step - 4) + '}';
     }
 
     if(formatter === 'plain') {
