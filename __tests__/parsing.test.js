@@ -1,8 +1,8 @@
 import { test, expect } from '@jest/globals';
 import half from "../src/half.js";
-import parsing from "../src/parsing.js";
 import fs from "fs";
 import * as yaml from "js-yaml";
+import genDiff from "../genDiff.js";
 
 test('half', () => {
     expect(half(6)).toBe(3);
@@ -11,10 +11,10 @@ test('half', () => {
 test('parsing', () => {
 
 
-    const data = fs.readFileSync('__tests__/__fixtures__/json/file1.json', 'utf8');
+   /* const data = fs.readFileSync('__tests__/__fixtures__/json/file1.json', 'utf8');
     const data1 = fs.readFileSync('__tests__/__fixtures__/json/file2.json', 'utf8');
     const json1 = JSON.parse(data);
-    const json2 = JSON.parse(data1);
+    const json2 = JSON.parse(data1);*/
 
    // const result = {"  host": "hexlet.io", "+ timeout": 20, "+ verbose": true, "- follow": false, "- proxy": "123.234.53.22", "- timeout": 50}
 
@@ -28,7 +28,7 @@ test('parsing', () => {
         '}';
 
 
-    expect(parsing(json1, json2, 'stylish')).toStrictEqual(result);
+    expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'stylish')).toStrictEqual(result);
 });
 
 test('parsing2', () => {
@@ -50,7 +50,7 @@ test('parsing2', () => {
         '}'
 
 
-    expect(parsing(json1, json2)).toStrictEqual(result);
+    expect(genDiff('__tests__/__fixtures__/yaml/file1.yaml', '__tests__/__fixtures__/yaml/file2.yaml')).toStrictEqual(result);
 });
 
 
@@ -157,7 +157,7 @@ test('parsing', () => {
         '}';
 
 
-    expect(parsing(json1, json2)).toStrictEqual(result);
+    expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json')).toStrictEqual(result);
 });
 
 test('parsing4', () => {
@@ -175,7 +175,7 @@ test('parsing4', () => {
         'Property \'verbose\' was added with value \'true\'\n';
 
 
-    expect(parsing(json1, json2, 'plain')).toStrictEqual(result);
+    expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'plain')).toStrictEqual(result);
 });
 
 test('parsing5', () => {
@@ -202,7 +202,7 @@ test('parsing5', () => {
         'Property \'group3\' was added with value \'[complex value]\'\n'
 
 
-    expect(parsing(json1, json2, 'plain')).toStrictEqual(result);
+    expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'plain')).toStrictEqual(result);
 });
 
 test('parsing', () => {
@@ -223,8 +223,8 @@ test('parsing', () => {
     };
 
 
-    expect(parsing(json1, json2, 'json')).toStrictEqual(result);
-    expect(parsing(json1, json2, 'json')["-follow"]).toStrictEqual(false);
+    expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')).toStrictEqual(result);
+    expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')["-follow"]).toStrictEqual(false);
 });
 
 test('parsing', () => {
@@ -281,6 +281,6 @@ test('parsing', () => {
     };
 
 
-    expect(parsing(json1, json2, 'json')).toStrictEqual(result);
-    expect(parsing(json1, json2, 'json')[" common"]["+follow"]).toStrictEqual(false);
+    expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')).toStrictEqual(result);
+    expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')[" common"]["+follow"]).toStrictEqual(false);
 });

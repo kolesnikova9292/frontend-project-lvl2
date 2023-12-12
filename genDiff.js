@@ -5,6 +5,7 @@ import lodash from 'lodash';
 import parsing from "./src/parsing.js";
 import * as path from 'path';
 import * as yaml from 'js-yaml';
+import {startResult} from "./src/formatters/index.js";
 
 //import { createRequire } from "module";
 
@@ -30,7 +31,7 @@ program
     .action((file, file2) => {
         try {
 
-            main(file, file2);
+            genDiff(file, file2);
 
             //const path = require('path');
 
@@ -45,7 +46,7 @@ program
 //использую для тестирования
 //program.parse(process.argv);
 
-export default function main(file1, file2) {
+export default function genDiff(file1, file2, formatter = 'stylish', replacer = ' ', spacesCount = 1,  result = startResult(formatter), step = 1) {
 
     const extension1 = path.extname(file1);
     const extension2 = path.extname(file2);
@@ -53,14 +54,23 @@ export default function main(file1, file2) {
 
     if (extension1 === '.json' && extension2 === '.json') {
 
-        const data = fs.readFileSync(file, 'utf8');
+        //console.log(8888)
+
+        const data = fs.readFileSync(file1, 'utf8');
         const data1 = fs.readFileSync(file2, 'utf8');
+        //console.log(data)
+        //console.log(data1)
         const json1 = JSON.parse(data);
         const json2 = JSON.parse(data1);
 
-        const resultObject = parsing(json1, json2);
+        //console.log(json1)
+        //console.log(json2)
 
-        console.log(resultObject)
+        const resultObject = parsing(json1, json2, formatter, replacer, spacesCount,  result, step);
+
+        return resultObject;
+
+        //console.log(resultObject)
 
         //console.log('{');
         //Object.entries(resultObject).forEach((e) => console.log(`    ${e[0]}: ${e[1]}`));
@@ -71,7 +81,7 @@ export default function main(file1, file2) {
 
     if (extension1 === '.yaml' && extension2 === '.yaml') {
 
-        const data = fs.readFileSync(file, 'utf8');
+        const data = fs.readFileSync(file1, 'utf8');
         const data1 = fs.readFileSync(file2, 'utf8');
 
         const doc = yaml.load(data);
@@ -82,9 +92,11 @@ export default function main(file1, file2) {
         //const json1 = JSON.parse(doc);
         //const json2 = JSON.parse(doc2);
         const resultObject = parsing(doc, doc2);
-        console.log('{');
+
+        return resultObject;
+        /*console.log('{');
         Object.entries(resultObject).forEach((e) => console.log(`    ${e[0]}: ${e[1]}`));
-        console.log('}');
+        console.log('}');*/
 
     }
 

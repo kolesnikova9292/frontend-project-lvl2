@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/kolesnikova9292/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/kolesnikova9292/frontend-project-lvl2/actions)",
-  "main": "gendiff.js",
+  "main": "genDiff.js",
   "scripts": {
     "make lint": "npx eslint .",
     "test": "npx jest",
@@ -12,7 +12,7 @@
     "start" : "make gendiff"
   },
   "bin": {
-    "gendiff": "./gendiff.js"
+    "gendiff": "genDiff.js"
   },
   "repository": {
     "type": "git",
