@@ -71,7 +71,7 @@ const stringifyLittle = (obj,
     }
 
     if(formatter === 'stylish' || formatter === 'json') {
-        return endResult( formatter, result, { replacer: replacer, spacesCount: spacesCount, step: step + 1 } );
+        return endResult( formatter, result, { replacer: replacer, spacesCount: spacesCount, step: step } );
     } else
         return null;
 }
