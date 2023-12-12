@@ -60,7 +60,7 @@ const stringifyLittle = (obj,
 ) => {
     if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj//.toString();
 
-    if (obj === null) return 'null';
+    if (obj === null) return null;
 
     if(formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
