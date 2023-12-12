@@ -68,7 +68,7 @@ const endResult = (formatter = 'stylish',
     }
 
     if(formatter === 'plain') {
-        return result.slice(0, -1);
+        return result;
     }
 
     if(formatter === 'json') {
