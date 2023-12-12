@@ -13,7 +13,7 @@ const addPlainFormatter = (variable, valueOfVariable, addedOrRemovedOrTheSame, u
     }
 
     if(addedOrRemovedOrTheSame === '+') {
-        return `Property \'${variable ?? ''}\' was added with value: ${typeof valueOfVariable === 'string' ? `'${valueOfVariable}'` : valueOfVariable}\n`;
+        return `Property \'${variable ?? ''}\' was added with value: ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]'  ? `'${valueOfVariable}'` : valueOfVariable}\n`;
     }
 
     if(addedOrRemovedOrTheSame === ' ') {
