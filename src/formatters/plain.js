@@ -13,7 +13,7 @@ const addPlainFormatter = (variable, valueOfVariable, addedOrRemovedOrTheSame, u
     }
 
     if(addedOrRemovedOrTheSame === '+') {
-        return `Property \'${variable ?? ''}\' was added with value \'${valueOfVariable ?? ''}\'\n`;
+        return `Property \'${variable ?? ''}\' was added with value: \'${valueOfVariable ?? ''}\'\n`;
     }
 
     if(addedOrRemovedOrTheSame === ' ') {
@@ -33,6 +33,6 @@ const addPlainFormatter = (variable, valueOfVariable, addedOrRemovedOrTheSame, u
         return '';
     }
 
-    return `Property \'${variable ?? ''}' was added with value \'${valueOfVariable ?? ''}\'\n`;
+    return `Property \'${variable ?? ''}' was added with value: \'${valueOfVariable ?? ''}\'\n`;
 }
 export default addPlainFormatter;
