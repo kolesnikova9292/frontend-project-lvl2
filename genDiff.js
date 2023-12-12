@@ -70,6 +70,7 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
 
         if(formatter === 'plain') {
             resultObject = resultObject.slice(0, -1);
+           // console.log(resultObject)
         }
 
         return resultObject;
@@ -99,6 +100,7 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
 
         if(formatter === 'plain') {
             resultObject = resultObject.slice(0, -1);
+           // console.log(resultObject)
         }
 
         return resultObject;
