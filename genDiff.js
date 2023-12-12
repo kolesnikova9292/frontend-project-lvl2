@@ -79,7 +79,7 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
     }
 
 
-    if (extension1 === '.yaml' && extension2 === '.yaml') {
+    if (extension1 === '.yaml' && extension2 === '.yaml' || extension1 === '.yml' && extension2 === '.yml') {
 
         const data = fs.readFileSync(file1, 'utf8');
         const data1 = fs.readFileSync(file2, 'utf8');
