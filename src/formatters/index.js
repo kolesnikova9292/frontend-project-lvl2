@@ -28,7 +28,7 @@ const addFormating = (formatter = 'stylish',
                       updated = '') => {
 
     if(formatter === 'stylish') {
-        console.log('variabe ' + variable)
+        //console.log('variabe ' + variable)
         return addStylishFormater(stylish, variable, valueOfVariable, addedOrRemovedOrTheSame);
     }
 
