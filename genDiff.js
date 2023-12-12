@@ -66,7 +66,11 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
         //console.log(json1)
         //console.log(json2)
 
-        const resultObject = parsing(json1, json2, formatter, replacer, spacesCount,  result, step);
+        let resultObject = parsing(json1, json2, formatter, replacer, spacesCount,  result, step);
+
+        if(formatter === 'plain') {
+            resultObject = resultObject.slice(0, -1);
+        }
 
         return resultObject;
 
@@ -91,7 +95,11 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
 
         //const json1 = JSON.parse(doc);
         //const json2 = JSON.parse(doc2);
-        const resultObject = parsing(doc, doc2, formatter, replacer, spacesCount,  result, step);
+        let resultObject = parsing(doc, doc2, formatter, replacer, spacesCount,  result, step);
+
+        if(formatter === 'plain') {
+            resultObject = resultObject.slice(0, -1);
+        }
 
         return resultObject;
         /*console.log('{');
