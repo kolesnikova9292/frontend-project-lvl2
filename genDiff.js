@@ -91,7 +91,7 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
 
         //const json1 = JSON.parse(doc);
         //const json2 = JSON.parse(doc2);
-        const resultObject = parsing(doc, doc2);
+        const resultObject = parsing(doc, doc2, formatter, replacer, spacesCount,  result, step);
 
         return resultObject;
         /*console.log('{');
