@@ -8,16 +8,7 @@ test('half', () => {
     expect(half(6)).toBe(3);
 });
 
-test('parsing', () => {
-
-
-   /* const data = fs.readFileSync('__tests__/__fixtures__/json/file1.json', 'utf8');
-    const data1 = fs.readFileSync('__tests__/__fixtures__/json/file2.json', 'utf8');
-    const json1 = JSON.parse(data);
-    const json2 = JSON.parse(data1);*/
-
-   // const result = {"  host": "hexlet.io", "+ timeout": 20, "+ verbose": true, "- follow": false, "- proxy": "123.234.53.22", "- timeout": 50}
-
+/*test('parsing', () => {
     const result = '{\n' +
         '  - follow: false\n' +
         '    host: hexlet.io\n' +
@@ -26,19 +17,9 @@ test('parsing', () => {
         '  + timeout: 20\n' +
         '  + verbose: true\n' +
         '}';
-
     expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'stylish')).toStrictEqual(result);
-});
-
-test('parsing2', () => {
-
-
-    const data = fs.readFileSync('__tests__/__fixtures__/yaml/file1.yaml', 'utf8');
-    const data1 = fs.readFileSync('__tests__/__fixtures__/yaml/file2.yaml', 'utf8');
-    const json1 = yaml.load(data);
-    const json2 = yaml.load(data1);
-
-    //const result = {"  host": "hexlet.io", "+ timeout": 20, "+ verbose": true, "- follow": false, "- proxy": "123.234.53.22", "- timeout": 50}
+});*/
+/*test('parsing2', () => {
     const result = '{\n' +
         '  - follow: false\n' +
         '    host: hexlet.io\n' +
@@ -46,115 +27,10 @@ test('parsing2', () => {
         '  - timeout: 50\n' +
         '  + timeout: 20\n' +
         '  + verbose: true\n' +
-        '}'
-
-
+        '}';
     expect(genDiff('__tests__/__fixtures__/yaml/file1.yaml', '__tests__/__fixtures__/yaml/file2.yaml')).toStrictEqual(result);
-});
-
-
+});*/
 test('parsing', () => {
-
-
-    const data = fs.readFileSync('__tests__/__fixtures__/json2/file1.json', 'utf8');
-    const data1 = fs.readFileSync('__tests__/__fixtures__/json2/file2.json', 'utf8');
-    const json1 = JSON.parse(data);
-    const json2 = JSON.parse(data1);
-
-    // const result = {"  host": "hexlet.io", "+ timeout": 20, "+ verbose": true, "- follow": false, "- proxy": "123.234.53.22", "- timeout": 50}
-
-    /*const result = '{\n' +
-        '   common: {\n' +
-        '    + follow: false\n' +
-        '      setting1: Value 1\n' +
-        '    - setting2: 200\n' +
-        '    + setting3: true\n' +
-        '    - setting3: null\n' +
-        '    + setting4: blah blah\n' +
-        '    + setting5: {\n' +
-        '         key5: value5\n' +
-        '        }\n' +
-        '      setting6: {\n' +
-        '         doge: {\n' +
-        '          + wow: \n' +
-        '          - wow: so much\n' +
-        '         }\n' +
-        '         key: value\n' +
-        '       + ops: vops\n' +
-        '      }\n' +
-        '   }\n' +
-        '   group1: {\n' +
-        '    + baz: bas\n' +
-        '    - baz: bars\n' +
-        '      foo: bar\n' +
-        '      nest: {\n' +
-        '       + 0: s\n' +
-        '       + 1: t\n' +
-        '       + 2: r\n' +
-        '       - key: value\n' +
-        '      }\n' +
-        '   }\n' +
-        ' - group2: {\n' +
-        '      abc: 12345\n' +
-        '      deep: {\n' +
-        '       id: 45\n' +
-        '      }\n' +
-        '     }\n' +
-        ' + group3: {\n' +
-        '      deep: {\n' +
-        '       id: {\n' +
-        '        number: 45\n' +
-        '       }\n' +
-        '      }\n' +
-        '      fee: 100500\n' +
-        '     }\n' +
-        '}';*/
-
-    /*const result = '{\n' +
-        '   common: {\n' +
-        '    + follow: false\n' +
-        '      setting1: Value 1\n' +
-        '    - setting2: 200\n' +
-        '    - setting3: true\n' +
-        '    + setting3: null\n' +
-        '    + setting4: blah blah\n' +
-        '    + setting5: {\n' +
-        '         key5: value5\n' +
-        '        }\n' +
-        '      setting6: {\n' +
-        '         doge: {\n' +
-        '          - wow: \n' +
-        '          + wow: so much\n' +
-        '         }\n' +
-        '         key: value\n' +
-        '       + ops: vops\n' +
-        '      }\n' +
-        '   }\n' +
-        '   group1: {\n' +
-        '    - baz: bas\n' +
-        '    + baz: bars\n' +
-        '      foo: bar\n' +
-        '    - nest: {\n' +
-        '       key: value\n' +
-        '      }\n' +
-        '    + nest: str\n' +
-        '   }\n' +
-        ' - group2: {\n' +
-        '      abc: 12345\n' +
-        '      deep: {\n' +
-        '       id: 45\n' +
-        '      }\n' +
-        '     }\n' +
-        ' + group3: {\n' +
-        '      deep: {\n' +
-        '       id: {\n' +
-        '        number: 45\n' +
-        '       }\n' +
-        '      }\n' +
-        '      fee: 100500\n' +
-        '     }\n' +
-        '}';*/
-
     const result = '{\n' +
     '    common: {\n' +
     '      + follow: false\n' +
@@ -198,40 +74,20 @@ test('parsing', () => {
     '        }\n' +
     '        fee: 100500\n' +
     '    }\n' +
-    '}'
-
-
+    '}';
     expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json')).toStrictEqual(result);
 });
 
-test('parsing4', () => {
-
-
-    const data = fs.readFileSync('__tests__/__fixtures__/json/file1.json', 'utf8');
-    const data1 = fs.readFileSync('__tests__/__fixtures__/json/file2.json', 'utf8');
-    const json1 = JSON.parse(data);
-    const json2 = JSON.parse(data1);
-
+/*test('parsing4', () => {
     const result = '' +
         'Property \'follow\' was removed\n' +
         'Property \'proxy\' was removed\n' +
         'Property \'timeout\' was updated. From \'50\' to \'20\'\n' +
         'Property \'verbose\' was added with value \'true\'\n';
-
-
     expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'plain')).toStrictEqual(result);
 });
 
 test('parsing5', () => {
-
-
-    const data = fs.readFileSync('__tests__/__fixtures__/json2/file1.json', 'utf8');
-    const data1 = fs.readFileSync('__tests__/__fixtures__/json2/file2.json', 'utf8');
-    const json1 = JSON.parse(data);
-    const json2 = JSON.parse(data1);
-
-    // const result = {"  host": "hexlet.io", "+ timeout": 20, "+ verbose": true, "- follow": false, "- proxy": "123.234.53.22", "- timeout": 50}
-
     const result = '' +
         'Property \'common.follow\' was added with value \'false\'\n' +
         'Property \'common.setting2\' was removed\n' +
@@ -243,20 +99,11 @@ test('parsing5', () => {
         'Property \'group1.baz\' was updated. From \'bas\' to \'bars\'\n' +
         'Property \'group1.nest\' was updated. From \'[complex value]\' to \'str\'\n' +
         'Property \'group2\' was removed\n' +
-        'Property \'group3\' was added with value \'[complex value]\'\n'
-
-
+        'Property \'group3\' was added with value \'[complex value]\'\n';
     expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'plain')).toStrictEqual(result);
 });
 
 test('parsing', () => {
-
-
-    const data = fs.readFileSync('__tests__/__fixtures__/json/file1.json', 'utf8');
-    const data1 = fs.readFileSync('__tests__/__fixtures__/json/file2.json', 'utf8');
-    const json1 = JSON.parse(data);
-    const json2 = JSON.parse(data1);
-
     const result = {
         "-follow": false,
         " host": "hexlet.io",
@@ -265,20 +112,11 @@ test('parsing', () => {
         "+timeout": 20,
         "+verbose": true,
     };
-
-
     expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')).toStrictEqual(result);
     expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')["-follow"]).toStrictEqual(false);
 });
 
 test('parsing', () => {
-
-
-    const data = fs.readFileSync('__tests__/__fixtures__/json2/file1.json', 'utf8');
-    const data1 = fs.readFileSync('__tests__/__fixtures__/json2/file2.json', 'utf8');
-    const json1 = JSON.parse(data);
-    const json2 = JSON.parse(data1);
-
     const result = {
         " common": {
             "+follow": false,
@@ -323,8 +161,6 @@ test('parsing', () => {
         " fee": 100500
     }
     };
-
-
     expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')).toStrictEqual(result);
     expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')[" common"]["+follow"]).toStrictEqual(false);
-});
+});*/

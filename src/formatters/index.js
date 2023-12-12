@@ -28,6 +28,7 @@ const addFormating = (formatter = 'stylish',
                       updated = '') => {
 
     if(formatter === 'stylish') {
+        console.log('variabe ' + variable)
         return addStylishFormater(stylish, variable, valueOfVariable, addedOrRemovedOrTheSame);
     }
 
@@ -58,7 +59,11 @@ const endResult = (formatter = 'stylish',
                    result,
                    stylish = { replacer: ' ', spacesCount: 1, step: 1 }) => {
     if(formatter === 'stylish') {
-        return result + stylish.replacer.repeat(stylish.step * stylish.spacesCount) + '}';
+        //return result + stylish.replacer.repeat((stylish.step-1) * stylish.spacesCount) + '}';
+        return result + stylish.replacer.repeat((stylish.step-1) * (stylish.spacesCount)) + '}';
+
+
+      //  ${stylish.replacer.repeat((stylish.step-1) * (stylish.spacesCount + 2))}${stylish.replacer.repeat(stylish.step * stylish.spacesCount)} ${addedOrRemovedOrTheSame}
     }
 
     if(formatter === 'plain') {
