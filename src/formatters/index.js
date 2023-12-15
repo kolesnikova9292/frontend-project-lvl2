@@ -15,8 +15,31 @@ const chainResult = (formatter = 'stylish',
     }
 
     if(formatter === 'json') {
-        result[ nextChain.variable ] = nextChain.value;
-        return result;
+       // const qwe = `\"${nextChain.variable}\"`;
+       // const qwe = `"${nextChain.variable}"`;
+        //console.log(qwe)
+        //console.log(nextChain.variable)
+        /*result[ qwe ] = nextChain.value;
+        console.log(result)
+        return result;*/
+       // console.log(result)
+      //  return result + qwe + ":" + nextChain.value + ', ';
+      //  result[qwe.replace('\'','1')] = nextChain.value;
+      //  console.log(result)
+       // return result;
+      //
+        //  return { ...result, qwe: nextChain.value }
+
+
+        /*if(typeof nextChain.value === 'object') {
+            return result + '"' + nextChain.variable + '"' + ': ' + nextChain.value + ', ';
+        } else {
+            return result + '"' + nextChain.variable + '"' + ': ' + '"' + nextChain.value + '"' + ', ';
+        }*/
+
+        return result + '"' + nextChain.variable + '"' + ': ' + nextChain.value + ', ';
+
+
     }
 }
 
@@ -51,7 +74,8 @@ const startResult = (formatter = 'stylish') => {
     }
 
     if(formatter === 'json') {
-        return {};
+      //  return {};
+        return '{'
     }
 }
 
@@ -72,7 +96,7 @@ const endResult = (formatter = 'stylish',
     }
 
     if(formatter === 'json') {
-        return result;
+        return result.slice(0, -2) + ' }';
     }
 }
 

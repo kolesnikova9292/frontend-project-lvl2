@@ -73,6 +73,10 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
            // console.log(resultObject)
         }
 
+        console.log(9999)
+
+        console.log(resultObject)
+
         return resultObject;
 
         //console.log(resultObject)
