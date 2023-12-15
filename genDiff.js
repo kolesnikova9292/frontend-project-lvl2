@@ -82,7 +82,7 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
 
         console.log(resultObject)
 
-        return console.log(resultObject);
+        return resultObject;
 
         //console.log(resultObject)
 
@@ -112,7 +112,7 @@ export default function genDiff(file1, file2, formatter = 'stylish', replacer = 
            // console.log(resultObject)
         }
 
-        return console.log(resultObject);
+        return resultObject;
         /*console.log('{');
         Object.entries(resultObject).forEach((e) => console.log(`    ${e[0]}: ${e[1]}`));
         console.log('}');*/
