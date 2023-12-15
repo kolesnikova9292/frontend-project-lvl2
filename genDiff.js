@@ -50,7 +50,7 @@ program
     });
 
 //использую для тестирования
-program.parse(process.argv);
+program.parse();
 
 export default function genDiff(file1, file2, formatter = 'stylish', replacer = ' ', spacesCount = 1,  result = startResult(formatter), step = 1) {
 
