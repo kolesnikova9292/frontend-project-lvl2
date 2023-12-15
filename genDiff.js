@@ -32,7 +32,7 @@ program
         try {
 
 
-            return console.log(genDiff(file, file2))
+            return () => console.log(genDiff(file, file2))
 
            // return genDiff(file, file2);
 
