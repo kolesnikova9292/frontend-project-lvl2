@@ -11,7 +11,7 @@ import {startResult} from "./src/formatters/index.js";
 
 //const path = require('node:path');
 
-program
+/*program
     .description('Compares two configuration files and shows a difference.') // command description
     .version('output the version number')
     .helpOption('-h, --help', 'output usage information')
@@ -20,7 +20,7 @@ program
     // function to execute when command is uses
     .action(() => {
 
-    });
+    });*/
 
 
 program
