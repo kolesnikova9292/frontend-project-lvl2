@@ -31,9 +31,11 @@ program
     .action((file, file2) => {
         try {
 
-            return genDiff(file, file2);
+           // return genDiff(file, file2);
 
             //const path = require('path');
+
+            console.log(genDiff(file, file2))
 
 
 
