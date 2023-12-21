@@ -103,12 +103,12 @@ test('parsing5', () => {
 
 test('parsing6', () => {
   const result = {
-    "-follow": false,
-    " host": "hexlet.io",
-    "-proxy": "123.234.53.22",
-    "-timeout": 50,
-    "+timeout": 20,
-    "+verbose": true,
+    "-follow": false, // eslint-disable-line
+    " host": "hexlet.io", // eslint-disable-line
+    "-proxy": "123.234.53.22", // eslint-disable-line
+    "-timeout": 50, // eslint-disable-line
+    "+timeout": 20, // eslint-disable-line
+    "+verbose": true, // eslint-disable-line
   };
   expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')).toStrictEqual(result);
   expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')["-follow"]).toStrictEqual(false);
