@@ -2,7 +2,7 @@ import addStylishFormater from './stylish.js';
 import addPlainFormatter from './plain.js';
 import addJsonFormater from './json.js';
 
-const chainResult = (formatter = 'stylish', result, nextChain) => {
+const chainResult = (formatter = 'stylish', result = '', nextChain = '') => {
   if (formatter === 'stylish') {
     return result + nextChain;
   }
@@ -12,8 +12,9 @@ const chainResult = (formatter = 'stylish', result, nextChain) => {
   }
 
   if (formatter === 'json') {
-    return result + '"' + nextChain.variable + '"' + ': ' + nextChain.value + ', ';
+    return `${result}"${nextChain.variable}": ${nextChain.value}, `;
   }
+  return null;
 }
 
 const addFormating = (formatter = 'stylish',
