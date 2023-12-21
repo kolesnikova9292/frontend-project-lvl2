@@ -3,30 +3,30 @@ import half from '../src/half.js';
 import genDiff from '../genDiff.js';
 
 test('half', () => {
-    expect(half(6)).toBe(3);
+  expect(half(6)).toBe(3);
 });
 
 test('parsing', () => {
-    const result = '{\n' +
-        '  - follow: false\n' +
-        '    host: hexlet.io\n' +
-        '  - proxy: 123.234.53.22\n' +
-        '  - timeout: 50\n' +
-        '  + timeout: 20\n' +
-        '  + verbose: true\n' +
-        '}';
-    expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'stylish')).toStrictEqual(result);
+  const result = '{\n'
+      + '  - follow: false\n'
+      + '    host: hexlet.io\n'
+      + '  - proxy: 123.234.53.22\n'
+      + '  - timeout: 50\n'
+      + '  + timeout: 20\n'
+      + '  + verbose: true\n'
+      + '}';
+  expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'stylish')).toStrictEqual(result);
 });
 test('parsing2', () => {
-    const result = '{\n' +
-        '  - follow: false\n' +
-        '    host: hexlet.io\n' +
-        '  - proxy: 123.234.53.22\n' +
-        '  - timeout: 50\n' +
-        '  + timeout: 20\n' +
-        '  + verbose: true\n' +
-        '}';
-    expect(genDiff('__tests__/__fixtures__/yaml/file1.yaml', '__tests__/__fixtures__/yaml/file2.yaml')).toStrictEqual(result);
+  const result = '{\n'
+        + '  - follow: false\n'
+        + '    host: hexlet.io\n'
+        + '  - proxy: 123.234.53.22\n'
+        + '  - timeout: 50\n'
+        + '  + timeout: 20\n'
+        + '  + verbose: true\n'
+        + '}';
+  expect(genDiff('__tests__/__fixtures__/yaml/file1.yaml', '__tests__/__fixtures__/yaml/file2.yaml')).toStrictEqual(result);
 });
 test('parsing', () => {
     const result = '{\n' +
