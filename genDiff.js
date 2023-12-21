@@ -52,7 +52,7 @@ program
         }
     });*/
 
-program.parse();
+program.parse(process.argv);
 
 export default function genDiff(file1, file2, formatter = 'stylish', replacer = ' ', spacesCount = 1,  result = startResult(formatter), step = 1) {
 
