@@ -15,20 +15,20 @@ const stringifyLittle = (
 
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-  for (const variable in obj) {
-    if (formatter === 'stylish' || formatter === 'json') {
-      result = chainResult(
-        formatter,
-        result,
-        addFormating(
+  result = Object.entries(obj).forEach((e) => {
+      if (formatter === 'stylish' || formatter === 'json') {
+        return chainResult(
           formatter,
+          result,
+          addFormating(
+            formatter,
           { replacer, spacesCount, step },
-          variable,
-          stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1)
-        ),
-      );
-    }
-  }
+            e[0],
+            stringifyLittle(e[1], formatter, replacer, spacesCount, step + 1),
+          ),
+        );
+      }
+    });
 
   if (formatter === 'stylish' || formatter === 'json') {
     return endResult(formatter, result, { replacer, spacesCount, step });
