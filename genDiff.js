@@ -86,9 +86,9 @@ export default function genDiff(fileName1, fileName2, formatter = 'stylish', rep
            // console.log(resultObject)
         }
 
-        console.log(9999)
+        //console.log(9999)
 
-        console.log(resultObject)
+        //console.log(resultObject)
 
         return resultObject;
 

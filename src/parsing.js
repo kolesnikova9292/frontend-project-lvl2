@@ -50,10 +50,10 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
         }
     });
 
-    console.log(8888)
+  //  console.log(8888)
     //console.log(result)
 
-    console.log(endResult( formatter, result, { replacer: replacer, spacesCount: spacesCount, step: step } ))
+  //  console.log(endResult( formatter, result, { replacer: replacer, spacesCount: spacesCount, step: step } ))
 
     return endResult( formatter, result, { replacer: replacer, spacesCount: spacesCount, step: step } )
 };

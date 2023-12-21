@@ -7,7 +7,7 @@ const addJsonFormater = (variable, valueOfVariable, addedOrRemovedOrTheSame) =>{
         return { variable: addedOrRemovedOrTheSame + variable, value: '"' + valueOfVariable + '"' };
     }*/
 
-    console.log(valueOfVariable)
+   // console.log(valueOfVariable)
 
     if(valueOfVariable.toString().substring(0,1) === '{') {
         return { variable: addedOrRemovedOrTheSame + variable, value: valueOfVariable };
