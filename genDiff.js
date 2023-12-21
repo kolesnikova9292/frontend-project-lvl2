@@ -58,8 +58,8 @@ program.parse();
 
 export default function genDiff(fileName1, fileName2, formatter = 'stylish', replacer = ' ', spacesCount = 1,  result = startResult(formatter), step = 1) {
 
-    const extension1 = path.extname(file1);
-    const extension2 = path.extname(file2);
+    const extension1 = path.extname(fileName1);
+    const extension2 = path.extname(fileName2);
 
     const file1 = path.resolve(fileName1);
     const file2 = path.resolve(fileName2);
