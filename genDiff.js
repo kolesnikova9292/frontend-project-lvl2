@@ -30,6 +30,7 @@ program
     .option('-f, --format <type>', 'output format', 'stylish')
     .arguments('<filepath1>')
     .arguments('<filepath2>')
+    .allowUnknownOption(true)
     .action((filepath1, filepath2) => {
         //const result = genDiff(filepath1, filepath2, program.opts().format);
         const result = genDiff(filepath1, filepath2, program.opts().format);
@@ -52,7 +53,7 @@ program
         }
     });*/
 
-program.parse(process.argv);
+program.parse();
 
 export default function genDiff(file1, file2, formatter = 'stylish', replacer = ' ', spacesCount = 1,  result = startResult(formatter), step = 1) {
 
