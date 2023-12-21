@@ -24,7 +24,7 @@ import {startResult} from "./src/formatters/index.js";
     });*/
 
 
-/*program
+program
     .version('0.0.1')
     .description('Compares two configuration files and shows a difference.')
     .option('-f, --format <type>', 'output format', 'stylish')
@@ -35,10 +35,10 @@ import {startResult} from "./src/formatters/index.js";
         //const result = genDiff(filepath1, filepath2, program.opts().format);
         const result = genDiff(filepath1, filepath2, program.opts().format);
         console.log(result);
-    });*/
+    });
 
 
-program
+/*program
     .description('Compares two configuration files and shows a difference.')
     .version('0.1.0')
     .usage('[options] <file> <file>')
@@ -52,7 +52,7 @@ program
         } catch (err) {
             console.error(err);
         }
-    });
+    });*/
 
 program.parse();
 
