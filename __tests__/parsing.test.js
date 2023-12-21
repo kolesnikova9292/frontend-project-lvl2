@@ -111,10 +111,10 @@ test('parsing6', () => {
     "+verbose": true, // eslint-disable-line
   };
   expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')).toStrictEqual(result);
-  expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')["-follow"]).toStrictEqual(false);
+  expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')["-follow"]).toStrictEqual(false); // eslint-disable-line
 });
 
 test('parsing7', () => {
-  expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))[" common"]["+follow"]).toEqual("false");
-  expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))["+group3"][" fee"]).toEqual("100500");
+  expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))[" common"]["+follow"]).toEqual("false"); // eslint-disable-line
+  expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))["+group3"][" fee"]).toEqual("100500"); // eslint-disable-line
 });
