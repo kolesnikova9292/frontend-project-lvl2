@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-//import program from 'commander';
+import program from 'commander';
 import fs from 'fs';
 import lodash from 'lodash';
 import parsing from "./src/parsing.js";
@@ -8,7 +8,7 @@ import * as yaml from 'js-yaml';
 import {startResult} from "./src/formatters/index.js";
 import { Command } from "commander";
 
-const program = new Command();
+//const program = new Command();
 
 //import { createRequire } from "module";
 
@@ -32,31 +32,16 @@ program
     .usage('[options] <file> <file>')
     .arguments('<file> <file>')
     .action((file, file2) => {
-        try {
-
-            //console.log(genDiff(file, file2))
-
-           // return () => console.log(genDiff(file, file2))
-
-           // return genDiff(file, file2);
-
-            //const path = require('path');
-
-            //console.log(genDiff(file, file2))
-
-
+        const result = genDiff(file, file2);
+        console.log(result);
+        /*try {
             return genDiff(file, file2);
-
-
-
-
         } catch (err) {
             console.error(err);
-        }
+        }*/
     });
 
-//использую для тестирования
-program.parse(process.argv);
+program.parse();
 
 export default function genDiff(file1, file2, formatter = 'stylish', replacer = ' ', spacesCount = 1,  result = startResult(formatter), step = 1) {
 
