@@ -15,12 +15,13 @@ const chainResult = (formatter = 'stylish', result = '', nextChain = '') => {
     return `${result}"${nextChain.variable}": ${nextChain.value}, `;
   }
   return null;
-}
+};
 
-const addFormating = (formatter = 'stylish',
+const addFormating = (
+  formatter = 'stylish',
   stylish = { replacer: ' ', spacesCount: 1, step: 1 },
-  variable,
-  valueOfVariable,
+  variable = '',
+  valueOfVariable = '',
   addedOrRemovedOrTheSame = ' ',
   updated = '') => {
   if (formatter === 'stylish') {
@@ -34,7 +35,7 @@ const addFormating = (formatter = 'stylish',
   if (formatter === 'json') {
     return addJsonFormater(variable, valueOfVariable, addedOrRemovedOrTheSame);
   }
-}
+};
 
 const startResult = (formatter = 'stylish') => {
   if (formatter === 'stylish') {
