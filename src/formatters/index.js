@@ -51,6 +51,7 @@ const startResult = (formatter = 'stylish') => {
   if (formatter === 'json') {
     return '{';
   }
+  return null;
 };
 
 const endResult = (formatter = 'stylish', result = '', stylish = { replacer: ' ', spacesCount: 1, step: 1 }) => {
@@ -65,6 +66,7 @@ const endResult = (formatter = 'stylish', result = '', stylish = { replacer: ' '
   if (formatter === 'json') {
     return `${result.slice(0, -2)} }`;
   }
+  return null;
 };
 
 export default addFormating;
