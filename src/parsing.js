@@ -2,31 +2,31 @@ import lodash from 'lodash';
 import addFormating, { endResult, startResult, chainResult } from './formatters/index.js';
 
 const stringifyLittle = (
-    obj,
-    formatter = 'stylish',
-    replacer = ' ',
-    spacesCount = 1,
-    step = 1,
-    result = startResult(formatter)
+  obj,
+  formatter = 'stylish',
+  replacer = ' ',
+  spacesCount = 1,
+  step = 1,
+  result = startResult(formatter)
 ) => {
-    if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
+  if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
 
-    if (obj === null) return 'null';
+  if (obj === null) return 'null';
 
-    if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
+  if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-    for (const variable in obj) {
-        if (formatter === 'stylish' || formatter === 'json') {
-            result = chainResult(formatter, result,
-                addFormating(formatter, { replacer, spacesCount, step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1))
-            );
-        }
-    }
-
+  for (const variable in obj) {
     if (formatter === 'stylish' || formatter === 'json') {
-        return endResult(formatter, result,{ replacer, spacesCount, step });
+      result = chainResult(formatter, result,
+        addFormating(formatter, { replacer, spacesCount, step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1))
+      );
     }
-    return null;
+  }
+
+  if (formatter === 'stylish' || formatter === 'json') {
+    return endResult(formatter, result,{ replacer, spacesCount, step });
+  }
+  return null;
 };
 
 const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCount = 1, result = startResult(formatter), step = 1) => {
@@ -54,7 +54,7 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
       arrayWithInsertedProps.push(x.key);
       result = chainResult(
         formatter, result,
-        addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter,replacer, spacesCount, step + 1), '-'),
+        addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1), '-'),
       );
     }
 
@@ -62,9 +62,7 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
       arrayWithInsertedProps.push(x.key);
       result = chainResult(
         formatter, result,
-        addFormating(
-          formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+',
-        ),
+        addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+'),
       );
     }
 
