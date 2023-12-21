@@ -15,7 +15,7 @@ const stringifyLittle = (
 
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-  Object.keys(obj).forEach((key) => {
+  Object.keys(obj || {}).forEach((key) => {
       if (formatter === 'stylish' || formatter === 'json') {
         result = chainResult(
           formatter,
