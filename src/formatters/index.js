@@ -23,8 +23,8 @@ const addFormating = (
   variable = '',
   valueOfVariable = '',
   addedOrRemovedOrTheSame = ' ',
-  updated = ''
-  ) => {
+  updated = '',
+) => {
   if (formatter === 'stylish') {
     return addStylishFormater(stylish, variable, valueOfVariable, addedOrRemovedOrTheSame);
   }
@@ -42,29 +42,29 @@ const addFormating = (
 const startResult = (formatter = 'stylish') => {
   if (formatter === 'stylish') {
     return '{\n';
-  };
+  }
 
   if (formatter === 'plain') {
     return '';
-  };
+  }
 
   if (formatter === 'json') {
     return '{'
-  };
+  }
 }
 
 const endResult = (formatter = 'stylish', result, stylish = { replacer: ' ', spacesCount: 1, step: 1 }) => {
   if (formatter === 'stylish') {
     return result + stylish.replacer.repeat(4 * stylish.step - 4) + '}';
-  };
+  }
 
   if (formatter === 'plain') {
     return result;
-  };
+  }
 
   if (formatter === 'json') {
     return result.slice(0, -2) + ' }';
-  };
+  }
 }
 
 export default addFormating;
