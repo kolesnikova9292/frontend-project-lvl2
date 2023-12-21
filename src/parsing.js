@@ -1,6 +1,34 @@
 import lodash from 'lodash';
 import addFormating, { endResult, startResult, chainResult } from './formatters/index.js';
 
+const stringifyLittle = (
+    obj,
+    formatter = 'stylish',
+    replacer = ' ',
+    spacesCount = 1,
+    step = 1,
+    result = startResult(formatter)
+) => {
+    if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
+
+    if (obj === null) return 'null';
+
+    if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
+
+    for (const variable in obj) {
+        if (formatter === 'stylish' || formatter === 'json') {
+            result = chainResult(formatter, result,
+                addFormating(formatter, { replacer, spacesCount, step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1))
+            );
+        }
+    }
+
+    if (formatter === 'stylish' || formatter === 'json') {
+        return endResult(formatter, result,{ replacer, spacesCount, step });
+    }
+    return null;
+};
+
 const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCount = 1, result = startResult(formatter), step = 1) => {
   const arrayWithInsertedProps = [];
 
@@ -68,34 +96,6 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
   });
 
   return endResult(formatter, result, { replacer, spacesCount, step });
-};
-
-const stringifyLittle = (
-  obj,
-  formatter = 'stylish',
-  replacer = ' ',
-  spacesCount = 1,
-  step = 1,
-  result = startResult(formatter)
-) => {
-  if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
-
-  if (obj === null) return 'null';
-
-  if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
-
-  for (const variable in obj) {
-    if (formatter === 'stylish' || formatter === 'json') {
-      result = chainResult(formatter, result,
-        addFormating(formatter, { replacer, spacesCount, step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1))
-      );
-    }
-  }
-
-  if (formatter === 'stylish' || formatter === 'json') {
-    return endResult(formatter, result,{ replacer, spacesCount, step });
-  }
-  return null;
 };
 
 export default parsing;
