@@ -26,7 +26,7 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
       arrayWithInsertedProps.push(x.key);
       result = chainResult(
         formatter, result,
-        addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter,replacer, spacesCount, step+1), '-')
+        addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter,replacer, spacesCount, step + 1), '-'),
       );
     }
 
@@ -35,8 +35,8 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
       result = chainResult(
         formatter, result,
         addFormating(
-          formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step+1), '+'
-        )
+          formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+',
+        ),
       );
     }
 
@@ -46,28 +46,28 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
         result = chainResult(
           formatter, result,
           addFormating(
-            formatter, { replacer, spacesCount, step }, x.key, parsing(json1[x.key], json2[x.key], formatter, replacer, spacesCount, startResult(formatter), step+1)
-          )
+            formatter, { replacer, spacesCount, step }, x.key, parsing(json1[x.key], json2[x.key], formatter, replacer, spacesCount, startResult(formatter), step + 1),
+          ),
         );
       } else {
         result = chainResult(
           formatter, result,
           addFormating(
-            formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step+1), '-', 'old'
-          )
+            formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1), '-', 'old',
+          ),
         );
 
         result = chainResult(
           formatter, result,
           addFormating(
-            formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step+1), '+', 'new'
-          )
+            formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+', 'new',
+          ),
         );
       }
     }
   });
 
-  return endResult( formatter, result, { replacer: replacer, spacesCount: spacesCount, step: step } )
+  return endResult(formatter, result, { replacer, spacesCount, step });
 };
 
 const stringifyLittle = (
@@ -78,22 +78,24 @@ const stringifyLittle = (
   step = 1,
   result = startResult(formatter)
 ) => {
-  if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj//.toString();
+  if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
 
   if (obj === null) return 'null';
 
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-  for (let variable in obj) {
+  for (const variable in obj) {
     if (formatter === 'stylish' || formatter === 'json') {
-      result = chainResult(formatter, result, addFormating(formatter, { replacer, spacesCount, step: step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step+1)));
+      result = chainResult(formatter, result,
+        addFormating(formatter, { replacer, spacesCount, step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1))
+      );
     }
   }
 
   if (formatter === 'stylish' || formatter === 'json') {
-    return endResult( formatter, result, { replacer: replacer, spacesCount: spacesCount, step: step } );
-  } else
-        return null;
-}
+    return endResult(formatter, result,{ replacer, spacesCount, step });
+  }
+  return null;
+};
 
 export default parsing;
