@@ -20,13 +20,18 @@ const stringifyLittle = (
       result = chainResult(
         formatter,
         result,
-        addFormating(formatter, { replacer, spacesCount, step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1))
+        addFormating(
+          formatter,
+          { replacer, spacesCount, step },
+          variable,
+          stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1)
+        ),
       );
     }
   }
 
   if (formatter === 'stylish' || formatter === 'json') {
-    return endResult(formatter, result,{ replacer, spacesCount, step });
+    return endResult(formatter, result, { replacer, spacesCount, step });
   }
   return null;
 };
