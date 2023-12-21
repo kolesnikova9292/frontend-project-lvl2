@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import program from 'commander';
+import { program } from 'commander';
 import fs from 'fs';
 import lodash from 'lodash';
 import parsing from "./src/parsing.js";
