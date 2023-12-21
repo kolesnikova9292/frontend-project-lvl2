@@ -33,11 +33,11 @@ export default function genDiff(fileName1, fileName2, formatter = 'stylish', rep
     const json1 = JSON.parse(data);
     const json2 = JSON.parse(data1);
 
-    let resultObject = parsing(json1, json2, formatter, replacer, spacesCount, result, step);
+    const resultObject = parsing(json1, json2, formatter, replacer, spacesCount, result, step);
 
-      if(formatter === 'plain') {
-        resultObject = resultObject.slice(0, -1);
-      }
+    if (formatter === 'plain') {
+      return resultObject.slice(0, -1);
+    }
 
     return resultObject;
   }
