@@ -7,7 +7,7 @@ const stringifyLittle = (
   replacer = ' ',
   spacesCount = 1,
   step = 1,
-  result = startResult(formatter)
+  result = startResult(formatter),
 ) => {
   if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
 
@@ -17,7 +17,9 @@ const stringifyLittle = (
 
   for (const variable in obj) {
     if (formatter === 'stylish' || formatter === 'json') {
-      result = chainResult(formatter, result,
+      result = chainResult(
+        formatter,
+        result,
         addFormating(formatter, { replacer, spacesCount, step }, variable, stringifyLittle(obj[variable], formatter, replacer, spacesCount, step + 1))
       );
     }
