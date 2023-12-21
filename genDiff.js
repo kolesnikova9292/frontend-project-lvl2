@@ -43,6 +43,7 @@ program
     .version('0.1.0')
     .usage('[options] <file> <file>')
     .arguments('<file> <file>')
+    .allowUnknownOption(true)
     .action((file, file2) => {
        // const result = genDiff(file, file2);
        // console.log(result);
