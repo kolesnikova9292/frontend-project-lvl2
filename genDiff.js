@@ -7,6 +7,8 @@ import * as path from 'path';
 import * as yaml from 'js-yaml';
 import {startResult} from "./src/formatters/index.js";
 
+const program = new Command();
+
 //import { createRequire } from "module";
 
 //const path = require('node:path');
@@ -26,14 +28,12 @@ import {startResult} from "./src/formatters/index.js";
 program
     .description('Compares two configuration files and shows a difference.')
     .version('0.1.0')
-    .helpOption('-h, --help', 'output usage information')
-    .option('-f, --format [type]', 'output format')
     .usage('[options] <file> <file>')
     .arguments('<file> <file>')
     .action((file, file2) => {
         try {
 
-            console.log(genDiff(file, file2))
+            //console.log(genDiff(file, file2))
 
            // return () => console.log(genDiff(file, file2))
 
@@ -42,6 +42,9 @@ program
             //const path = require('path');
 
             //console.log(genDiff(file, file2))
+
+
+            return genDiff(file, file2);
 
 
 
