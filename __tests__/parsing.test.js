@@ -8,7 +8,7 @@ test('half', () => {
     expect(half(6)).toBe(3);
 });
 
-/*test('parsing', () => {
+test('parsing', () => {
     const result = '{\n' +
         '  - follow: false\n' +
         '    host: hexlet.io\n' +
@@ -114,7 +114,7 @@ test('parsing', () => {
     };
     expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')).toStrictEqual(result);
     expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'json')["-follow"]).toStrictEqual(false);
-});*/
+});
 
 test('parsing', () => {
     const result = {
