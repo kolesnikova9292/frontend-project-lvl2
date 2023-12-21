@@ -49,13 +49,13 @@ const startResult = (formatter = 'stylish') => {
   }
 
   if (formatter === 'json') {
-    return '{'
+    return '{';
   }
-}
+};
 
-const endResult = (formatter = 'stylish', result, stylish = { replacer: ' ', spacesCount: 1, step: 1 }) => {
+const endResult = (formatter = 'stylish', result = '', stylish = { replacer: ' ', spacesCount: 1, step: 1 }) => {
   if (formatter === 'stylish') {
-    return result + stylish.replacer.repeat(4 * stylish.step - 4) + '}';
+    return `${result}${stylish.replacer.repeat(4 * stylish.step - 4)}}`;
   }
 
   if (formatter === 'plain') {
@@ -63,9 +63,9 @@ const endResult = (formatter = 'stylish', result, stylish = { replacer: ' ', spa
   }
 
   if (formatter === 'json') {
-    return result.slice(0, -2) + ' }';
+    return `${result.slice(0, -2)} }`;
   }
-}
+};
 
 export default addFormating;
-export { startResult as startResult, endResult as endResult, chainResult as chainResult };
+export { startResult, endResult, chainResult };
