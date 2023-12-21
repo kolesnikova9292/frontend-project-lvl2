@@ -15,16 +15,16 @@ const stringifyLittle = (
 
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-  result = Object.entries(obj).forEach((e) => {
+  Object.keys(obj).forEach((key) => {
       if (formatter === 'stylish' || formatter === 'json') {
-        return chainResult(
+        result = chainResult(
           formatter,
           result,
           addFormating(
             formatter,
           { replacer, spacesCount, step },
-            e[0],
-            stringifyLittle(e[1], formatter, replacer, spacesCount, step + 1),
+            key,
+            stringifyLittle(obj[key], formatter, replacer, spacesCount, step + 1),
           ),
         );
       }
