@@ -12,13 +12,13 @@ const addPlainFormatter = (variable, valueOfVariable, addedOrRemovedOrTheSame, u
   }
 
   if (addedOrRemovedOrTheSame === '+') {
-    return `Property '${variable ?? ''}' was added with value: ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]'&& valueOfVariable !== 'null' ? `'${valueOfVariable}'` : valueOfVariable}\n`;
+    return `Property '${variable ?? ''}' was added with value: ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]' && valueOfVariable !== 'null' ? `'${valueOfVariable}'` : valueOfVariable}\n`;
   }
 
   if (addedOrRemovedOrTheSame === ' ') {
     if (valueOfVariable.indexOf('Property') > -1) {
       const regex = /Property '/g;
-      return valueOfVariable.replace(regex, `Property \'${variable}.`);
+      return valueOfVariable.replace(regex, `Property '${variable}.`);
     }
     return '';
   }
