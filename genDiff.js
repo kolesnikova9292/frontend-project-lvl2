@@ -27,6 +27,19 @@ import { Command } from "commander";
 
 
 program
+    .version('0.0.1')
+    .description('Compares two configuration files and shows a difference.')
+    .option('-f, --format <type>', 'output format', 'stylish')
+    .arguments('<filepath1>')
+    .arguments('<filepath2>')
+    .action((filepath1, filepath2) => {
+        //const result = genDiff(filepath1, filepath2, program.opts().format);
+        const result = genDiff(filepath1, filepath2);
+        console.log(result);
+    });
+
+
+/*program
     .description('Compares two configuration files and shows a difference.')
     .version('0.1.0')
     .usage('[options] <file> <file>')
@@ -34,12 +47,12 @@ program
     .action((file, file2) => {
         const result = genDiff(file, file2);
         console.log(result);
-        /*try {
+        try {
             return genDiff(file, file2);
         } catch (err) {
             console.error(err);
-        }*/
-    });
+        }
+    });*/
 
 program.parse();
 
