@@ -77,28 +77,28 @@ test('parsing3', () => {
 });
 
 test('parsing4', () => {
-    const result = '' +
-        'Property \'follow\' was removed\n' +
-        'Property \'proxy\' was removed\n' +
-        'Property \'timeout\' was updated. From 50 to 20\n' +
-        'Property \'verbose\' was added with value: true';
-    expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'plain')).toStrictEqual(result);
+  const result = ''
+      + 'Property \'follow\' was removed\n'
+      + 'Property \'proxy\' was removed\n'
+      + 'Property \'timeout\' was updated. From 50 to 20\n'
+      + 'Property \'verbose\' was added with value: true';
+  expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'plain')).toStrictEqual(result);
 });
 
 test('parsing5', () => {
-    const result = '' +
-        'Property \'common.follow\' was added with value: false\n' +
-        'Property \'common.setting2\' was removed\n' +
-        'Property \'common.setting3\' was updated. From true to null\n' +
-        'Property \'common.setting4\' was added with value: \'blah blah\'\n' +
-        'Property \'common.setting5\' was added with value: [complex value]\n' +
-        'Property \'common.setting6.doge.wow\' was updated. From \'\' to \'so much\'\n' +
-        'Property \'common.setting6.ops\' was added with value: \'vops\'\n' +
-        'Property \'group1.baz\' was updated. From \'bas\' to \'bars\'\n' +
-        'Property \'group1.nest\' was updated. From [complex value] to \'str\'\n' +
-        'Property \'group2\' was removed\n' +
-        'Property \'group3\' was added with value: [complex value]';
-    expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'plain')).toStrictEqual(result);
+  const result = ''
+        + 'Property \'common.follow\' was added with value: false\n'
+        + 'Property \'common.setting2\' was removed\n'
+        + 'Property \'common.setting3\' was updated. From true to null\n'
+        + 'Property \'common.setting4\' was added with value: \'blah blah\'\n'
+        + 'Property \'common.setting5\' was added with value: [complex value]\n'
+        + 'Property \'common.setting6.doge.wow\' was updated. From \'\' to \'so much\'\n'
+        + 'Property \'common.setting6.ops\' was added with value: \'vops\'\n'
+        + 'Property \'group1.baz\' was updated. From \'bas\' to \'bars\'\n'
+        + 'Property \'group1.nest\' was updated. From [complex value] to \'str\'\n'
+        + 'Property \'group2\' was removed\n'
+        + 'Property \'group3\' was added with value: [complex value]';
+  expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'plain')).toStrictEqual(result);
 });
 
 test('parsing', () => {
@@ -159,28 +159,7 @@ test('parsing', () => {
         " fee": 100500
     }
     };
-    const qwe = '{"foo": 1}';
-    /*expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')).toStrictEqual(result);
-    expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')[" common"]["+follow"]).toStrictEqual(false);
-    console.log(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'));
-    console.log(qwe);
-    console.log(JSON.parse(qwe))
-    console.log(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')))*/
-    //expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))).toEqual(result);
-
-    console.log(87878)
-
-    console.log(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'));
-
-    console.log(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')));
-
-    console.log(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))[" common"]["+follow"]);
 
     expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))[" common"]["+follow"]).toEqual("false");
-
     expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json'))["+group3"][" fee"]).toEqual("100500");
-
-
-
-    //expect(JSON.parse(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json', 'json')[" common"]["+follow"])).toEqual(false);
 });
