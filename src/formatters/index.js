@@ -1,6 +1,6 @@
-import addStylishFormater from "./stylish.js";
-import addPlainFormatter from "./plain.js";
-import addJsonFormater from "./json.js";
+import addStylishFormater from './stylish.js';
+import addPlainFormatter from './plain.js';
+import addJsonFormater from './json.js';
 
 const chainResult = (formatter = 'stylish',
                      result,

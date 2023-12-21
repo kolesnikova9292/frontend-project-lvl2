@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 import fs from 'fs';
-import parsing from "./src/parsing.js";
+import parsing from './src/parsing.js';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
-import {startResult} from "./src/formatters/index.js";
+import {startResult} from './src/formatters/index.js';
 
 //const program = new Command();
 

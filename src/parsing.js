@@ -1,5 +1,5 @@
-import lodash from "lodash";
-import addFormating, {endResult, startResult, chainResult} from "./formatters/index.js";
+import lodash from 'lodash';
+import addFormating, {endResult, startResult, chainResult} from './formatters/index.js';
 
 
 const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCount = 1,  result = startResult(formatter), step = 1) => {
