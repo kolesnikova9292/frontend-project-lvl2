@@ -12,7 +12,7 @@
     "start": "make gendiff"
   },
   "bin": {
-    "gendiff": "genDiff.js"
+    "gendiff": "bin/genDiff.js"
   },
   "repository": {
     "type": "git",
