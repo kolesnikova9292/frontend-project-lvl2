@@ -9,4 +9,4 @@ test:
 		npm test
 
 gendiff:
-		node bin/gendiff.js
+		node genDiff.js
