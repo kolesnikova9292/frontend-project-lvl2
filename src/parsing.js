@@ -22,7 +22,7 @@ const stringifyLittle = (
           accumulator,
           addFormating(
             formatter,
-            {replacer, spacesCount, step},
+            { replacer, spacesCount, step },
             currentValue,
             stringifyLittle(obj[currentValue], formatter, replacer, spacesCount, step + 1),
           ),
@@ -30,7 +30,7 @@ const stringifyLittle = (
       }
       return accumulator;
     },
-    startResult(formatter)
+    startResult(formatter),
   );
 
   if (formatter === 'stylish' || formatter === 'json') {
@@ -40,7 +40,7 @@ const stringifyLittle = (
 };
 
 const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCount = 1, result = startResult(formatter), step = 1) => {
-  let arrayWithInsertedProps = [];
+  const arrayWithInsertedProps = [];
 
   const keysWithObjRef = Object.keys(json1).map((x) => ({ obj: 'json1', key: x }));
 
@@ -49,8 +49,9 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
   const allKeys = lodash.sortBy([...keysWithObjRef, ...keysWithObj2Ref], (a) => a.key);
 
   const newResult = allKeys.reduce((accumulator, x) => {
-    if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key]) && arrayWithInsertedProps.indexOf(x.key) === -1) {
-      arrayWithInsertedProps = [ ...arrayWithInsertedProps, x.key];
+    if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key]) &&
+      arrayWithInsertedProps.indexOf(x.key) === -1) {
+      arrayWithInsertedProps.push(x.key);
       return chainResult(formatter, accumulator, addFormating(
         formatter, { replacer, spacesCount, step }, x.key,
         stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step)));
