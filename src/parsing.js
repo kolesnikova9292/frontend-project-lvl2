@@ -52,7 +52,9 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
     if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key])
       && arrayWithInsertedProps.indexOf(x.key) === -1) {
       arrayWithInsertedProps.push(x.key);
-      return chainResult(formatter, accumulator,
+      return chainResult(
+        formatter,
+        accumulator,
         addFormating(formatter, { replacer, spacesCount, step }, x.key,
           stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step)));
     }
