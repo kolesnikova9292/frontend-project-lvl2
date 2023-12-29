@@ -9,7 +9,7 @@ const stringifyLittle = (
   step = 1,
 ) => {
 
-  let newResult = startResult(formatter);
+  //let newResult = startResult(formatter);
 
   if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
 
@@ -17,7 +17,7 @@ const stringifyLittle = (
 
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-  Object.keys(obj || {}).forEach((key) => {
+  /*Object.keys(obj || {}).forEach((key) => {
     if (formatter === 'stylish' || formatter === 'json') {
       newResult = chainResult(
         formatter,
@@ -30,7 +30,24 @@ const stringifyLittle = (
         ),
       );
     }
-  });
+  });*/
+
+  const newResult = Object.keys(obj || {}).reduce((accumulator, currentValue) => {
+        if (formatter === 'stylish' || formatter === 'json') {
+          return chainResult(
+              formatter,
+              accumulator,
+              addFormating(
+                  formatter,
+                  {replacer, spacesCount, step},
+                  currentValue,
+                  stringifyLittle(obj[currentValue], formatter, replacer, spacesCount, step + 1),
+              ),
+          );
+        }
+      },
+      startResult(formatter)
+  );
 
   if (formatter === 'stylish' || formatter === 'json') {
     return endResult(formatter, newResult, { replacer, spacesCount, step });
