@@ -7,8 +7,6 @@ const stringifyLittle = (
   replacer = ' ',
   spacesCount = 1,
   step = 1,
-  result = ''
-  //result = startResult(formatter),
 ) => {
 
   let newResult = startResult(formatter);
