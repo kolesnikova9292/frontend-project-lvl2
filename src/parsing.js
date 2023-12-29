@@ -8,45 +8,27 @@ const stringifyLittle = (
   spacesCount = 1,
   step = 1,
 ) => {
-
-  //let newResult = startResult(formatter);
-
   if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
 
   if (obj === null) return 'null';
 
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-  /*Object.keys(obj || {}).forEach((key) => {
+  const newResult = Object.keys(obj || {}).reduce((accumulator, currentValue) => {
     if (formatter === 'stylish' || formatter === 'json') {
-      newResult = chainResult(
+      return chainResult(
         formatter,
-        newResult,
+        accumulator,
         addFormating(
           formatter,
-          { replacer, spacesCount, step },
-          key,
-          stringifyLittle(obj[key], formatter, replacer, spacesCount, step + 1),
+          {replacer, spacesCount, step},
+          currentValue,
+          stringifyLittle(obj[currentValue], formatter, replacer, spacesCount, step + 1),
         ),
       );
     }
-  });*/
-
-  const newResult = Object.keys(obj || {}).reduce((accumulator, currentValue) => {
-        if (formatter === 'stylish' || formatter === 'json') {
-          return chainResult(
-              formatter,
-              accumulator,
-              addFormating(
-                  formatter,
-                  {replacer, spacesCount, step},
-                  currentValue,
-                  stringifyLittle(obj[currentValue], formatter, replacer, spacesCount, step + 1),
-              ),
-          );
-        }
-      },
-      startResult(formatter)
+  },
+  startResult(formatter)
   );
 
   if (formatter === 'stylish' || formatter === 'json') {
