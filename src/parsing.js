@@ -40,7 +40,7 @@ const stringifyLittle = (
 };
 
 const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCount = 1, result = startResult(formatter), step = 1) => {
-  const arrayWithInsertedProps = [];
+  let arrayWithInsertedProps = [];
 
   const keysWithObjRef = Object.keys(json1).map((x) => ({ obj: 'json1', key: x }));
 
@@ -50,7 +50,7 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
 
   const newResult = allKeys.reduce((accumulator, x) => {
     if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key]) && arrayWithInsertedProps.indexOf(x.key) === -1) {
-      arrayWithInsertedProps.push(x.key);
+      arrayWithInsertedProps = [ ...arrayWithInsertedProps, x.key];
       return chainResult(formatter, accumulator, addFormating(
         formatter, { replacer, spacesCount, step }, x.key,
         stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step)));
