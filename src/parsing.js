@@ -14,21 +14,23 @@ const stringifyLittle = (
 
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
-  const newResult = Object.keys(obj || {}).reduce((accumulator, currentValue) => {
-    if (formatter === 'stylish' || formatter === 'json') {
-      return chainResult(
-        formatter,
-        accumulator,
-        addFormating(
+  const newResult = Object.keys(obj || {}).reduce(
+    (accumulator, currentValue) => {
+      if (formatter === 'stylish' || formatter === 'json') {
+        return chainResult(
           formatter,
-          {replacer, spacesCount, step},
-          currentValue,
-          stringifyLittle(obj[currentValue], formatter, replacer, spacesCount, step + 1),
-        ),
-      );
-    }
-  },
-  startResult(formatter)
+          accumulator,
+          addFormating(
+            formatter,
+            {replacer, spacesCount, step},
+            currentValue,
+            stringifyLittle(obj[currentValue], formatter, replacer, spacesCount, step + 1),
+          ),
+        );
+      }
+      return accumulator;
+    },
+    startResult(formatter)
   );
 
   if (formatter === 'stylish' || formatter === 'json') {
