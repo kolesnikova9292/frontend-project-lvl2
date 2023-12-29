@@ -51,21 +51,21 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
   const newResult = allKeys.reduce((accumulator, x) => {
     if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key])
       && touchedProps.indexOf(x.key) === -1) {
-      touchedProps.push(x.key);
+      touchedProps.push(x.key); // eslint-disable-line
       const varValue = stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step);
       const nextChain = addFormating(formatter, { replacer, spacesCount, step }, x.key, varValue);
       return chainResult(formatter, accumulator, nextChain);
     }
 
     if (json2[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
-      touchedProps.push(x.key);
+      touchedProps.push(x.key); // eslint-disable-line
       const varVal = stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1);
       const nextCh = addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal, '-');
       return chainResult(formatter, accumulator, nextCh);
     }
 
     if (json1[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
-      touchedProps.push(x.key);
+      touchedProps.push(x.key); // eslint-disable-line
       const varVal = stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1);
       const nextCh = addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal, '+');
       return chainResult(formatter, accumulator, nextCh);
@@ -74,7 +74,7 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
     if (stringifyLittle(json1[x.key]) !== stringifyLittle(json2[x.key])
       && json1[x.key] !== undefined && json2[x.key] !== undefined
       && touchedProps.indexOf(x.key) === -1) {
-      touchedProps.push(x.key);
+      touchedProps.push(x.key); // eslint-disable-line
       if (typeof json1[x.key] === 'object' && json1[x.key] !== null && typeof json2[x.key] === 'object' && json2[x.key] !== null) {
         const obj1 = json1[x.key];
         const obj2 = json2[x.key];
