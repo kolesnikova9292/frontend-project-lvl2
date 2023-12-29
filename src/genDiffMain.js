@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { program } from 'commander';
 import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';

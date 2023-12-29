@@ -16,19 +16,19 @@ const stringifyLittle = (
   if (formatter === 'plain' && typeof obj === 'object') return '[complex value]';
 
   Object.keys(obj || {}).forEach((key) => {
-      if (formatter === 'stylish' || formatter === 'json') {
-        result = chainResult(
+    if (formatter === 'stylish' || formatter === 'json') {
+      result = chainResult(
+        formatter,
+        result,
+        addFormating(
           formatter,
-          result,
-          addFormating(
-            formatter,
           { replacer, spacesCount, step },
-            key,
-            stringifyLittle(obj[key], formatter, replacer, spacesCount, step + 1),
-          ),
-        );
-      }
-    });
+          key,
+          stringifyLittle(obj[key], formatter, replacer, spacesCount, step + 1),
+        ),
+      );
+    }
+  });
 
   if (formatter === 'stylish' || formatter === 'json') {
     return endResult(formatter, result, { replacer, spacesCount, step });
@@ -39,13 +39,9 @@ const stringifyLittle = (
 const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCount = 1, result = startResult(formatter), step = 1) => {
   const arrayWithInsertedProps = [];
 
-  const keysWithObjRef = Object.keys(json1).map((x) => {
-    return { obj: 'json1', key: x };
-  });
+  const keysWithObjRef = Object.keys(json1).map((x) => ({ obj: 'json1', key: x }));
 
-  const keysWithObj2Ref = Object.keys(json2).map((x) => {
-    return { obj: 'json2', key: x };
-  });
+  const keysWithObj2Ref = Object.keys(json2).map((x) => ({ obj: 'json2', key: x }));
 
   const allKeys = lodash.sortBy([...keysWithObjRef, ...keysWithObj2Ref], (a) => a.key);
 
@@ -53,7 +49,9 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
     if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key]) && arrayWithInsertedProps.indexOf(x.key) === -1) {
       arrayWithInsertedProps.push(x.key);
       result = chainResult(
-        formatter, result, addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step))
+        formatter, result, addFormating(
+          formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step)
+        )
       );
     }
 
