@@ -7,8 +7,12 @@ const stringifyLittle = (
   replacer = ' ',
   spacesCount = 1,
   step = 1,
-  result = startResult(formatter),
+  result = ''
+  //result = startResult(formatter),
 ) => {
+
+  let newResult = startResult(formatter);
+
   if (typeof obj === 'string' || typeof obj === 'boolean' || typeof obj === 'number') return obj;
 
   if (obj === null) return 'null';
@@ -17,9 +21,9 @@ const stringifyLittle = (
 
   Object.keys(obj || {}).forEach((key) => {
     if (formatter === 'stylish' || formatter === 'json') {
-      result = chainResult(
+      newResult = chainResult(
         formatter,
-        result,
+        newResult,
         addFormating(
           formatter,
           { replacer, spacesCount, step },
@@ -31,7 +35,7 @@ const stringifyLittle = (
   });
 
   if (formatter === 'stylish' || formatter === 'json') {
-    return endResult(formatter, result, { replacer, spacesCount, step });
+    return endResult(formatter, newResult, { replacer, spacesCount, step });
   }
   return null;
 };
