@@ -64,15 +64,16 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
       return chainResult(formatter, accumulator, nextCh);
     }
 
-    if (json1[x.key] === undefined && touchedProps.indexOf(x.key) == -1) {
+    if (json1[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key);
       const varVal = stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1);
       const nextCh = addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal, '+');
       return chainResult(formatter, accumulator, nextCh);
     }
 
-    if (stringifyLittle(json1[x.key]) !== stringifyLittle(json2[x.key]) && json1[x.key] !== undefined
-      && json2[x.key] !== undefined && touchedProps.indexOf(x.key) === -1) {
+    if (stringifyLittle(json1[x.key]) !== stringifyLittle(json2[x.key])
+      && json1[x.key] !== undefined && json2[x.key] !== undefined
+      && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key);
       if (typeof json1[x.key] === 'object' && json1[x.key] !== null && typeof json2[x.key] === 'object' && json2[x.key] !== null) {
         const obj1 = json1[x.key];
@@ -81,18 +82,17 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
         const varVal = parsing(obj1, obj2, formatter, replacer, spacesCount, start, step + 1);
         const nextCh = addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal);
         return chainResult(formatter, accumulator, nextCh);
-      } else {
-        const varVal = stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1);
-        const nextCh =
-          addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal, '-', 'old');
-        const firstPart = chainResult(formatter, accumulator, nextCh);
-
-        const varVal2 = stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1);
-        const nextCh2 =
-          addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal2, '+', 'new');
-
-        return chainResult(formatter, firstPart, nextCh2);
       }
+
+      const varVal = stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1);
+      const stylish = { replacer, spacesCount, step };
+      const nextCh = addFormating(formatter, stylish, x.key, varVal, '-', 'old');
+      const firstPart = chainResult(formatter, accumulator, nextCh);
+
+      const varVal2 = stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1);
+      const nextCh2 = addFormating(formatter, stylish, x.key, varVal2, '+', 'new');
+
+      return chainResult(formatter, firstPart, nextCh2);
     }
 
     return accumulator;
