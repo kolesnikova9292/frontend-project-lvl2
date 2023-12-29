@@ -53,49 +53,45 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
       && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key);
       const varValue = stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step);
-      const nextChain = addFormating(formatter,{ replacer, spacesCount, step }, x.key, varValue);
+      const nextChain = addFormating(formatter, { replacer, spacesCount, step }, x.key, varValue);
       return chainResult(formatter, accumulator, nextChain);
     }
 
     if (json2[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key);
-      return chainResult(
-        formatter, accumulator,
-        addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1), '-'),
-      );
+      const varVal = stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1);
+      const nextCh = addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal, '-');
+      return chainResult(formatter, accumulator, nextCh);
     }
 
     if (json1[x.key] === undefined && touchedProps.indexOf(x.key) == -1) {
       touchedProps.push(x.key);
-      return chainResult(
-        formatter, accumulator,
-        addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+'),
-      );
+      const varVal = stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1);
+      const nextCh = addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal, '+');
+      return chainResult(formatter, accumulator, nextCh);
     }
 
-    if (stringifyLittle(json1[x.key]) !== stringifyLittle(json2[x.key]) && json1[x.key] !== undefined && json2[x.key] !== undefined && touchedProps.indexOf(x.key) === -1) {
+    if (stringifyLittle(json1[x.key]) !== stringifyLittle(json2[x.key]) && json1[x.key] !== undefined
+      && json2[x.key] !== undefined && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key);
       if (typeof json1[x.key] === 'object' && json1[x.key] !== null && typeof json2[x.key] === 'object' && json2[x.key] !== null) {
-        return chainResult(
-          formatter, accumulator,
-          addFormating(
-            formatter, { replacer, spacesCount, step }, x.key, parsing(json1[x.key], json2[x.key], formatter, replacer, spacesCount, startResult(formatter), step + 1),
-          ),
-        );
+        const obj1 = json1[x.key];
+        const obj2 = json2[x.key];
+        const start = startResult(formatter);
+        const varVal = parsing(obj1, obj2, formatter, replacer, spacesCount, start, step + 1);
+        const nextCh = addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal);
+        return chainResult(formatter, accumulator, nextCh);
       } else {
-        const firstPart = chainResult(
-          formatter, accumulator,
-          addFormating(
-            formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1), '-', 'old',
-          ),
-        );
+        const varVal = stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1);
+        const nextCh =
+          addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal, '-', 'old');
+        const firstPart = chainResult(formatter, accumulator, nextCh);
 
-        return chainResult(
-          formatter, firstPart,
-          addFormating(
-            formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+', 'new',
-          ),
-        );
+        const varVal2 = stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1);
+        const nextCh2 =
+          addFormating(formatter, { replacer, spacesCount, step }, x.key, varVal2, '+', 'new');
+
+        return chainResult(formatter, firstPart, nextCh2);
       }
     }
 
