@@ -51,14 +51,14 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
   const newResult = allKeys.reduce((accumulator, x) => {
     if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key]) && arrayWithInsertedProps.indexOf(x.key) === -1) {
       arrayWithInsertedProps.push(x.key);
-      accumulator = chainResult(formatter, accumulator, addFormating(
+      return chainResult(formatter, accumulator, addFormating(
         formatter, { replacer, spacesCount, step }, x.key,
         stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step)));
     }
 
     if (json2[x.key] === undefined && arrayWithInsertedProps.indexOf(x.key) == -1) {
       arrayWithInsertedProps.push(x.key);
-      accumulator = chainResult(
+      return chainResult(
         formatter, accumulator,
         addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1), '-'),
       );
@@ -66,7 +66,7 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
 
     if (json1[x.key] === undefined && arrayWithInsertedProps.indexOf(x.key) == -1) {
       arrayWithInsertedProps.push(x.key);
-      accumulator = chainResult(
+      return chainResult(
         formatter, accumulator,
         addFormating(formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+'),
       );
@@ -75,22 +75,22 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
     if (stringifyLittle(json1[x.key]) !== stringifyLittle(json2[x.key]) && json1[x.key] !== undefined && json2[x.key] !== undefined && arrayWithInsertedProps.indexOf(x.key) === -1) {
       arrayWithInsertedProps.push(x.key);
       if (typeof json1[x.key] === 'object' && json1[x.key] !== null && typeof json2[x.key] === 'object' && json2[x.key] !== null) {
-        accumulator = chainResult(
+        return chainResult(
           formatter, accumulator,
           addFormating(
             formatter, { replacer, spacesCount, step }, x.key, parsing(json1[x.key], json2[x.key], formatter, replacer, spacesCount, startResult(formatter), step + 1),
           ),
         );
       } else {
-        accumulator = chainResult(
+        const firstPart = chainResult(
           formatter, accumulator,
           addFormating(
             formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step + 1), '-', 'old',
           ),
         );
 
-        accumulator = chainResult(
-          formatter, accumulator,
+        return chainResult(
+          formatter, firstPart,
           addFormating(
             formatter, { replacer, spacesCount, step }, x.key, stringifyLittle(json2[x.key], formatter, replacer, spacesCount, step + 1), '+', 'new',
           ),
