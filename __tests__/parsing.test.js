@@ -1,6 +1,6 @@
 import { test, expect } from '@jest/globals';
 import half from '../src/half.js';
-import genDiff from '../genDiff.js';
+import genDiff from '../src/genDiffMain.js';
 
 test('half', () => {
   expect(half(6)).toBe(3);

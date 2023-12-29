@@ -3,10 +3,10 @@ import { program } from 'commander';
 import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
-import { startResult } from './src/formatters/index.js';
-import parsing from './src/parsing.js';
+import { startResult } from './formatters/index.js';
+import parsing from './parsing.js';
 
-export default function genDiff(fileName1, fileName2, formatter = 'stylish', replacer = ' ', spacesCount = 1, result = startResult(formatter), step = 1) {
+export default function genDiffMain(fileName1, fileName2, formatter = 'stylish', replacer = ' ', spacesCount = 1, result = startResult(formatter), step = 1) {
   const extension1 = path.extname(fileName1);
   const extension2 = path.extname(fileName2);
 
