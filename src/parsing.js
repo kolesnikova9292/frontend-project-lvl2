@@ -55,7 +55,10 @@ const parsing = (json1, json2, formatter = 'stylish', replacer = ' ', spacesCoun
       return chainResult(
         formatter,
         accumulator,
-        addFormating(formatter, { replacer, spacesCount, step }, x.key,
+        addFormating(
+          formatter,
+          { replacer, spacesCount, step },
+          x.key,
           stringifyLittle(json1[x.key], formatter, replacer, spacesCount, step)));
     }
 
