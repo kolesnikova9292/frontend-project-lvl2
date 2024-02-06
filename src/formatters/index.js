@@ -19,7 +19,7 @@ const chainResult = (formatter = 'stylish', result = '', nextChain = '') => {
 
 const addFormating = (
   formatter = 'stylish',
-  stylish = { spacesCount: 1, step: 1 },
+  stylish = { step: 1 },
   variable = '',
   valueOfVariable = '',
   addedOrRemovedOrTheSame = ' ',
@@ -54,7 +54,7 @@ const startResult = (formatter = 'stylish') => {
   return null;
 };
 
-const endResult = (formatter = 'stylish', result = '', stylish = { spacesCount: 1, step: 1 }) => {
+const endResult = (formatter = 'stylish', result = '', stylish = { step: 1 }) => {
   if (formatter === 'stylish') {
     return `${result}${stylishStyle.replacer.repeat(4 * stylish.step - 4)}}`;
   }

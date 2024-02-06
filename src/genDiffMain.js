@@ -5,7 +5,7 @@ import * as yaml from 'js-yaml';
 import { startResult } from './formatters/index.js';
 import parsing from './parsing.js';
 
-export default function genDiffMain(fileName1, fileName2, formatter = 'stylish', spacesCount = 1, result = startResult(formatter), step = 1) {
+export default function genDiffMain(fileName1, fileName2, formatter = 'stylish', result = startResult(formatter), step = 1) {
   const extension1 = path.extname(fileName1);
   const extension2 = path.extname(fileName2);
 
@@ -18,7 +18,7 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish',
     const json1 = JSON.parse(data);
     const json2 = JSON.parse(data1);
 
-    const resultObject = parsing(json1, json2, formatter, spacesCount, result, step);
+    const resultObject = parsing(json1, json2, formatter, result, step);
 
     if (formatter === 'plain') {
       return resultObject.slice(0, -1);
@@ -34,7 +34,7 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish',
     const doc = yaml.load(data);
     const doc2 = yaml.load(data1);
 
-    const resultObject = parsing(doc, doc2, formatter, spacesCount, result, step);
+    const resultObject = parsing(doc, doc2, formatter, result, step);
 
     if (formatter === 'plain') {
       return resultObject.slice(0, -1);
