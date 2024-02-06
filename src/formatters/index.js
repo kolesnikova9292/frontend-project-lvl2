@@ -1,4 +1,4 @@
-import addStylishFormater from './stylish.js';
+import addStylishFormater, {stylishStyle} from './stylish.js';
 import addPlainFormatter from './plain.js';
 import addJsonFormater from './json.js';
 
@@ -19,7 +19,7 @@ const chainResult = (formatter = 'stylish', result = '', nextChain = '') => {
 
 const addFormating = (
   formatter = 'stylish',
-  stylish = { replacer: ' ', spacesCount: 1, step: 1 },
+  stylish = { spacesCount: 1, step: 1 },
   variable = '',
   valueOfVariable = '',
   addedOrRemovedOrTheSame = ' ',
@@ -54,9 +54,9 @@ const startResult = (formatter = 'stylish') => {
   return null;
 };
 
-const endResult = (formatter = 'stylish', result = '', stylish = { replacer: ' ', spacesCount: 1, step: 1 }) => {
+const endResult = (formatter = 'stylish', result = '', stylish = { spacesCount: 1, step: 1 }) => {
   if (formatter === 'stylish') {
-    return `${result}${stylish.replacer.repeat(4 * stylish.step - 4)}}`;
+    return `${result}${stylishStyle.replacer.repeat(4 * stylish.step - 4)}}`;
   }
 
   if (formatter === 'plain') {
