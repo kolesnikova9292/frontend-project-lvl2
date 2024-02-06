@@ -20,7 +20,7 @@ const stringifyLittle = (
           accumulator,
           addFormating(
             formatter,
-            { step },
+            step,
             currentValue,
             stringifyLittle(obj[currentValue], formatter, step + 1),
           ),
@@ -32,7 +32,7 @@ const stringifyLittle = (
   );
 
   if (formatter === 'stylish' || formatter === 'json') {
-    return endResult(formatter, newResult, { step });
+    return endResult(formatter, newResult, step);
   }
   return null;
 };
@@ -51,21 +51,21 @@ const parsing = (json1, json2, formatter = 'stylish', result = startResult(forma
       && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key); // eslint-disable-line
       const varValue = stringifyLittle(json1[x.key], formatter, step);
-      const nextChain = addFormating(formatter, { step }, x.key, varValue);
+      const nextChain = addFormating(formatter, step, x.key, varValue);
       return chainResult(formatter, accumulator, nextChain);
     }
 
     if (json2[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key); // eslint-disable-line
       const varVal = stringifyLittle(json1[x.key], formatter, step + 1);
-      const nextCh = addFormating(formatter, { step }, x.key, varVal, '-');
+      const nextCh = addFormating(formatter, step, x.key, varVal, '-');
       return chainResult(formatter, accumulator, nextCh);
     }
 
     if (json1[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key); // eslint-disable-line
       const varVal = stringifyLittle(json2[x.key], formatter, step + 1);
-      const nextCh = addFormating(formatter, { step }, x.key, varVal, '+');
+      const nextCh = addFormating(formatter, step, x.key, varVal, '+');
       return chainResult(formatter, accumulator, nextCh);
     }
 
@@ -78,17 +78,17 @@ const parsing = (json1, json2, formatter = 'stylish', result = startResult(forma
         const obj2 = json2[x.key];
         const start = startResult(formatter);
         const varVal = parsing(obj1, obj2, formatter, start, step + 1);
-        const nextCh = addFormating(formatter, { step }, x.key, varVal);
+        const nextCh = addFormating(formatter, step, x.key, varVal);
         return chainResult(formatter, accumulator, nextCh);
       }
 
       const varVal = stringifyLittle(json1[x.key], formatter, step + 1);
-      const stylish = { step };
-      const nextCh = addFormating(formatter, stylish, x.key, varVal, '-', 'old');
+
+      const nextCh = addFormating(formatter, step, x.key, varVal, '-', 'old');
       const firstPart = chainResult(formatter, accumulator, nextCh);
 
       const varVal2 = stringifyLittle(json2[x.key], formatter, step + 1);
-      const nextCh2 = addFormating(formatter, stylish, x.key, varVal2, '+', 'new');
+      const nextCh2 = addFormating(formatter, step, x.key, varVal2, '+', 'new');
 
       return chainResult(formatter, firstPart, nextCh2);
     }
@@ -96,7 +96,7 @@ const parsing = (json1, json2, formatter = 'stylish', result = startResult(forma
     return accumulator;
   }, result);
 
-  return endResult(formatter, newResult, { step });
+  return endResult(formatter, newResult, step);
 };
 
 export default parsing;
