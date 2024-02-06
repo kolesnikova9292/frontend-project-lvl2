@@ -1,4 +1,4 @@
-import addStylishFormater, {stylishStyle} from './stylish.js';
+import addStylishFormater, { stylishStyle } from './stylish.js';
 import addPlainFormatter from './plain.js';
 import addJsonFormater from './json.js';
 
