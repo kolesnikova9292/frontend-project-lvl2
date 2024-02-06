@@ -1,4 +1,4 @@
-const stylishStyle = { replacer: ' ', spacesCount: 1 };
+export const stylishStyle = { replacer: ' ', spacesCount: 1 };
 
 const addStylishFormater = (
   step = 1,
@@ -8,4 +8,4 @@ const addStylishFormater = (
 ) => `${stylishStyle.replacer.repeat((step - 1) * (stylishStyle.spacesCount + 2))}`
   + `${stylishStyle.replacer.repeat(step * stylishStyle.spacesCount)} ${addedOrRemovedOrTheSame} `
   + `${variable ?? ''}${variable ? ': ' : ''}${valueOfVariable ?? ''}${variable ? '\n' : ''}`;
-export { addStylishFormater as default, stylishStyle };
+export default addStylishFormater;
