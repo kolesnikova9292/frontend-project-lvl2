@@ -24,7 +24,7 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish')
     getDataByType(fileName1),
     getDataByType(fileName2),
     formatter,
-    startResult(formatter)
+    startResult(formatter),
   );
   if (formatter === 'plain') {
     return resultObject.slice(0, -1);
