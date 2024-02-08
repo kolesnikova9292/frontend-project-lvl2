@@ -21,10 +21,10 @@ const getDataByType = (fileName) => {
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
   const resultObject = parsing(
-      getDataByType(fileName1),
-      getDataByType(fileName2),
-      formatter,
-      startResult(formatter)
+    getDataByType(fileName1),
+    getDataByType(fileName2),
+    formatter,
+    startResult(formatter)
   );
   if (formatter === 'plain') {
     return resultObject.slice(0, -1);
