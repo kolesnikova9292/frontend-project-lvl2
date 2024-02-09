@@ -3,7 +3,7 @@ import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 import { startResult } from './formatters/index.js';
-import parsing from './parsing.js';
+import buildTree from "./buildTree.js";
 
 const getDataByType = (fileName) => {
   const dateType = path.extname(fileName).slice(1);
@@ -20,7 +20,7 @@ const getDataByType = (fileName) => {
 };
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
-  const resultObject = parsing(
+  const resultObject = buildTree(
     getDataByType(fileName1),
     getDataByType(fileName2),
     formatter,

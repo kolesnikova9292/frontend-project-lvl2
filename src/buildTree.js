@@ -1,7 +1,7 @@
 import lodash from 'lodash';
 import addFormating, { endResult, startResult, chainResult } from './formatters/index.js';
 
-const stringifyLittle = (
+const buildBranch = (
   obj,
   formatter = 'stylish',
   step = 1,
@@ -22,7 +22,7 @@ const stringifyLittle = (
             formatter,
             step,
             currentValue,
-            stringifyLittle(obj[currentValue], formatter, step + 1),
+            buildBranch(obj[currentValue], formatter, step + 1),
           ),
         );
       }
@@ -37,7 +37,7 @@ const stringifyLittle = (
   return null;
 };
 
-const parsing = (json1, json2, formatter = 'stylish', result = startResult(formatter), step = 1) => {
+const buildTree = (json1, json2, formatter = 'stylish', result = startResult(formatter), step = 1) => {
   const touchedProps = [];
 
   const keysWithObjRef = Object.keys(json1).map((x) => ({ obj: 'json1', key: x }));
@@ -47,29 +47,29 @@ const parsing = (json1, json2, formatter = 'stylish', result = startResult(forma
   const allKeys = lodash.sortBy([...keysWithObjRef, ...keysWithObj2Ref], (a) => a.key);
 
   const newResult = allKeys.reduce((accumulator, x) => {
-    if (stringifyLittle(json1[x.key]) === stringifyLittle(json2[x.key])
+    if (buildBranch(json1[x.key]) === buildBranch(json2[x.key])
       && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key); // eslint-disable-line
-      const varValue = stringifyLittle(json1[x.key], formatter, step);
+      const varValue = buildBranch(json1[x.key], formatter, step);
       const nextChain = addFormating(formatter, step, x.key, varValue);
       return chainResult(formatter, accumulator, nextChain);
     }
 
     if (json2[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key); // eslint-disable-line
-      const varVal = stringifyLittle(json1[x.key], formatter, step + 1);
+      const varVal = buildBranch(json1[x.key], formatter, step + 1);
       const nextCh = addFormating(formatter, step, x.key, varVal, '-');
       return chainResult(formatter, accumulator, nextCh);
     }
 
     if (json1[x.key] === undefined && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key); // eslint-disable-line
-      const varVal = stringifyLittle(json2[x.key], formatter, step + 1);
+      const varVal = buildBranch(json2[x.key], formatter, step + 1);
       const nextCh = addFormating(formatter, step, x.key, varVal, '+');
       return chainResult(formatter, accumulator, nextCh);
     }
 
-    if (stringifyLittle(json1[x.key]) !== stringifyLittle(json2[x.key])
+    if (buildBranch(json1[x.key]) !== buildBranch(json2[x.key])
       && json1[x.key] !== undefined && json2[x.key] !== undefined
       && touchedProps.indexOf(x.key) === -1) {
       touchedProps.push(x.key); // eslint-disable-line
@@ -77,17 +77,17 @@ const parsing = (json1, json2, formatter = 'stylish', result = startResult(forma
         const obj1 = json1[x.key];
         const obj2 = json2[x.key];
         const start = startResult(formatter);
-        const varVal = parsing(obj1, obj2, formatter, start, step + 1);
+        const varVal = buildTree(obj1, obj2, formatter, start, step + 1);
         const nextCh = addFormating(formatter, step, x.key, varVal);
         return chainResult(formatter, accumulator, nextCh);
       }
 
-      const varVal = stringifyLittle(json1[x.key], formatter, step + 1);
+      const varVal = buildBranch(json1[x.key], formatter, step + 1);
 
       const nextCh = addFormating(formatter, step, x.key, varVal, '-', 'old');
       const firstPart = chainResult(formatter, accumulator, nextCh);
 
-      const varVal2 = stringifyLittle(json2[x.key], formatter, step + 1);
+      const varVal2 = buildBranch(json2[x.key], formatter, step + 1);
       const nextCh2 = addFormating(formatter, step, x.key, varVal2, '+', 'new');
 
       return chainResult(formatter, firstPart, nextCh2);
@@ -99,4 +99,4 @@ const parsing = (json1, json2, formatter = 'stylish', result = startResult(forma
   return endResult(formatter, newResult, step);
 };
 
-export default parsing;
+export default buildTree;
