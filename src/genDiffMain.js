@@ -2,7 +2,6 @@
 import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
-import { startResult } from './formatters/index.js';
 import buildTree from "./buildTree.js";
 import _ from 'lodash';
 
@@ -23,88 +22,76 @@ const getDataByType = (fileName) => {
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
   const resultObject = buildTree(
     getDataByType(fileName1),
-    getDataByType(fileName2),
-    //formatter,
-    //startResult(formatter),
+    getDataByType(fileName2)
   );
-  /*if (formatter === 'plain') {
-    return resultObject.slice(0, -1);
-  }*/
 
-  return formatTree(resultObject, formatter)
+  //console.log(resultObject);
 
-  //return resultObject;
+  //return formatTree(resultObject, formatter)
 }
 
 
 const formatTree = (tree, formatter) => {
   if(formatter === 'stylish') {
-    //console.log(tree[0])
-    console.log(stringify(tree[0]))
-    //return stringify(tree);
+    return stringify(tree, ' ', 1);
   }
-
 }
 
 const stringify = (value, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
-
-    //console.log(currentValue)
-    // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
-    if (currentValue.value && !_.isObject(currentValue.value)) {
-      return currentValue.value;
-    }
-
     let indentSize = depth * spacesCount;
     let currentIndent = replacer.repeat(indentSize);
     let bracketIndent = replacer.repeat(indentSize - spacesCount);
-    //console.log(currentValue)
 
-   // if(currentValue.type === 'nested') {
+
+    if(currentValue.type === 'nested') {
       const lines = currentValue.children
-          .map((x) => {
-            if(x.type === 'nested') {
-              const qwe = depth - 1;
-              const ert = qwe * spacesCount;
-              const uio = replacer.repeat(ert);
-              //return `${currentIndent}${x.key}: ${iter(x, depth + 1)}`
-              return `${uio}${iter(x, depth+1)}`
-            } else {
-              const qwe = depth + 1;
-              const ert = qwe * spacesCount;
-              const uio = replacer.repeat(ert);
-              return `${uio}${x.key}: ${x.value}`
-              //return `${currentIndent}${x.key}: ${x.value}`
-            }
-          }
-        );
+            .map((x) => {
+                  if(x.type === 'nested') {
+                    return `${currentIndent}${iter(x, depth+1)}`
+                  } else {
+                    let firstSymbol = ' ';
+                    if(x.type === 'added')
+                      firstSymbol = '+';
+                    if(x.type === 'deleted')
+                      firstSymbol = '-';
 
-      console.log(lines)
+                    if(x.type === 'changed') {
+                      return `${currentIndent}- ${x.key}: ${x.oldValue}\n${currentIndent}+ ${x.key}: ${x.newValue}`;
+                    }
 
-      depth = depth + 1;
-      let indentSize1 = depth * spacesCount;
-     // let currentIndent1 = replacer.repeat(indentSize1);
-      let bracketIndent1 = replacer.repeat(indentSize1 - spacesCount);
+                    return `${currentIndent}${firstSymbol} ${x.key}: ${x.value}`;
+                  }
+                }
+            );
 
-      return [
-        //`${bracketIndent}{`,
-        `${currentIndent}${currentValue.key} : {`,
-        ...lines,
-         // '}'
-        `${bracketIndent1}}`,
-      ].join('\n');
+        return [
+          //`${bracketIndent}{`,
+          `${currentIndent}${currentValue.key}: {`,
+          ...lines,
+          // '}'
+          `${bracketIndent}}`,
+        ].join('\n');
 
+      } else {
+        let firstSymbol = ' ';
+        if(currentValue.type === 'added')
+          firstSymbol = '+';
+        if(currentValue.type === 'deleted')
+          firstSymbol = '-';
 
-   // } else {
+        if(currentValue.type === 'changed') {
+          return `${currentIndent}- ${currentValue.key}: ${currentValue.oldValue}\n${currentIndent}+ ${currentValue.key}: ${currentValue.newValue}`;
+        }
 
-     // console.log(55555)
-    //  console.log(currentValue)
+        return `${currentIndent}${firstSymbol} ${currentValue.key}: ${currentValue.value}`;
 
-  //    return currentValue.value;
-
-   // }
+      }
   };
 
-  return `{\n${iter(value, 1)}\n}` ;
+  return `{\n${value.map(value1 => {
+    const rez = iter(value1, 1);
+    return rez;
+  }).join('\n')}\n}` ;
 };
 

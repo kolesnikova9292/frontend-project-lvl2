@@ -66,63 +66,35 @@ const stringify = (value) => {
 
 const commonTree = (nodeArray1, nodeArray2) => {
 
-
     const iter = (nodeArray1, nodeArray2, depth) => {
-        // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
-       /* if (!_.isObject(nodeArray1.value)) {
-            return `${nodeArray1.value}`;
-        }*/
-
-      //  console.log(_.isArray(nodeArray1))
-     //   console.log(nodeArray1)
-     //   console.log(nodeArray2)
-
         if (!_.isArray(nodeArray1) && !_.isArray(nodeArray2) && !_.isObject(nodeArray1.value) && !_.isObject(nodeArray2.value)) {
-         //   console.log('---------');
-         //   console.log(nodeArray1.value)
-
-            /*if(nodeArray1.children.length > 0 && nodeArray2.children.length > 0) {
-
-            }*/
-
             if(nodeArray1.value && nodeArray1.value === nodeArray2.value) {
                 return { value: nodeArray1.value, type: 'unchanged' }
             } else {
                 return { value: nodeArray1.value, type: 'changed', oldValue: nodeArray1.value, newValue: nodeArray2.value }
             }
-            //return `${nodeArray1.value}`;
         }
 
-       // console.log(nodeArray1)
-      //  console.log(nodeArray2)
-
         const lines = nodeArray1
-            .reduce((accumulator, currentValue, index) =>{
+            .reduce((accumulator, currentValue) =>{
 
-               // console.log(currentValue)
+                if(nodeArray2 && nodeArray2.map(x => x.key).indexOf(currentValue.key) > -1) {
 
-                if(nodeArray2.map(x => x.key).indexOf(currentValue.key) > -1) {
-
-                    if(currentValue.children?.length > 0) {
+                    if(currentValue.children && currentValue.children.length > 0) {
                         return [ ...accumulator, { key: currentValue.key, type: 'nested',
                             children:  iter(currentValue.children, nodeArray2.find(x => x.key === currentValue.key).children, depth + 1) } ];
                     }
 
-                    //console.log('-------')
                     const index = nodeArray2.map(x => x.key).indexOf(currentValue.key);
-                    //console.log(index)
                     const nodeValue = iter(currentValue, nodeArray2[index], depth + 1);
-                    //console.log(nodeValue)
                     return [ ...accumulator, { key: currentValue.key, ...nodeValue } ]
                 }
 
-                  else if(nodeArray2.map(x => x.key).indexOf(currentValue.key) <= -1) {
-                        //console.log('-------')
-                        //const index = nodeArray2.map(x => x.key).indexOf(currentValue.key);
-                        //console.log(index)
-                        //const nodeValue = iter(currentValue, nodeArray2[index], depth + 1);
-                        //console.log(nodeValue)
-                        return [ ...accumulator, { key: currentValue.key, value: currentValue.value, type: 'deleted' } ]
+                  else if(nodeArray2 && nodeArray2.map(x => x.key).indexOf(currentValue.key) <= -1) {
+                      if(currentValue.value) {
+                          return [ ...accumulator, { key: currentValue.key, value: currentValue.value, type: 'deleted' } ]
+                      }
+                    return [ ...accumulator, { key: currentValue.key, children: currentValue.children, type: 'deleted' } ]
                     }
 
                 else {
@@ -140,103 +112,37 @@ const commonTree = (nodeArray1, nodeArray2) => {
 
 const commonTreeWithAdded = (nodeArraySecond, resultTree) => {
 
-
-    //console.log(nodeArraySecond);
-    //console.log(resultTree)
-
-
     const iter = (nodeArraySecond, resultTree, depth) => {
-
-        //if (!_.isArray(nodeArraySecond) && !_.isArray(resultTree) && !_.isObject(nodeArraySecond.value) && !_.isObject(resultTree.value)) {
-        if (!_.isArray(nodeArraySecond) && !_.isArray(resultTree)) {
-            /*if(nodeArray1.value && nodeArray1.value === nodeArray2.value) {
-                return { value: nodeArray1.value, type: 'unchanged' }
-            } else {
-                return { value: nodeArray1.value, type: 'changed', oldValue: nodeArray1.value, newValue: nodeArray2.value }
-            }*/
-            //return `${nodeArray1.value}`;
-            console.log(4444);
-            console.log(4444);
-        }
-
-        /*if (!_.isArray(nodeArraySecond) && !_.isArray(resultTree) && !_.isObject(nodeArraySecond.value) && !_.isObject(resultTree.value)) {
-
-            if(nodeArraySecond.value && nodeArraySecond.value === resultTree.value) {
-                return { value: nodeArraySecond.value, type: 'unchanged' }
-            } else {
-                return { value: nodeArraySecond.value, type: 'changed', oldValue: nodeArraySecond.value, newValue: resultTree.value }
-            }
-        }*/
-
-      //  console.log(nodeArraySecond);
-      //  console.log(resultTree)
-
-
         const lines = nodeArraySecond
-            .reduce((accumulator, currentValue, index) =>{
+            .reduce((accumulator, currentValue) =>{
                     if(resultTree.map(x => x.key).indexOf(currentValue.key) <= -1) {
-
-                      //  console.log(8888888);
-                     //   console.log(currentValue)
-                      //  console.log(accumulator)
-
-                       // console.log(accumulator)
                         return [ ...accumulator, { key: currentValue.key, type: 'added', value: currentValue.value } ];
-
-
-
-                    } else if(resultTree.map(x => x.key).indexOf(currentValue.key) > -1) {
-
+                    }
+                    else if(resultTree.map(x => x.key).indexOf(currentValue.key) > -1) {
                         const element = resultTree.find(x => x.key === currentValue.key);
-
-                       // console.log(element)
-
-                        if(element.type === 'nested') {
-
-                            const index = resultTree.map(x => x.key).indexOf(currentValue.key);
-
-                            if(currentValue.children?.length > 0) {
-                                return [ ...accumulator, { key: currentValue.key, type: 'nested',
-                                    children:  iter(currentValue.children, resultTree.find(x => x.key === currentValue.key).children, depth + 1) } ];
+                        //console.log(element);
+                        if (element.type === 'nested' && currentValue.type === 'nested') {
+                            //console.log(currentValue);
+                            if (currentValue.children && currentValue.children.length > 0) {
+                                const newChildren = iter(currentValue.children, resultTree.find(x => x.key === currentValue.key).children, depth + 1);
+                                var foundIndex = accumulator.findIndex(x => x.key == currentValue.key);
+                                accumulator[foundIndex].children = [ ...newChildren ]
+                                //console.log(newChildren)
+                                return [ ...accumulator ];
                             }
-
-
-                            //вот это под вопросом надо ли вообще
-                           // const nodeValue = iter(currentValue, resultTree[index], depth + 1);
-                         //   return [ ...accumulator, { key: currentValue.key, ...nodeValue } ]
-
-                            //console.log(resultTree[index].children)
-           //                 const nodeValue = iter(currentValue.children, resultTree[index].children, depth + 1);
-                            //console.log(nodeValue)
-                            //console.log(accumulator)
-            //                return [ ...accumulator, ...nodeValue  ]
-                           // console.log(accumulator)
-                            //return [ ...accumulator, { key: currentValue.key, ...nodeValue } ]
-                           // return [ ...accumulator, { key: currentValue.key, type: 'nested',
-                           //     children:  iter(currentValue.children, nodeArray2.find(x => x.key === currentValue.key).children, depth + 1) } ];
-
                         } else {
-                          //  console.log(element)
-                          //  console.log(accumulator)
-                            return [ ...accumulator, { ...element } ]
+                            return [ ...accumulator ];
                         }
-
-
-                        //console.log(77777777)
-                        //console.log(element)
-
                     }
                     else {
                         return [ ...accumulator ];
                     }
-                }, []
+                }, resultTree
             );
         return lines;
     };
 
     return iter(nodeArraySecond, resultTree, 1);
-
-
 }
 
 const buildTree = (json1, json2) => {
@@ -244,31 +150,20 @@ const buildTree = (json1, json2) => {
     const nodeArray1 = stringify(json1);
     const nodeArray2 = stringify(json2);
 
-    //console.log(nodeArray2[0].children)
-
     const commonTreeResult = commonTree(nodeArray1, nodeArray2);
-    //console.log(commonTreeResult);
-    //console.log(commonTreeResult[0].children);
-
-    const commonTreeResultWithAdded = commonTreeWithAdded(nodeArray2, commonTreeResult);
-
-    //console.log('------------------------');
-   // console.log(nodeArray2);
-   // console.log(commonTreeResult);
-
-    //console.log(commonTreeResultWithAdded);
-    //console.log(commonTreeResultWithAdded[0].children);
+    console.log(commonTreeResult)
+    console.log(commonTreeResult[1])
+    const commonTreeResultWithAdded = commonTreeWithAdded(nodeArray2, commonTreeResult).sort(function (a, b) {
+        if (a.key < b.key) {
+            return -1;
+        }
+        if (a.key > b.key) {
+            return 1;
+        }
+        return 0;
+    });
 
     return commonTreeResultWithAdded;
-
-
-  //console.log(json1);
-  //console.log(stringify(json1));
-  //console.log(json2);
-  //console.log(stringify(json2));
-
-
-
 };
 
 /*const buildTree = (json1, json2, formatter = 'stylish', result = startResult(formatter), step = 1) => {

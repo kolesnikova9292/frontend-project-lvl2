@@ -6,7 +6,7 @@ test('half', () => {
   expect(half(6)).toBe(3);
 });
 
-/*test('parsing1', () => {
+test('parsing1', () => {
   const result = '{\n'
       + '  - follow: false\n'
       + '    host: hexlet.io\n'
@@ -16,7 +16,7 @@ test('half', () => {
       + '  + verbose: true\n'
       + '}';
   expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'stylish')).toStrictEqual(result);
-});*/
+});
 /*test('parsing2', () => {
   const result = '{\n'
         + '  - follow: false\n'
@@ -28,7 +28,7 @@ test('half', () => {
         + '}';
   expect(genDiff('__tests__/__fixtures__/yaml/file1.yaml', '__tests__/__fixtures__/yaml/file2.yaml')).toStrictEqual(result);
 });*/
-/*test('parsing3', () => {
+test('parsing3', () => {
   const result = '{\n'
         + '    common: {\n'
         + '      + follow: false\n'
@@ -74,32 +74,34 @@ test('half', () => {
         + '    }\n'
         + '}';
   expect(genDiff('__tests__/__fixtures__/json2/file1.json', '__tests__/__fixtures__/json2/file2.json')).toStrictEqual(result);
-});*/
-
-test('parsing3', () => {
-  const result = '{\n'
-      + '    common: {\n'
-      + '      + follow: false\n'
-      + '        setting1: Value 1\n'
-      + '      - setting2: 200\n'
-      + '      - setting3: true\n'
-      + '      + setting3: null\n'
-      + '      + setting4: blah blah\n'
-      + '      + setting5: {\n'
-      + '            key5: value5\n'
-      + '        }\n'
-      + '        setting6: {\n'
-      + '            doge: {\n'
-      + '              - wow: \n'
-      + '              + wow: so much\n'
-      + '            }\n'
-      + '            key: value\n'
-      + '          + ops: vops\n'
-      + '        }\n'
-      + '    }\n'
-      + '}';
-  expect(genDiff('__tests__/__fixtures__/json3/file1.json', '__tests__/__fixtures__/json3/file2.json')).toStrictEqual(result);
 });
+
+// test('parsing3', () => {
+//   const result = '{\n' +
+//       '    common: {\n' +
+//       '      + follow: false\n' +
+//       '        setting1: Value 1\n' +
+//       '      - setting2: 200\n' +
+//       '      - setting3: true\n' +
+//       '      + setting3: null\n' +
+//       '      + setting4: blah blah\n' +
+//       '      + setting5: {\n' +
+//       '            key5: value5\n' +
+//       '        }\n' +
+//       '        setting6: {\n' +
+//       '            doge: {\n' +
+//       '              - wow: \n' +
+//       '              + wow: so much\n' +
+//       '            }\n' +
+//       '            key: value\n' +
+//       '          + ops: vops\n' +
+//       '        }\n' +
+//       '    }\n' +
+//       '}';
+//
+//
+//   expect(genDiff('__tests__/__fixtures__/json3/file1.json', '__tests__/__fixtures__/json3/file2.json')).toStrictEqual(result);
+// });
 
 /*test('parsing4', () => {
   const result = ''
