@@ -64,45 +64,107 @@ const stringify = (value) => {
   return iter(value, 1);
 };
 
+const hasObjectThisProp = (object, prop) => {
+    if(object.map(x => x.key).indexOf(prop) <= -1) {
+        return false;
+    }
+    if(object.map(x => x.key).indexOf(prop) > -1) {
+        return true;
+    }
+}
+
+const getElementByKey = (object, prop) => {
+    const index = object.map(x => x.key).indexOf(prop);
+    return object[index];
+}
+
 const commonTree = (nodeArray1, nodeArray2) => {
 
     const iter = (nodeArray1, nodeArray2, depth) => {
-        if (!_.isArray(nodeArray1) && !_.isArray(nodeArray2) && !_.isObject(nodeArray1.value) && !_.isObject(nodeArray2.value)) {
-            if(nodeArray1.value && nodeArray1.value === nodeArray2.value) {
-                return { value: nodeArray1.value, type: 'unchanged' }
-            } else {
-                return { value: nodeArray1.value, type: 'changed', oldValue: nodeArray1.value, newValue: nodeArray2.value }
-            }
+        console.log(nodeArray1);
+        console.log(nodeArray2);
+        if(nodeArray1.length === 0 && nodeArray2.length === 0) {
+            return [];
         }
+        //if (!_.isArray(nodeArray1) && !_.isArray(nodeArray2) && !_.isObject(nodeArray1.value) && !_.isObject(nodeArray2.value)) {
+            /*if(nodeArray1.value && nodeArray1.value && nodeArray1.value === nodeArray2.value) {
+                return { value: nodeArray1.value, type: 'unchanged' }
+            }*/
 
-        const lines = nodeArray1
-            .reduce((accumulator, currentValue) =>{
+            /*else {
+                console.log(nodeArray1)
+                let valOfFirst = '';
+                if(nodeArray1.children && nodeArray1.children.length > 0) {
+                    console.log(nodeArray1.children)
+                    valOfFirst = nodeArray1.children;
+                } else {
+                    valOfFirst = nodeArray1.value;
+                }
+                return { type: 'changed', oldValue: valOfFirst, newValue: nodeArray2.value }
+            }*/
+        //}
 
-                if(nodeArray2 && nodeArray2.map(x => x.key).indexOf(currentValue.key) > -1) {
+        const keys = _.union(nodeArray1.map(x => x.key), nodeArray2.map(x => x.key));
 
-                    if(currentValue.children && currentValue.children.length > 0) {
-                        return [ ...accumulator, { key: currentValue.key, type: 'nested',
-                            children:  iter(currentValue.children, nodeArray2.find(x => x.key === currentValue.key).children, depth + 1) } ];
-                    }
+        //console.log(54545454);
+        //console.log(keys);
+        //console.log(nodeArray1);
+        //console.log(nodeArray2);
 
-                    const index = nodeArray2.map(x => x.key).indexOf(currentValue.key);
-                    const nodeValue = iter(currentValue, nodeArray2[index], depth + 1);
-                    return [ ...accumulator, { key: currentValue.key, ...nodeValue } ]
+        const lines1 = keys.reduce((accumulator, currentValue) => {
+
+            //console.log(222222);
+            //console.log(currentValue);
+            //console.log(hasObjectThisProp(nodeArray1, currentValue))
+
+            if(hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
+                && _.isEqual(getElementByKey(nodeArray1, currentValue), getElementByKey(nodeArray2, currentValue))) {
+                return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'unchanged' } ]
+            }
+
+            if(hasObjectThisProp(nodeArray1, currentValue) && !hasObjectThisProp(nodeArray2, currentValue)) {
+                //console.log(nodeArray1[currentValue]);
+                //console.log(hasObjectThisProp(nodeArray1, currentValue));
+                //console.log(getElementByKey(nodeArray1, currentValue));
+                return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'deleted' } ]
+            }
+            if(!hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)) {
+                //console.log(nodeArray2[currentValue])
+                return [ ...accumulator, { ...getElementByKey(nodeArray2, currentValue), type: 'added' } ]
+            }
+
+            if(hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
+                && !_.isEqual(getElementByKey(nodeArray1, currentValue), getElementByKey(nodeArray2, currentValue))) {
+                if(!_.isNil(getElementByKey(nodeArray1, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray2, currentValue)['value'])) {
+                    return [ ...accumulator, { ...getElementByKey(nodeArray2, currentValue), oldValue: getElementByKey(nodeArray1, currentValue)['value'], type: 'changed' } ];
                 }
 
-                  else if(nodeArray2 && nodeArray2.map(x => x.key).indexOf(currentValue.key) <= -1) {
-                      if(currentValue.value) {
-                          return [ ...accumulator, { key: currentValue.key, value: currentValue.value, type: 'deleted' } ]
-                      }
-                    return [ ...accumulator, { key: currentValue.key, children: currentValue.children, type: 'deleted' } ]
-                    }
-
-                else {
-                    return [ ...accumulator ];
+                if(_.isNil(getElementByKey(nodeArray1, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray1, currentValue)['children']) &&
+                    _.isNil(getElementByKey(nodeArray2, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray2, currentValue)['children'])) {
+                    return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue),
+                        children: _.orderBy(iter(getElementByKey(nodeArray1, currentValue)['children'], getElementByKey(nodeArray2, currentValue)['children'], depth + 1),
+                            ['key'], ['asc']), type: 'nested' } ];
                 }
-            }, []
-            );
-        return lines;
+
+
+
+                if(_.isNil(getElementByKey(nodeArray1, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray2, currentValue)['value']) &&
+                    !_.isNil(getElementByKey(nodeArray1, currentValue)['children']) && _.isNil(getElementByKey(nodeArray2, currentValue)['children'])) {
+
+                    return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue),
+                        children: _.orderBy(iter(getElementByKey(nodeArray1, currentValue)['children'], getElementByKey(nodeArray1, currentValue)['children'], depth + 1),
+                            ['key'], ['asc']), type: 'deleted' }, { ...getElementByKey(nodeArray2, currentValue), type: 'added' } ]
+
+                }
+            }
+
+            return [ ...accumulator ];
+
+        }, []);
+
+        //console.log(54545454);
+        //console.log(lines1);
+        return lines1;
     };
 
     return iter(nodeArray1, nodeArray2, 1);
@@ -116,6 +178,10 @@ const commonTreeWithAdded = (nodeArraySecond, resultTree) => {
         const lines = nodeArraySecond
             .reduce((accumulator, currentValue) =>{
                     if(resultTree.map(x => x.key).indexOf(currentValue.key) <= -1) {
+                        //console.log(currentValue)
+                        if(currentValue.children && currentValue.children > 0) {
+                            return [ ...accumulator, { key: currentValue.key, type: 'added', value: currentValue.children } ];
+                        }
                         return [ ...accumulator, { key: currentValue.key, type: 'added', value: currentValue.value } ];
                     }
                     else if(resultTree.map(x => x.key).indexOf(currentValue.key) > -1) {
@@ -151,9 +217,9 @@ const buildTree = (json1, json2) => {
     const nodeArray2 = stringify(json2);
 
     const commonTreeResult = commonTree(nodeArray1, nodeArray2);
-    console.log(commonTreeResult)
-    console.log(commonTreeResult[1])
-    const commonTreeResultWithAdded = commonTreeWithAdded(nodeArray2, commonTreeResult).sort(function (a, b) {
+    //console.log(commonTreeResult)
+    //console.log(commonTreeResult[1])
+    /*const commonTreeResultWithAdded = commonTreeWithAdded(nodeArray2, commonTreeResult).sort(function (a, b) {
         if (a.key < b.key) {
             return -1;
         }
@@ -161,9 +227,11 @@ const buildTree = (json1, json2) => {
             return 1;
         }
         return 0;
-    });
+    });*/
 
-    return commonTreeResultWithAdded;
+    //console.log(commonTreeResult)
+
+    return _.orderBy(commonTreeResult, ['key'], ['asc']);
 };
 
 /*const buildTree = (json1, json2, formatter = 'stylish', result = startResult(formatter), step = 1) => {
