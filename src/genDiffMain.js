@@ -152,7 +152,7 @@ const plain = (value) => {
                 //вот сюда нужно добавить какбы обратное условие
                 if(itemAlreadyAdded.type === 'deleted' && currentValue.type === 'added') {
                     console.log(7777)
-                    if(itemAlreadyAdded.children.length > 0) {
+                    if(itemAlreadyAdded.children?.length > 0) {
                         console.log(7777)
                         accumulator[index].oldValue = '[complex value]';
                         accumulator[index].type = 'changed';
@@ -164,7 +164,7 @@ const plain = (value) => {
 
                 if(currentValue.type === 'deleted' && itemAlreadyAdded.type === 'added') {
                     console.log(7777)
-                    if(currentValue.children.length > 0) {
+                    if(currentValue.children?.length > 0) {
                         console.log(7777)
                         accumulator[index].oldValue = '[complex value]';
                         accumulator[index].type = 'changed';

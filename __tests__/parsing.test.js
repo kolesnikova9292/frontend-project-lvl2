@@ -17,7 +17,7 @@ test('parsing1', () => {
       + '}';
   expect(genDiff('__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', 'stylish')).toStrictEqual(result);
 });
-/*test('parsing2', () => {
+test('parsing2', () => {
   const result = '{\n'
         + '  - follow: false\n'
         + '    host: hexlet.io\n'
@@ -27,7 +27,7 @@ test('parsing1', () => {
         + '  + verbose: true\n'
         + '}';
   expect(genDiff('__tests__/__fixtures__/yaml/file1.yaml', '__tests__/__fixtures__/yaml/file2.yaml')).toStrictEqual(result);
-});*/
+});
 test('parsing3', () => {
   const result = '{\n'
         + '    common: {\n'
