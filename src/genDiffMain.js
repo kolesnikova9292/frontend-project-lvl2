@@ -2,8 +2,15 @@
 import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
-import buildTree from "./buildTree.js";
+import buildTree, {hasObjectThisProp} from "./buildTree.js";
 import _ from 'lodash';
+
+const mapping = {
+    added: (prop, value) => `Property '${prop}' was added with value: ${value}`,
+    deleted: (prop) => `Property '${prop}' was removed`,
+    changed: (prop, value, oldValue) => `Property '${prop}' was updated. From ${oldValue} to ${value}`,
+    unchanged: (prop) => null,
+};
 
 const getDataByType = (fileName) => {
   const dateType = path.extname(fileName).slice(1);
@@ -28,6 +35,7 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish')
   //console.log(getDataByType(fileName1));
 
   console.log(resultObject[1].children);
+    console.log(resultObject);
 
   return formatTree(resultObject, formatter)
 }
@@ -35,9 +43,14 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish')
 
 const formatTree = (tree, formatter) => {
   if(formatter === 'stylish') {
-    console.log(stringify(tree, ' ', 4))
+    //console.log(stringify(tree, ' ', 4))
     return stringify(tree, ' ', 4);
   }
+
+    if(formatter === 'plain') {
+        console.log(plain(tree))
+        return plain(tree);
+    }
 }
 
 const stringify = (value, replacer = ' ', spacesCount = 1) => {
@@ -94,6 +107,119 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
   };
 
   return iter(value, 1);
+};
+
+const plain = (value) => {
+    const iter = (currentValue, parentKey) => {
+        //console.log(currentValue)
+        // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
+        if (!_.isObject(currentValue)) {
+            console.log(currentValue)
+            //return `${currentValue}`;
+            return mapping[type](parentKey + '.' + key, value, oldValue);
+        }
+
+        console.log(currentValue)
+
+        /*const lines = currentValue
+                .map(({ key, value, children, type, oldValue }) => {
+                    const newKey = parentKey ? parentKey + '.' + key : key;
+                    const newValue = (Number(value) || value == 'true' || value == 'false' || value == 'null') ? value :  '\'' + value + '\'';
+                    const newOldValue = (Number(oldValue) || oldValue == 'true' || oldValue == 'false' || oldValue == 'null') ? oldValue :  '\'' + oldValue + '\'';
+                    if(!_.isNil(value)) {
+                        if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
+                            return mapping[type](newKey, newValue, newOldValue);
+                        }
+                        return null;
+                    }
+                    if(!_.isNil(children) && type === 'added') {
+                        return mapping[type](newKey, '[complex value]');
+                    }
+                    if(!_.isNil(children) && type === 'deleted') {
+                        return mapping[type](newKey, '[complex value]');
+                    }
+                    if(!_.isNil(children)) {
+                        return iter(children, newKey);
+                    }
+                });*/
+
+        const currentValueNew = currentValue.reduce((accumulator, currentValue) => {
+
+            if(hasObjectThisProp(accumulator, currentValue.key)) {
+
+                const index = accumulator.map(x => x.key).indexOf(currentValue.key);
+
+                const itemAlreadyAdded = accumulator[index]
+
+                console.log(itemAlreadyAdded);
+                console.log(currentValue);
+
+                //вот сюда нужно добавить какбы обратное условие
+                if(itemAlreadyAdded.type === 'deleted' && currentValue.type === 'added') {
+                    console.log(7777)
+                    if(itemAlreadyAdded.children.length > 0) {
+                        console.log(7777)
+                        accumulator[index].oldValue = '[complex value]';
+                        accumulator[index].type = 'changed';
+                        accumulator[index].value = currentValue.value;
+                        console.log(accumulator[index]);
+                        return [ ...accumulator ]
+                    }
+                }
+
+                if(currentValue.type === 'deleted' && itemAlreadyAdded.type === 'added') {
+                    console.log(7777)
+                    if(currentValue.children.length > 0) {
+                        console.log(7777)
+                        accumulator[index].oldValue = '[complex value]';
+                        accumulator[index].type = 'changed';
+                        accumulator[index].value = itemAlreadyAdded.value;
+                        console.log(accumulator[index]);
+                        return [ ...accumulator ]
+                    }
+                }
+
+                return [ ...accumulator ]
+            }
+
+            return [ ...accumulator, currentValue ]
+
+        }, []);
+
+
+        const lines = currentValueNew
+            .reduce((accumulator, currentValue) => {
+                const { key, value, children, type, oldValue } = currentValue;
+
+                console.log(currentValue);
+
+                const newKey = parentKey ? parentKey + '.' + key : key;
+                const newValue = (Number(value) || value == 'true' || value == 'false' || value == 'null' || value == '[complex value]') ? value :  '\'' + value + '\'';
+                const newOldValue = (Number(oldValue) || oldValue == 'true' || oldValue == 'false' || oldValue == 'null' || oldValue == '[complex value]') ? oldValue :  '\'' + oldValue + '\'';
+
+                if(!_.isNil(value)) {
+                    if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
+                        return [ ...accumulator, mapping[type](newKey, newValue, newOldValue) ];
+                    }
+                    return accumulator;
+                }
+                if(!_.isNil(children) && type === 'added') {
+                    return [ ...accumulator, mapping[type](newKey, '[complex value]') ];
+                }
+                if(!_.isNil(children) && type === 'deleted') {
+                    return [ ...accumulator, mapping[type](newKey, '[complex value]') ];
+                }
+                if(!_.isNil(children)) {
+                    return [ ...accumulator, iter(children, newKey) ];
+                }
+            }, []);
+
+        return [
+            ...lines.filter(Boolean) ,
+        ].join('\n');
+    };
+
+    return iter(value);
 };
 
 /*const stringify = (value, replacer = ' ', spacesCount = 1) => {

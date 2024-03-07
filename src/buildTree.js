@@ -64,7 +64,7 @@ const stringify = (value) => {
   return iter(value, 1);
 };
 
-const hasObjectThisProp = (object, prop) => {
+export const hasObjectThisProp = (object, prop) => {
     if(object.map(x => x.key).indexOf(prop) <= -1) {
         return false;
     }
@@ -81,8 +81,8 @@ const getElementByKey = (object, prop) => {
 const commonTree = (nodeArray1, nodeArray2) => {
 
     const iter = (nodeArray1, nodeArray2, depth) => {
-        console.log(nodeArray1);
-        console.log(nodeArray2);
+        //console.log(nodeArray1);
+        //console.log(nodeArray2);
         if(nodeArray1.length === 0 && nodeArray2.length === 0) {
             return [];
         }
