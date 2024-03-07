@@ -32,11 +32,6 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish')
     getDataByType(fileName2)
   );
 
-  //console.log(getDataByType(fileName1));
-
-  console.log(resultObject[1].children);
-    console.log(resultObject);
-
   return formatTree(resultObject, formatter)
 }
 
