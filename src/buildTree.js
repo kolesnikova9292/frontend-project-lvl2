@@ -217,7 +217,7 @@ const buildTree = (json1, json2) => {
     const nodeArray2 = stringify(json2);
 
     const commonTreeResult = commonTree(nodeArray1, nodeArray2);
-    console.log(commonTreeResult)
+    console.log(commonTreeResult[0].children)
     //console.log(commonTreeResult[1])
     /*const commonTreeResultWithAdded = commonTreeWithAdded(nodeArray2, commonTreeResult).sort(function (a, b) {
         if (a.key < b.key) {
