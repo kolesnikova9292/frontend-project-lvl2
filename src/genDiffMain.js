@@ -195,8 +195,8 @@ const plain = (value) => {
                 const { key, value, children, type, oldValue } = currentValue;
 
                 const newKey = parentKey ? parentKey + '.' + key : key;
-                const newValue = (Number(value) || value == 'true' || value == 'false' || value == 'null' || value == '[complex value]') ? value :  '\'' + value + '\'';
-                const newOldValue = (Number(oldValue) || oldValue == 'true' || oldValue == 'false' || oldValue == 'null' || oldValue == '[complex value]') ? oldValue :  '\'' + oldValue + '\'';
+                const newValue = (Number.parseInt(value) || value == 'true' || value == 'false' || value == 'null' || value == '[complex value]') ? value :  '\'' + value + '\'';
+                const newOldValue = (Number.parseInt(oldValue) || oldValue == 'true' || oldValue == 'false' || oldValue == 'null' || oldValue == '[complex value]') ? oldValue :  '\'' + oldValue + '\'';
 
                 if(!_.isNil(value)) {
                     if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
