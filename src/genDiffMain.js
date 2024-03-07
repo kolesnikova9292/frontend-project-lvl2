@@ -43,7 +43,7 @@ const formatTree = (tree, formatter) => {
   }
 
     if(formatter === 'plain') {
-        console.log(plain(tree))
+        //console.log(plain(tree))
         return plain(tree);
     }
 }
@@ -109,12 +109,9 @@ const plain = (value) => {
         //console.log(currentValue)
         // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
         if (!_.isObject(currentValue)) {
-            console.log(currentValue)
             //return `${currentValue}`;
             return mapping[type](parentKey + '.' + key, value, oldValue);
         }
-
-        console.log(currentValue)
 
         /*const lines = currentValue
                 .map(({ key, value, children, type, oldValue }) => {
@@ -146,18 +143,15 @@ const plain = (value) => {
 
                 const itemAlreadyAdded = accumulator[index]
 
-                console.log(itemAlreadyAdded);
-                console.log(currentValue);
+                //console.log(itemAlreadyAdded);
+                //console.log(currentValue);
 
                 //вот сюда нужно добавить какбы обратное условие
                 if(itemAlreadyAdded.type === 'deleted' && currentValue.type === 'added') {
-                    console.log(7777)
                     if(itemAlreadyAdded.children?.length > 0) {
-                        console.log(7777)
                         accumulator[index].oldValue = '[complex value]';
                         accumulator[index].type = 'changed';
                         accumulator[index].value = currentValue.value;
-                        console.log(accumulator[index]);
                         return [ ...accumulator ]
                     }
                 }
@@ -185,8 +179,6 @@ const plain = (value) => {
         const lines = currentValueNew
             .reduce((accumulator, currentValue) => {
                 const { key, value, children, type, oldValue } = currentValue;
-
-                console.log(currentValue);
 
                 const newKey = parentKey ? parentKey + '.' + key : key;
                 const newValue = (Number(value) || value == 'true' || value == 'false' || value == 'null' || value == '[complex value]') ? value :  '\'' + value + '\'';
