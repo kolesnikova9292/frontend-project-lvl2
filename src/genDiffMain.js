@@ -154,6 +154,12 @@ const plain = (value) => {
                         accumulator[index].value = currentValue.value;
                         return [ ...accumulator ]
                     }
+                    if(currentValue.children?.length > 0) {
+                        accumulator[index].oldValue = itemAlreadyAdded.value;
+                        accumulator[index].type = 'changed';
+                        accumulator[index].value = '[complex value]';
+                        return [ ...accumulator ]
+                    }
                 }
 
                 if(currentValue.type === 'deleted' && itemAlreadyAdded.type === 'added') {
@@ -163,6 +169,14 @@ const plain = (value) => {
                         accumulator[index].oldValue = '[complex value]';
                         accumulator[index].type = 'changed';
                         accumulator[index].value = itemAlreadyAdded.value;
+                        console.log(accumulator[index]);
+                        return [ ...accumulator ]
+                    }
+                    if(itemAlreadyAdded.children?.length > 0) {
+                        console.log(7777)
+                        accumulator[index].oldValue = '[complex value]';
+                        accumulator[index].type = 'changed';
+                        accumulator[index].value = currentValue.value;
                         console.log(accumulator[index]);
                         return [ ...accumulator ]
                     }
