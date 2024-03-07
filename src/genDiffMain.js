@@ -143,8 +143,8 @@ const plain = (value) => {
 
                 const itemAlreadyAdded = accumulator[index]
 
-                //console.log(itemAlreadyAdded);
-                //console.log(currentValue);
+                console.log(itemAlreadyAdded);
+                console.log(currentValue);
 
                 //вот сюда нужно добавить какбы обратное условие
                 if(itemAlreadyAdded.type === 'deleted' && currentValue.type === 'added') {
