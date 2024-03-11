@@ -13,64 +13,72 @@ const stringify = (value) => {
         const resultValue = { key };
 
         if (!_.isObject(nodeValue)) {
-          return { ...resultValue, value: nodeValue }
-        };
+          return { ...resultValue, value: nodeValue };
+        }
 
         return { key: key, children: nodeValue };
-        }
+      }
       );
-    return [ ...lines ];
+    return [...lines];
   };
 
   return iter(value, 1);
 };
 
 export const hasObjectThisProp = (object, prop) => {
-  if(object.map(x => x.key).indexOf(prop) <= -1) {
+  if (object.map((x) => x.key).indexOf(prop) <= -1) {
     return false;
   }
-  if(object.map(x => x.key).indexOf(prop) > -1) {
+  if (object.map((x) => x.key).indexOf(prop) > -1) {
     return true;
   }
-}
+  return false;
+};
 
 const getElementByKey = (object, prop) => {
-  const index = object.map(x => x.key).indexOf(prop);
+  const index = object.map((x) => x.key).indexOf(prop);
   return object[index];
-}
+};
 
-const commonTree = (nodeArray1, nodeArray2) => {
+const commonTree = (nodeArrayFirst, nodeArraySecond) => {
   const iter = (nodeArray1, nodeArray2, depth) => {
-    if(nodeArray1.length === 0 && nodeArray2.length === 0) {
+    if (nodeArray1.length === 0 && nodeArray2.length === 0) {
       return [];
     }
     const keys = _.union(nodeArray1.map(x => x.key), nodeArray2.map(x => x.key));
     const lines1 = keys.reduce((accumulator, currentValue) => {
-      if(hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
-        && _.isEqual(getElementByKey(nodeArray1, currentValue), getElementByKey(nodeArray2, currentValue))) {
-        return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'unchanged' } ];
+      if (hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
+        && _.isEqual(
+          getElementByKey(nodeArray1, currentValue),
+          getElementByKey(nodeArray2, currentValue))
+      ) {
+        return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'unchanged' }];
       }
-      if(hasObjectThisProp(nodeArray1, currentValue) && !hasObjectThisProp(nodeArray2, currentValue)) {
-        return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'deleted' } ]
+      if (hasObjectThisProp(nodeArray1, currentValue)
+        && !hasObjectThisProp(nodeArray2, currentValue)) {
+        return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'deleted' }];
       }
-      if(!hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)) {
-        return [ ...accumulator, { ...getElementByKey(nodeArray2, currentValue), type: 'added' } ]
+      if (!hasObjectThisProp(nodeArray1, currentValue)
+        && hasObjectThisProp(nodeArray2, currentValue)) {
+        return [...accumulator, { ...getElementByKey(nodeArray2, currentValue), type: 'added' }];
       }
 
-      if(hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
+      if (hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
         && !_.isEqual(
           getElementByKey(nodeArray1, currentValue),
-          getElementByKey(nodeArray2, currentValue)
+          getElementByKey(nodeArray2, currentValue),
         )) {
-        if(!_.isNil(getElementByKey(nodeArray1, currentValue).value)
+        if (!_.isNil(getElementByKey(nodeArray1, currentValue).value)
           && !_.isNil(getElementByKey(nodeArray2, currentValue).value)) {
           return [...accumulator,
-            { ...getElementByKey(nodeArray2, currentValue),
-              oldValue: getElementByKey(nodeArray1, currentValue).value, type: 'changed'
+            {
+              ...getElementByKey(nodeArray2, currentValue),
+              oldValue: getElementByKey(nodeArray1, currentValue).value,
+              type: 'changed',
             }];
         }
 
-        if(_.isNil(getElementByKey(nodeArray1, currentValue).value)
+        if (_.isNil(getElementByKey(nodeArray1, currentValue).value)
           && !_.isNil(getElementByKey(nodeArray1, currentValue).children)
           && _.isNil(getElementByKey(nodeArray2, currentValue).value)
           && !_.isNil(getElementByKey(nodeArray2, currentValue).children)) {
@@ -83,7 +91,7 @@ const commonTree = (nodeArray1, nodeArray2) => {
                 depth + 1,
               ),
               ['key'],
-                ['asc'],
+               ['asc'],
             ),
             type: 'nested',
           }];
@@ -136,7 +144,7 @@ const commonTree = (nodeArray1, nodeArray2) => {
     return lines1;
   };
 
-  return iter(nodeArray1, nodeArray2, 1);
+  return iter(nodeArrayFirst, nodeArraySecond, 1);
 };
 
 const buildTree = (json1, json2) => {
