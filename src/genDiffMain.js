@@ -78,7 +78,7 @@ const plain = (tree) => {
     // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
       // return `${currentValue}`;
-      return mapping[type](parentKey + '.' + key, value, oldValue);
+      return mapping[currentValue.type](parentKey + '.' + key, value, oldValue);
     }
 
     const currentValueNew = currentValue.reduce((accumulator, current) => {
