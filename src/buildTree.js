@@ -75,16 +75,18 @@ const commonTree = (nodeArray1, nodeArray2) => {
 
             return [...accumulator, { ...getElementByKey(nodeArray1, currentValue),
               children: _.orderBy(iter(
-                getElementByKey(nodeArray1, currentValue)['children'],
-                getElementByKey(nodeArray1, currentValue)['children'],
-                depth + 1),
-                  ['key'],
-                  ['asc']
-              ),
-              type: 'deleted' },
+                getElementByKey(nodeArray1, currentValue).children,
+                getElementByKey(nodeArray1, currentValue).children,
+              depth + 1
+                ),
+            ['key'],
+            ['asc'],
+            ),
+            type: 'deleted'
+            },
           { ...getElementByKey(nodeArray2, currentValue), type: 'added' },
           ];
-        }
+        };
 
         if( _.isNil(getElementByKey(nodeArray2, currentValue).value)
           && !_.isNil(getElementByKey(nodeArray1, currentValue).value)
@@ -98,7 +100,7 @@ const commonTree = (nodeArray1, nodeArray2) => {
                 iter(
                   getElementByKey(nodeArray2, currentValue).children,
                   getElementByKey(nodeArray2, currentValue).children,
-                  depth + 1
+                  depth + 1,
                 ),
                 ['key'],
                 ['asc'],
