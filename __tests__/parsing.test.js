@@ -1,10 +1,23 @@
-import { test, expect } from '@jest/globals';
-import half from '../src/half.js';
+import {test, expect, describe} from '@jest/globals';
 import genDiff from '../src/genDiffMain.js';
+import each from 'jest-each';
 
-test('half', () => {
-  expect(half(6)).toBe(3);
-});
+describe('parser', () => {
+  /*each([
+    ['__tests__/__fixtures__/json/file1.json', '__tests__/__fixtures__/json/file2.json', '__tests__/__fixtures__/json/result.txt']
+
+  ]).test('returns %s when adding %s and %s', (expected, a, b) => {
+    expect(genDiff(a, b, 'stylish')).toStrictEqual(expected);
+  })*/
+
+  each([
+    [1, 1, 2],
+    [1, 2, 3],
+    [2, 1, 3],
+  ]).test('returns the result of adding %d to %d', (a, b, expected) => {
+    expect(a + b).toBe(expected);
+  });
+})
 
 test('parsing1', () => {
   const result = '{\n'
