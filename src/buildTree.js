@@ -83,16 +83,16 @@ const commonTree = (nodeArray1, nodeArray2) => {
 
           return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'deleted' }, { ...getElementByKey(nodeArray2, currentValue),
             children: _.orderBy(iter(getElementByKey(nodeArray2, currentValue)['children'], getElementByKey(nodeArray2, currentValue)['children'], depth + 1),
-            ['key'], ['asc']), type: 'added' } ]
-            }
-          }
-          return [ ...accumulator ];
-        }, []);
-        return lines1;
-    };
+            ['key'], ['asc']), type: 'added' }];
+        }
+      }
+      return [ ...accumulator ];
+    }, []);
+    return lines1;
+  };
 
-    return iter(nodeArray1, nodeArray2, 1);
-}
+  return iter(nodeArray1, nodeArray2, 1);
+};
 
 const buildTree = (json1, json2) => {
   const nodeArray1 = stringify(json1);
