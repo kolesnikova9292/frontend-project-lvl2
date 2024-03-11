@@ -148,7 +148,7 @@ const plain = (value) => {
         const { key, value, children, type, oldValue } = currentValue;
 
         const newKey = parentKey ? parentKey + '.' + key : key;
-        const newValue = (parseInt(value) || parseInt(value) === 0 || value == 'true' || value == 'false' || value == 'null' || value == '[complex value]') ? value :  '\'' + value + '\'';
+        const newValue = (parseInt(value) || parseInt(value) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value :  '\'' + value + '\'';
         const newOldValue = (parseInt(oldValue) || parseInt(oldValue) === 0 || oldValue == 'true' || oldValue == 'false' || oldValue == 'null' || oldValue == '[complex value]') ? oldValue :  '\'' + oldValue + '\'';
 
         if(!_.isNil(value)) {
@@ -170,10 +170,10 @@ const plain = (value) => {
 
       return [
             ...lines.filter(Boolean) ,
-        ].join('\n');
-    };
+      ].join('\n');
+  };
 
-    return iter(value);
+  return iter(value);
 };
 
 
@@ -192,35 +192,34 @@ const json = (value, replacer = ' ', spacesCount = 1) => {
         .map(({ key, value, children, type, oldValue }) => {
           let sign = '  ';
 
-          if(type === 'added') {
+          if (type === 'added') {
             sign = '+ '
-
           }
-          if(type === 'deleted') {
+          if (type === 'deleted') {
             sign = '- ';
           }
 
-          if(!_.isNil(value)) {
+          if (!_.isNil(value)) {
             if (type === 'changed') {
               return [`${currentIndent}"- ${key}": "${iter(oldValue, depth + 1)}",`, `${currentIndent}"+ ${key}": "${iter(value, depth + 1)}",`].join('\n');
             }
             return `${currentIndent}"${sign}${key}": "${iter(value, depth + 1)}",`;
           }
 
-          if(!_.isNil(children)) {
+          if (!_.isNil(children)) {
             return `${currentIndent}"${sign}${key}": ${iter(children, depth + 1)},`;
           }
+          return null;
         });
 
-        lines[lines.length - 1] = lines[lines.length - 1].slice(0, -1);
+    lines[lines.length - 1] = lines[lines.length - 1].slice(0, -1);
 
-        return [
-            '{',
-            ...lines,
-            `${bracketIndent}}`,
-        ].join('\n');
-    };
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
+  };
 
-    return iter(value, 1);
+  return iter(value, 1);
 };
-
