@@ -75,57 +75,59 @@ const plain = (value) => {
   const iter = (currentValue, parentKey) => {
     // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
-      //return `${currentValue}`;
+      // return `${currentValue}`;
       return mapping[type](parentKey + '.' + key, value, oldValue);
     }
 
-    const currentValueNew = currentValue.reduce((accumulator, currentValue) => {
-      if(hasObjectThisProp(accumulator, currentValue.key)) {
-        const index = accumulator.map(x => x.key).indexOf(currentValue.key);
+    const currentValueNew = currentValue.reduce((accumulator, current) => {
+      if (hasObjectThisProp(accumulator, current.key)) {
+        const index = accumulator.map((x) => x.key).indexOf(current.key);
         const itemAlreadyAdded = accumulator[index];
-        //вот сюда нужно добавить какбы обратное условие
-        if (itemAlreadyAdded.type === 'deleted' && currentValue.type === 'added') {
-          if(itemAlreadyAdded.children?.length > 0) {
+        // вот сюда нужно добавить какбы обратное условие
+        if (itemAlreadyAdded.type === 'deleted' && current.type === 'added') {
+          if (itemAlreadyAdded.children?.length > 0) {
             accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
-            accumulator[index].value = currentValue.value;
-            return [ ...accumulator ]
+            accumulator[index].value = current.value;
+            return [...accumulator];
           }
-          if(currentValue.children?.length > 0) {
+          if (current.children?.length > 0) {
             accumulator[index].oldValue = itemAlreadyAdded.value;
             accumulator[index].type = 'changed';
             accumulator[index].value = '[complex value]';
-            return [ ...accumulator ]
+            return [...accumulator];
           }
         }
 
-        if (currentValue.type === 'deleted' && itemAlreadyAdded.type === 'added') {
-          if (currentValue.children?.length > 0) {
+        if (current.type === 'deleted' && itemAlreadyAdded.type === 'added') {
+          if (current.children?.length > 0) {
             accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
             accumulator[index].value = itemAlreadyAdded.value;
-            return [ ...accumulator ]
+            return [...accumulator];
           }
           if(itemAlreadyAdded.children?.length > 0) {
             accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
-            accumulator[index].value = currentValue.value;
+            accumulator[index].value = current.value;
             return [...accumulator];
           }
         }
        return [...accumulator];
       }
-      return [...accumulator, currentValue];
+      return [...accumulator, current];
     }, []);
 
 
     const lines = currentValueNew
       .reduce((accumulator, currentValue) => {
-        const { key, value, children, type, oldValue } = currentValue;
+        const {
+          key, value, children, type, oldValue
+        } = currentValue;
 
-        const newKey = parentKey ? parentKey + '.' + key : key;
-        const newValue = (parseInt(value) || parseInt(value) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `\'${value}\'`;
-        const newOldValue = (parseInt(oldValue) || parseInt(oldValue) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : '\'' + oldValue + '\'';
+        const newKey = parentKey ? `${parentKey}.${key}` : key;
+        const newValue = (parseInt(value) || parseInt(value) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
+        const newOldValue = (parseInt(oldValue) || parseInt(oldValue) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : `'${oldValue}'`;
 
         if (!_.isNil(value)) {
           if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
@@ -142,6 +144,7 @@ const plain = (value) => {
         if (!_.isNil(children)) {
           return [...accumulator, iter(children, newKey)];
         }
+        return [...accumulator];
       }, []);
 
     return [
@@ -163,7 +166,8 @@ const json = (tree, replacer = ' ', spacesCount = 1) => {
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - 2);
     const lines = currentValue
-      .map(({ key, value, children, type, oldValue
+      .map(({
+        key, value, children, type, oldValue,
       }) => {
         let sign = '  ';
 
@@ -187,13 +191,13 @@ const json = (tree, replacer = ' ', spacesCount = 1) => {
         return null;
       });
 
-      lines[lines.length - 1] = lines[lines.length - 1].slice(0, -1);
+    lines[lines.length - 1] = lines[lines.length - 1].slice(0, -1);
 
-      return [
-        '{',
-        ...lines,
-        `${bracketIndent}}`,
-      ].join('\n');
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
   };
 
   return iter(tree, 1);
@@ -212,7 +216,7 @@ const formatTree = (tree, formatter) => {
     return json(tree, ' ', 4);
   }
   return '';
-}
+};
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
   const resultObject = buildTree(
