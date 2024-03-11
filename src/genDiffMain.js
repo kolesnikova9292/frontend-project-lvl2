@@ -38,18 +38,14 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish')
 
 const formatTree = (tree, formatter) => {
   if(formatter === 'stylish') {
-    //console.log(stringify(tree, ' ', 4))
     return stringify(tree, ' ', 4);
   }
 
     if(formatter === 'plain') {
-        //console.log(plain(tree))
         return plain(tree);
     }
 
     if(formatter === 'json') {
-       // console.log(json(tree))
-      //  console.log(typeof json(tree))
         return json(tree, ' ', 4);
     }
 }
@@ -65,13 +61,8 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
 
     const indentSize = depth * spacesCount - 2;
     const currentIndent = replacer.repeat(indentSize);
-    //const bracketIndent = replacer.repeat(indentSize - spacesCount);
     const bracketIndent = replacer.repeat(indentSize - 2);
-    //console.log(8888);
-    //console.log(currentIndent);
     const lines =
-        //Object
-        //.entries(currentValue)
         currentValue
         .map(({ key, value, children, type, oldValue }) => {
 
@@ -112,34 +103,11 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
 
 const plain = (value) => {
     const iter = (currentValue, parentKey) => {
-        //console.log(currentValue)
         // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
         if (!_.isObject(currentValue)) {
             //return `${currentValue}`;
             return mapping[type](parentKey + '.' + key, value, oldValue);
         }
-
-        /*const lines = currentValue
-                .map(({ key, value, children, type, oldValue }) => {
-                    const newKey = parentKey ? parentKey + '.' + key : key;
-                    const newValue = (Number(value) || value == 'true' || value == 'false' || value == 'null') ? value :  '\'' + value + '\'';
-                    const newOldValue = (Number(oldValue) || oldValue == 'true' || oldValue == 'false' || oldValue == 'null') ? oldValue :  '\'' + oldValue + '\'';
-                    if(!_.isNil(value)) {
-                        if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
-                            return mapping[type](newKey, newValue, newOldValue);
-                        }
-                        return null;
-                    }
-                    if(!_.isNil(children) && type === 'added') {
-                        return mapping[type](newKey, '[complex value]');
-                    }
-                    if(!_.isNil(children) && type === 'deleted') {
-                        return mapping[type](newKey, '[complex value]');
-                    }
-                    if(!_.isNil(children)) {
-                        return iter(children, newKey);
-                    }
-                });*/
 
         const currentValueNew = currentValue.reduce((accumulator, currentValue) => {
 
@@ -166,30 +134,22 @@ const plain = (value) => {
                 }
 
                 if(currentValue.type === 'deleted' && itemAlreadyAdded.type === 'added') {
-                    console.log(7777)
                     if(currentValue.children?.length > 0) {
-                        console.log(7777)
                         accumulator[index].oldValue = '[complex value]';
                         accumulator[index].type = 'changed';
                         accumulator[index].value = itemAlreadyAdded.value;
-                        console.log(accumulator[index]);
                         return [ ...accumulator ]
                     }
                     if(itemAlreadyAdded.children?.length > 0) {
-                        console.log(7777)
                         accumulator[index].oldValue = '[complex value]';
                         accumulator[index].type = 'changed';
                         accumulator[index].value = currentValue.value;
-                        console.log(accumulator[index]);
                         return [ ...accumulator ]
                     }
                 }
-
                 return [ ...accumulator ]
             }
-
             return [ ...accumulator, currentValue ]
-
         }, []);
 
 
@@ -234,17 +194,10 @@ const json = (value, replacer = ' ', spacesCount = 1) => {
             return `${currentValue}`;
         }
 
-        //глубина * количество отступов — смещение влево.
-
         const indentSize = depth * spacesCount - 2;
         const currentIndent = replacer.repeat(indentSize);
-        //const bracketIndent = replacer.repeat(indentSize - spacesCount);
         const bracketIndent = replacer.repeat(indentSize - 2);
-        //console.log(8888);
-        //console.log(currentIndent);
         const lines =
-            //Object
-            //.entries(currentValue)
             currentValue
                 .map(({ key, value, children, type, oldValue }) => {
 
@@ -284,62 +237,4 @@ const json = (value, replacer = ' ', spacesCount = 1) => {
 
     return iter(value, 1);
 };
-
-/*const stringify = (value, replacer = ' ', spacesCount = 1) => {
-  const iter = (currentValue, depth) => {
-    let indentSize = depth * spacesCount;
-    let currentIndent = replacer.repeat(indentSize);
-    let bracketIndent = replacer.repeat(indentSize - spacesCount);
-
-
-    if(currentValue.type === 'nested') {
-      const lines = currentValue.children
-            .map((x) => {
-                  if(x.type === 'nested') {
-                    return `${currentIndent}${iter(x, depth+1)}`
-                  } else {
-                    let firstSymbol = ' ';
-                    if(x.type === 'added')
-                      firstSymbol = '+';
-                    if(x.type === 'deleted')
-                      firstSymbol = '-';
-
-                    if(x.type === 'changed') {
-                      return `${currentIndent}- ${x.key}: ${x.oldValue}\n${currentIndent}+ ${x.key}: ${x.newValue}`;
-                    }
-
-                    return `${currentIndent}${firstSymbol} ${x.key}: ${x.value}`;
-                  }
-                }
-            );
-
-        return [
-          //`${bracketIndent}{`,
-          `${currentIndent}${currentValue.key}: {`,
-          ...lines,
-          // '}'
-          `${bracketIndent}}`,
-        ].join('\n');
-
-      } else {
-        let firstSymbol = ' ';
-        if(currentValue.type === 'added')
-          firstSymbol = '+';
-        if(currentValue.type === 'deleted')
-          firstSymbol = '-';
-
-        if(currentValue.type === 'changed') {
-          return `${currentIndent}- ${currentValue.key}: ${currentValue.oldValue}\n${currentIndent}+ ${currentValue.key}: ${currentValue.newValue}`;
-        }
-
-        return `${currentIndent}${firstSymbol} ${currentValue.key}: ${currentValue.value}`;
-
-      }
-  };
-
-  return `{\n${value.map(value1 => {
-    const rez = iter(value1, 1);
-    return rez;
-  }).join('\n')}\n}` ;
-};*/
 
