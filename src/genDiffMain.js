@@ -39,29 +39,29 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - 2);
     const lines = currentValue.map(({
-      key, value, children, type, oldValue
-      }) => {
-        let sign = '  ';
+      key, value, children, type, oldValue,
+    }) => {
+      let sign = '  ';
 
-        if (type === 'added') {
-          sign = '+ ';
-        }
-        if (type === 'deleted') {
-          sign = '- ';
-        }
+      if (type === 'added') {
+        sign = '+ ';
+      }
+      if (type === 'deleted') {
+        sign = '- ';
+      }
 
-        if (!_.isNil(value)) {
-          if (type === 'changed') {
-            return [`${currentIndent}- ${key}: ${iter(oldValue, depth + 1)}`, `${currentIndent}+ ${key}: ${iter(value, depth + 1)}`].join('\n');
-          }
-          return `${currentIndent}${sign}${key}: ${iter(value, depth + 1)}`;
+      if (!_.isNil(value)) {
+        if (type === 'changed') {
+          return [`${currentIndent}- ${key}: ${iter(oldValue, depth + 1)}`, `${currentIndent}+ ${key}: ${iter(value, depth + 1)}`].join('\n');
         }
+        return `${currentIndent}${sign}${key}: ${iter(value, depth + 1)}`;
+      }
 
-        if (!_.isNil(children)) {
-          return `${currentIndent}${sign}${key}: ${iter(children, depth + 1)}`;
-        }
-        return '';
-      });
+      if (!_.isNil(children)) {
+        return `${currentIndent}${sign}${key}: ${iter(children, depth + 1)}`;
+      }
+      return '';
+    });
 
     return [
       '{',
