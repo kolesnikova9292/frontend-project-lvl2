@@ -26,20 +26,21 @@ const getDataByType = (fileName) => {
   return null;
 };
 
-const stringify = (value, replacer = ' ', spacesCount = 1) => {
+const stringify = (tree, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
     // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }
 
-    //глубина * количество отступов — смещение влево.
+    // глубина * количество отступов — смещение влево.
 
     const indentSize = depth * spacesCount - 2;
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - 2);
-    const lines =
-      currentValue.map(({ key, value, children, type, oldValue }) => {
+    const lines = currentValue.map(({
+      key, value, children, type, oldValue
+      }) => {
         let sign = '  ';
 
         if (type === 'added') {
@@ -59,6 +60,7 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
         if (!_.isNil(children)) {
           return `${currentIndent}${sign}${key}: ${iter(children, depth + 1)}`;
         }
+        return '';
       });
 
     return [
@@ -68,7 +70,7 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
     ].join('\n');
   };
 
-  return iter(value, 1);
+  return iter(tree, 1);
 };
 
 const plain = (tree) => {
@@ -106,7 +108,7 @@ const plain = (tree) => {
             accumulator[index].value = itemAlreadyAdded.value;
             return [...accumulator];
           }
-          if(itemAlreadyAdded.children?.length > 0) {
+          if (itemAlreadyAdded.children?.length > 0) {
             accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
             accumulator[index].value = current.value;
