@@ -8,16 +8,15 @@ const stringify = (value) => {
     }
     const lines = Object
       .entries(currentValue)
-      .map(([key, val]) =>{
-
+      .map(([key, val]) => {
         const nodeValue = iter(val, depth + 1);
         const resultValue = { key };
 
         if (!_.isObject(nodeValue)) {
           return { ...resultValue, value: nodeValue }
-        }
+        };
 
-        return { key: key, children: nodeValue }
+        return { key: key, children: nodeValue };
         }
       );
     return [ ...lines ];
@@ -41,7 +40,6 @@ const getElementByKey = (object, prop) => {
 }
 
 const commonTree = (nodeArray1, nodeArray2) => {
-
   const iter = (nodeArray1, nodeArray2, depth) => {
     if(nodeArray1.length === 0 && nodeArray2.length === 0) {
       return [];
@@ -78,7 +76,6 @@ const commonTree = (nodeArray1, nodeArray2) => {
             return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue),
               children: _.orderBy(iter(getElementByKey(nodeArray1, currentValue)['children'], getElementByKey(nodeArray1, currentValue)['children'], depth + 1),
                   ['key'], ['asc']), type: 'deleted' }, { ...getElementByKey(nodeArray2, currentValue), type: 'added' } ]
-
                 }
 
         if(_.isNil(getElementByKey(nodeArray2, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray1, currentValue)['value']) &&
@@ -98,7 +95,6 @@ const commonTree = (nodeArray1, nodeArray2) => {
 }
 
 const buildTree = (json1, json2) => {
-
   const nodeArray1 = stringify(json1);
   const nodeArray2 = stringify(json2);
 
