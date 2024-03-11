@@ -97,9 +97,7 @@ const commonTree = (nodeArray1, nodeArray2) => {
 const buildTree = (json1, json2) => {
   const nodeArray1 = stringify(json1);
   const nodeArray2 = stringify(json2);
-
   const commonTreeResult = commonTree(nodeArray1, nodeArray2);
-
   return _.orderBy(commonTreeResult, ['key'], ['asc']);
 };
 

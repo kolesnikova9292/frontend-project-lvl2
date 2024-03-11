@@ -63,8 +63,7 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - 2);
     const lines =
-        currentValue
-        .map(({ key, value, children, type, oldValue }) => {
+      currentValue.map(({ key, value, children, type, oldValue }) => {
 
           let sign = '  ';
 
