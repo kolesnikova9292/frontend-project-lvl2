@@ -1,5 +1,3 @@
-import { expect, test } from '@jest/globals';
-
 const resultStylish = '{\n'
     + '  - follow: false\n'
     + '    host: hexlet.io\n'
@@ -15,8 +13,3 @@ const resultPlain = 'Property \'follow\' was removed\n'
     + 'Property \'verbose\' was added with value: true';
 
 export { resultStylish, resultPlain };
-
-test('result object', () => {
-  expect(resultStylish).not.toBeNull();
-  expect(resultPlain).not.toBeNull();
-});

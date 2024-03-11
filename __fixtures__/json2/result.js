@@ -1,5 +1,3 @@
-import {expect, test} from "@jest/globals";
-
 const resultStylish = '{\n' +
     '    common: {\n' +
     '      + follow: false\n' +
@@ -58,9 +56,3 @@ const resultPlain = 'Property \'common.follow\' was added with value: false\n' +
     'Property \'group3\' was added with value: [complex value]'
 
 export { resultStylish, resultPlain };
-
-
-test('result object', () => {
-    expect(resultStylish).not.toBeNull();
-    expect(resultPlain).not.toBeNull();
-});

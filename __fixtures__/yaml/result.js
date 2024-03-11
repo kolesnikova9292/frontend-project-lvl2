@@ -10,8 +10,3 @@ const result = '{\n' +
     '}';
 
 export default result;
-
-
-test('result object', () => {
-    expect(result).not.toBeNull();
-});
