@@ -61,17 +61,17 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
         }
       });
 
-      return [
-        '{',
-        ...lines,
-        `${bracketIndent}}`,
-      ].join('\n');
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
   };
 
   return iter(value, 1);
 };
 
-const plain = (value) => {
+const plain = (tree) => {
   const iter = (currentValue, parentKey) => {
     // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
@@ -120,10 +120,10 @@ const plain = (value) => {
 
 
     const lines = currentValueNew
-      .reduce((accumulator, currentValue) => {
+      .reduce((accumulator, current) => {
         const {
           key, value, children, type, oldValue
-        } = currentValue;
+        } = current;
 
         const newKey = parentKey ? `${parentKey}.${key}` : key;
         const newValue = (parseInt(value) || parseInt(value) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
@@ -152,7 +152,7 @@ const plain = (value) => {
     ].join('\n');
   };
 
-  return iter(value);
+  return iter(tree);
 };
 
 const json = (tree, replacer = ' ', spacesCount = 1) => {
