@@ -123,8 +123,8 @@ const plain = (value) => {
           }
         }
 
-        if(currentValue.type === 'deleted' && itemAlreadyAdded.type === 'added') {
-          if(currentValue.children?.length > 0) {
+        if (currentValue.type === 'deleted' && itemAlreadyAdded.type === 'added') {
+          if (currentValue.children?.length > 0) {
             accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
             accumulator[index].value = itemAlreadyAdded.value;
@@ -134,12 +134,12 @@ const plain = (value) => {
             accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
             accumulator[index].value = currentValue.value;
-            return [ ...accumulator ]
+            return [...accumulator];
           }
         }
-        return [ ...accumulator ]
+        return [...accumulator];
       }
-      return [ ...accumulator, currentValue ]
+      return [...accumulator, currentValue];
     }, []);
 
 
@@ -148,36 +148,35 @@ const plain = (value) => {
         const { key, value, children, type, oldValue } = currentValue;
 
         const newKey = parentKey ? parentKey + '.' + key : key;
-        const newValue = (parseInt(value) || parseInt(value) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value :  '\'' + value + '\'';
-        const newOldValue = (parseInt(oldValue) || parseInt(oldValue) === 0 || oldValue == 'true' || oldValue == 'false' || oldValue == 'null' || oldValue == '[complex value]') ? oldValue :  '\'' + oldValue + '\'';
+        const newValue = (parseInt(value) || parseInt(value) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `\'${value}\'`;
+        const newOldValue = (parseInt(oldValue) || parseInt(oldValue) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : '\'' + oldValue + '\'';
 
-        if(!_.isNil(value)) {
+        if (!_.isNil(value)) {
           if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
-            return [ ...accumulator, mapping[type](newKey, newValue, newOldValue) ];
+            return [...accumulator, mapping[type](newKey, newValue, newOldValue)];
           }
           return accumulator;
         }
-        if(!_.isNil(children) && type === 'added') {
-          return [ ...accumulator, mapping[type](newKey, '[complex value]') ];
+        if (!_.isNil(children) && type === 'added') {
+          return [...accumulator, mapping[type](newKey, '[complex value]')];
         }
-        if(!_.isNil(children) && type === 'deleted') {
-          return [ ...accumulator, mapping[type](newKey, '[complex value]') ];
+        if (!_.isNil(children) && type === 'deleted') {
+          return [...accumulator, mapping[type](newKey, '[complex value]')];
         }
-        if(!_.isNil(children)) {
-          return [ ...accumulator, iter(children, newKey) ];
+        if (!_.isNil(children)) {
+          return [...accumulator, iter(children, newKey)];
         }
       }, []);
 
-      return [
-            ...lines.filter(Boolean) ,
-      ].join('\n');
+    return [
+      ...lines.filter(Boolean),
+    ].join('\n');
   };
 
   return iter(value);
 };
 
-
-const json = (value, replacer = ' ', spacesCount = 1) => {
+const json = (tree, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
     // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
@@ -187,13 +186,13 @@ const json = (value, replacer = ' ', spacesCount = 1) => {
     const indentSize = depth * spacesCount - 2;
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - 2);
-    const lines =
-      currentValue
-        .map(({ key, value, children, type, oldValue }) => {
+    const lines = currentValue
+        .map(({ key, value, children, type, oldValue
+        }) => {
           let sign = '  ';
 
           if (type === 'added') {
-            sign = '+ '
+            sign = '+ ';
           }
           if (type === 'deleted') {
             sign = '- ';
@@ -221,5 +220,5 @@ const json = (value, replacer = ' ', spacesCount = 1) => {
     ].join('\n');
   };
 
-  return iter(value, 1);
+  return iter(tree, 1);
 };
