@@ -5,7 +5,7 @@ const resultStylish = '{\n'
     + '    host: hexlet.io\n'
     + '  - proxy: 123.234.53.22\n'
     + '  - timeout: 50\n'
-    + '  + timeout: 20\n' 
+    + '  + timeout: 20\n'
     + '  + verbose: true\n'
     + '}';
 
@@ -16,8 +16,7 @@ const resultPlain = 'Property \'follow\' was removed\n'
 
 export { resultStylish, resultPlain };
 
-
 test('result object', () => {
-    expect(resultStylish).not.toBeNull();
-    expect(resultPlain).not.toBeNull();
+  expect(resultStylish).not.toBeNull();
+  expect(resultPlain).not.toBeNull();
 });
