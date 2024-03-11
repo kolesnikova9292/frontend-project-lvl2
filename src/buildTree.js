@@ -58,33 +58,51 @@ const commonTree = (nodeArray1, nodeArray2) => {
       }
 
       if(hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
-        && !_.isEqual(getElementByKey(nodeArray1, currentValue), getElementByKey(nodeArray2, currentValue))) {
-        if(!_.isNil(getElementByKey(nodeArray1, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray2, currentValue)['value'])) {
-          return [ ...accumulator, { ...getElementByKey(nodeArray2, currentValue), oldValue: getElementByKey(nodeArray1, currentValue)['value'], type: 'changed' } ];
+        && !_.isEqual(
+          getElementByKey(nodeArray1, currentValue),
+          getElementByKey(nodeArray2, currentValue)
+        )) {
+        if(!_.isNil(getElementByKey(nodeArray1, currentValue).value)
+          && !_.isNil(getElementByKey(nodeArray2, currentValue).value)) {
+          return [...accumulator,
+            { ...getElementByKey(nodeArray2, currentValue),
+              oldValue: getElementByKey(nodeArray1, currentValue).value, type: 'changed'
+            }];
         }
 
-        if(_.isNil(getElementByKey(nodeArray1, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray1, currentValue)['children']) &&
-          _.isNil(getElementByKey(nodeArray2, currentValue)['value']) && !_.isNil(getElementByKey(nodeArray2, currentValue)['children'])) {
-          return [ ...accumulator, { ...getElementByKey(nodeArray1, currentValue),
-            children: _.orderBy(iter(getElementByKey(nodeArray1, currentValue)['children'], getElementByKey(nodeArray2, currentValue)['children'], depth + 1),
-              ['key'], ['asc']
-            ),
-            type: 'nested'
-          }];
-        }
-
-        if (_.isNil(getElementByKey(nodeArray1, currentValue).value) && !_.isNil(getElementByKey(nodeArray2, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray1, currentValue).children) && _.isNil(getElementByKey(nodeArray2, currentValue).children)) {
+        if(_.isNil(getElementByKey(nodeArray1, currentValue).value)
+          && !_.isNil(getElementByKey(nodeArray1, currentValue).children)
+          && _.isNil(getElementByKey(nodeArray2, currentValue).value)
+          && !_.isNil(getElementByKey(nodeArray2, currentValue).children)) {
           return [...accumulator, {
             ...getElementByKey(nodeArray1, currentValue),
             children: _.orderBy(
               iter(
-              getElementByKey(nodeArray1, currentValue).children,
-              getElementByKey(nodeArray1, currentValue).children,
-              depth + 1,
+                getElementByKey(nodeArray1, currentValue).children,
+                getElementByKey(nodeArray2, currentValue).children,
+                depth + 1,
+              ),
+              ['key'],
+                ['asc'],
             ),
-            ['key'],
-            ['asc'],
+            type: 'nested',
+          }];
+        }
+
+        if (_.isNil(getElementByKey(nodeArray1, currentValue).value)
+          && !_.isNil(getElementByKey(nodeArray2, currentValue).value)
+          && !_.isNil(getElementByKey(nodeArray1, currentValue).children)
+          && _.isNil(getElementByKey(nodeArray2, currentValue).children)) {
+          return [...accumulator, {
+            ...getElementByKey(nodeArray1, currentValue),
+            children: _.orderBy(
+              iter(
+                getElementByKey(nodeArray1, currentValue).children,
+                getElementByKey(nodeArray1, currentValue).children,
+                depth + 1,
+              ),
+              ['key'],
+              ['asc'],
             ),
             type: 'deleted',
           },
