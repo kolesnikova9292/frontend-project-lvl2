@@ -1,13 +1,13 @@
-import {expect, test} from "@jest/globals";
+import { expect, test } from '@jest/globals';
 
-const resultStylish = '{\n' +
-    '  - follow: false\n' +
-    '    host: hexlet.io\n' +
-    '  - proxy: 123.234.53.22\n' +
-    '  - timeout: 50\n' +
-    '  + timeout: 20\n' +
-    '  + verbose: true\n' +
-    '}';
+const resultStylish = '{\n'
+    + '  - follow: false\n'
+    + '    host: hexlet.io\n'
+    + '  - proxy: 123.234.53.22\n'
+    + '  - timeout: 50\n'
+    + '  + timeout: 20\n' 
+    + '  + verbose: true\n'
+    + '}';
 
 const resultPlain = 'Property \'follow\' was removed\n'
     + 'Property \'proxy\' was removed\n'
