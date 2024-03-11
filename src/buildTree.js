@@ -16,9 +16,8 @@ const stringify = (value) => {
           return { ...resultValue, value: nodeValue };
         }
 
-        return { key: key, children: nodeValue };
-      }
-      );
+        return { key, children: nodeValue };
+      });
     return [...lines];
   };
 
@@ -45,12 +44,13 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
     if (nodeArray1.length === 0 && nodeArray2.length === 0) {
       return [];
     }
-    const keys = _.union(nodeArray1.map(x => x.key), nodeArray2.map(x => x.key));
+    const keys = _.union(nodeArray1.map((x) => x.key), nodeArray2.map((x) => x.key));
     const lines1 = keys.reduce((accumulator, currentValue) => {
       if (hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
         && _.isEqual(
           getElementByKey(nodeArray1, currentValue),
-          getElementByKey(nodeArray2, currentValue))
+          getElementByKey(nodeArray2, currentValue)
+        )
       ) {
         return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'unchanged' }];
       }
@@ -91,7 +91,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
                 depth + 1,
               ),
               ['key'],
-               ['asc'],
+              ['asc'],
             ),
             type: 'nested',
           }];
