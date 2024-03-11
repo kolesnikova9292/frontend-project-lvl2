@@ -78,9 +78,12 @@ const commonTree = (nodeArray1, nodeArray2) => {
                 getElementByKey(nodeArray1, currentValue)['children'],
                 getElementByKey(nodeArray1, currentValue)['children'],
                 depth + 1),
-                  ['key'], ['asc']), type: 'deleted' },
-              { ...getElementByKey(nodeArray2, currentValue), type: 'added' }
-            ];
+                  ['key'],
+                  ['asc']
+              ),
+              type: 'deleted' },
+          { ...getElementByKey(nodeArray2, currentValue), type: 'added' },
+          ];
         }
 
         if( _.isNil(getElementByKey(nodeArray2, currentValue).value)
@@ -95,7 +98,8 @@ const commonTree = (nodeArray1, nodeArray2) => {
                 iter(
                   getElementByKey(nodeArray2, currentValue).children,
                   getElementByKey(nodeArray2, currentValue).children,
-                  depth + 1),
+                  depth + 1
+                ),
                 ['key'],
                 ['asc'],
               ),
