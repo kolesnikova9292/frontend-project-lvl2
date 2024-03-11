@@ -76,10 +76,10 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
 const plain = (tree) => {
   const iter = (currentValue, parentKey) => {
     // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
-    if (!_.isObject(currentValue)) {
+    /*if (!_.isObject(currentValue)) {
       // return `${currentValue}`;
       return mapping[currentValue.type](parentKey + '.' + key, value, oldValue);
-    }
+    }*/
 
     const currentValueNew = currentValue.reduce((accumulator, current) => {
       if (hasObjectThisProp(accumulator, current.key)) {
@@ -115,11 +115,10 @@ const plain = (tree) => {
             return [...accumulator];
           }
         }
-       return [...accumulator];
+        return [...accumulator];
       }
       return [...accumulator, current];
     }, []);
-
 
     const lines = currentValueNew
       .reduce((accumulator, current) => {
