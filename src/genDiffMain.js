@@ -84,21 +84,25 @@ const plain = (tree) => {
 
     const currentValueNew = currentValue.reduce((accumulator, current) => {
       if (hasObjectThisProp(accumulator, current.key)) {
-        const index = accumulator.findIndex(({key}) => key === current.key);
+        const index = accumulator.findIndex(({ key }) => key === current.key);
         const itemAlreadyAdded = accumulator[index];
         if (itemAlreadyAdded.type === 'deleted' && current.type === 'added') {
           if (itemAlreadyAdded.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
-              { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value },
+              {
+                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value,
+              },
               ...accumulator.slice(index + 1)
             ];
           }
           if (current.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
-              { ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: 'changed', value: '[complex value]' },
-              ...accumulator.slice(index + 1)
+              {
+                ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: 'changed', value: '[complex value]'
+              },
+              ...accumulator.slice(index + 1),
             ];
           }
         }
@@ -107,15 +111,19 @@ const plain = (tree) => {
           if (current.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
-              { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: itemAlreadyAdded.value },
-              ...accumulator.slice(index + 1)
+              {
+                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: itemAlreadyAdded.value
+              },
+              ...accumulator.slice(index + 1),
             ];
           }
           if (itemAlreadyAdded.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
-              { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value },
-              ...accumulator.slice(index + 1)
+              {
+                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value
+              },
+              ...accumulator.slice(index + 1),
             ];
           }
         }
