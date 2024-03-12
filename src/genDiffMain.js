@@ -84,10 +84,8 @@ const plain = (tree) => {
 
     const currentValueNew = currentValue.reduce((accumulator, current) => {
       if (hasObjectThisProp(accumulator, current.key)) {
-        //const index = accumulator.map((x) => x.key).indexOf(current.key);
         const index = accumulator.findIndex(({key}) => key === current.key);
         const itemAlreadyAdded = accumulator[index];
-        // вот сюда нужно добавить какбы обратное условие
         if (itemAlreadyAdded.type === 'deleted' && current.type === 'added') {
           if (itemAlreadyAdded.children?.length > 0) {
             return [
@@ -97,10 +95,6 @@ const plain = (tree) => {
             ];
           }
           if (current.children?.length > 0) {
-            /*accumulator[index].oldValue = itemAlreadyAdded.value;
-            accumulator[index].type = 'changed';
-            accumulator[index].value = '[complex value]';*/
-            //return [...accumulator];
             return [
               ...accumulator.slice(0, index),
               { ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: 'changed', value: '[complex value]' },
@@ -111,10 +105,6 @@ const plain = (tree) => {
 
         if (current.type === 'deleted' && itemAlreadyAdded.type === 'added') {
           if (current.children?.length > 0) {
-            /*accumulator[index].oldValue = '[complex value]';
-            accumulator[index].type = 'changed';
-            accumulator[index].value = itemAlreadyAdded.value;
-            return [...accumulator];*/
             return [
               ...accumulator.slice(0, index),
               { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: itemAlreadyAdded.value },
@@ -122,10 +112,6 @@ const plain = (tree) => {
             ];
           }
           if (itemAlreadyAdded.children?.length > 0) {
-            /*accumulator[index].oldValue = '[complex value]';
-            accumulator[index].type = 'changed';
-            accumulator[index].value = current.value;
-            return [...accumulator];*/
             return [
               ...accumulator.slice(0, index),
               { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value },
