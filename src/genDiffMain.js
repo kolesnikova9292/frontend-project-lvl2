@@ -93,14 +93,14 @@ const plain = (tree) => {
               {
                 ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value,
               },
-              ...accumulator.slice(index + 1)
+              ...accumulator.slice(index + 1),
             ];
           }
           if (current.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
               {
-                ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: 'changed', value: '[complex value]'
+                ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: 'changed', value: '[complex value]',
               },
               ...accumulator.slice(index + 1),
             ];
@@ -112,7 +112,7 @@ const plain = (tree) => {
             return [
               ...accumulator.slice(0, index),
               {
-                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: itemAlreadyAdded.value
+                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: itemAlreadyAdded.value,
               },
               ...accumulator.slice(index + 1),
             ];
@@ -121,7 +121,7 @@ const plain = (tree) => {
             return [
               ...accumulator.slice(0, index),
               {
-                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value
+                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value,
               },
               ...accumulator.slice(index + 1),
             ];
@@ -135,12 +135,12 @@ const plain = (tree) => {
     const lines = currentValueNew
       .reduce((accumulator, current) => {
         const {
-          key, value, children, type, oldValue
+          key, value, children, type, oldValue,
         } = current;
 
         const newKey = parentKey ? `${parentKey}.${key}` : key;
-        const newValue = (parseInt(value) || parseInt(value) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
-        const newOldValue = (parseInt(oldValue) || parseInt(oldValue) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : `'${oldValue}'`;
+        const newValue = (parseInt(value, 10) || parseInt(value, 10) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
+        const newOldValue = (parseInt(oldValue, 10) || parseInt(oldValue, 10) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : `'${oldValue}'`;
 
         if (!_.isNil(value)) {
           if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
@@ -182,24 +182,15 @@ const json = (tree, replacer = ' ', spacesCount = 1) => {
       .map(({
         key, value, children, type, oldValue,
       }) => {
-        let sign = '  ';
-
-        if (type === 'added') {
-          sign = '+ ';
-        }
-        if (type === 'deleted') {
-          sign = '- ';
-        }
-
         if (!_.isNil(value)) {
           if (type === 'changed') {
             return [`${currentIndent}"- ${key}": "${iter(oldValue, depth + 1)}",`, `${currentIndent}"+ ${key}": "${iter(value, depth + 1)}",`].join('\n');
           }
-          return `${currentIndent}"${sign}${key}": "${iter(value, depth + 1)}",`;
+          return `${currentIndent}"${sign(type)}${key}": "${iter(value, depth + 1)}",`;
         }
 
         if (!_.isNil(children)) {
-          return `${currentIndent}"${sign}${key}": ${iter(children, depth + 1)},`;
+          return `${currentIndent}"${sign(type)}${key}": ${iter(children, depth + 1)},`;
         }
         return null;
       });
