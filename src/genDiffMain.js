@@ -90,13 +90,6 @@ const plain = (tree) => {
         // вот сюда нужно добавить какбы обратное условие
         if (itemAlreadyAdded.type === 'deleted' && current.type === 'added') {
           if (itemAlreadyAdded.children?.length > 0) {
-            /* accumulator[index].oldValue = '[complex value]';
-            accumulator[index].type = 'changed';
-            accumulator[index].value = current.value;
-            return [...accumulator];*/
-            accumulator[index].oldValue = '[complex value]';
-            accumulator[index].type = 'changed';
-            accumulator[index].value = current.value;
             return [
               ...accumulator.slice(0, index),
               { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value },
@@ -104,25 +97,40 @@ const plain = (tree) => {
             ];
           }
           if (current.children?.length > 0) {
-            accumulator[index].oldValue = itemAlreadyAdded.value;
+            /*accumulator[index].oldValue = itemAlreadyAdded.value;
             accumulator[index].type = 'changed';
-            accumulator[index].value = '[complex value]';
-            return [...accumulator];
+            accumulator[index].value = '[complex value]';*/
+            //return [...accumulator];
+            return [
+              ...accumulator.slice(0, index),
+              { ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: 'changed', value: '[complex value]' },
+              ...accumulator.slice(index + 1)
+            ];
           }
         }
 
         if (current.type === 'deleted' && itemAlreadyAdded.type === 'added') {
           if (current.children?.length > 0) {
-            accumulator[index].oldValue = '[complex value]';
+            /*accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
             accumulator[index].value = itemAlreadyAdded.value;
-            return [...accumulator];
+            return [...accumulator];*/
+            return [
+              ...accumulator.slice(0, index),
+              { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: itemAlreadyAdded.value },
+              ...accumulator.slice(index + 1)
+            ];
           }
           if (itemAlreadyAdded.children?.length > 0) {
-            accumulator[index].oldValue = '[complex value]';
+            /*accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
             accumulator[index].value = current.value;
-            return [...accumulator];
+            return [...accumulator];*/
+            return [
+              ...accumulator.slice(0, index),
+              { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value },
+              ...accumulator.slice(index + 1)
+            ];
           }
         }
         return [...accumulator];
