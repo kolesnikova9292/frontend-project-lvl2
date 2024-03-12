@@ -195,11 +195,11 @@ const json = (tree, replacer = ' ', spacesCount = 1) => {
         return null;
       });
 
-    lines[lines.length - 1] = lines[lines.length - 1].slice(0, -1);
+    //lines[lines.length - 1] = lines[lines.length - 1].slice(0, -1);
 
     return [
       '{',
-      ...lines,
+      [ ...lines.slice(0, lines.length - 2), { ...lines[lines.length - 1].slice(0, -1) } ]
       `${bracketIndent}}`,
     ].join('\n');
   };
