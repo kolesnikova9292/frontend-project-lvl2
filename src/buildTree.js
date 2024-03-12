@@ -49,7 +49,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       if (hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
         && _.isEqual(
           getElementByKey(nodeArray1, currentValue),
-          getElementByKey(nodeArray2, currentValue)
+          getElementByKey(nodeArray2, currentValue),
         )
       ) {
         return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'unchanged' }];
