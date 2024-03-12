@@ -12,6 +12,16 @@ const mapping = {
   unchanged: () => null,
 };
 
+const sign = (type) => {
+  if (type === 'added') {
+    return '+ ';
+  }
+  if (type === 'deleted') {
+    return '- ';
+  }
+  return '  ';
+}
+
 const getDataByType = (fileName) => {
   const dateType = path.extname(fileName).slice(1);
   const filePath = path.resolve(fileName);
@@ -41,24 +51,15 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
     const lines = currentValue.map(({
       key, value, children, type, oldValue,
     }) => {
-      let sign = '  ';
-
-      if (type === 'added') {
-        sign = '+ ';
-      }
-      if (type === 'deleted') {
-        sign = '- ';
-      }
-
       if (!_.isNil(value)) {
         if (type === 'changed') {
           return [`${currentIndent}- ${key}: ${iter(oldValue, depth + 1)}`, `${currentIndent}+ ${key}: ${iter(value, depth + 1)}`].join('\n');
         }
-        return `${currentIndent}${sign}${key}: ${iter(value, depth + 1)}`;
+        return `${currentIndent}${sign(type)}${key}: ${iter(value, depth + 1)}`;
       }
 
       if (!_.isNil(children)) {
-        return `${currentIndent}${sign}${key}: ${iter(children, depth + 1)}`;
+        return `${currentIndent}${sign(type)}${key}: ${iter(children, depth + 1)}`;
       }
       return '';
     });
