@@ -20,7 +20,7 @@ const sign = (type) => {
     return '- ';
   }
   return '  ';
-}
+};
 
 const getDataByType = (fileName) => {
   const dateType = path.extname(fileName).slice(1);
@@ -77,22 +77,31 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
 const plain = (tree) => {
   const iter = (currentValue, parentKey) => {
     // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
-    /*if (!_.isObject(currentValue)) {
+    /* if (!_.isObject(currentValue)) {
       // return `${currentValue}`;
       return mapping[currentValue.type](parentKey + '.' + key, value, oldValue);
-    }*/
+    } */
 
     const currentValueNew = currentValue.reduce((accumulator, current) => {
       if (hasObjectThisProp(accumulator, current.key)) {
-        const index = accumulator.map((x) => x.key).indexOf(current.key);
+        //const index = accumulator.map((x) => x.key).indexOf(current.key);
+        const index = accumulator.findIndex(({key}) => key === current.key);
         const itemAlreadyAdded = accumulator[index];
         // вот сюда нужно добавить какбы обратное условие
         if (itemAlreadyAdded.type === 'deleted' && current.type === 'added') {
           if (itemAlreadyAdded.children?.length > 0) {
+            /* accumulator[index].oldValue = '[complex value]';
+            accumulator[index].type = 'changed';
+            accumulator[index].value = current.value;
+            return [...accumulator];*/
             accumulator[index].oldValue = '[complex value]';
             accumulator[index].type = 'changed';
             accumulator[index].value = current.value;
-            return [...accumulator];
+            return [
+              ...accumulator.slice(0, index),
+              { ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value },
+              ...accumulator.slice(index + 1)
+            ];
           }
           if (current.children?.length > 0) {
             accumulator[index].oldValue = itemAlreadyAdded.value;
