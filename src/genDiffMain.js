@@ -199,7 +199,8 @@ const json = (tree, replacer = ' ', spacesCount = 1) => {
 
     return [
       '{',
-      [ ...lines.slice(0, lines.length - 2), { ...lines[lines.length - 1].slice(0, -1) } ],
+       ...lines.slice(0, lines.length - 2),
+      lines[lines.length - 1].slice(0, -1),
       `${bracketIndent}}`,
     ].join('\n');
   };
