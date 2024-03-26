@@ -21,11 +21,14 @@ const sign = (type) => {
   return '  ';
 };
 
-const getDataByType = (fileName) => {
+const getParsedData = (fileName) => {
   const dateType = path.extname(fileName).slice(1);
   const filePath = path.resolve(fileName);
   const data = fs.readFileSync(filePath, 'utf8');
+  return parsedDataByType(data, dateType);
+};
 
+const parsedDataByType = (data, dateType) => {
   if (dateType === 'json') {
     return JSON.parse(data);
   }
@@ -33,7 +36,7 @@ const getDataByType = (fileName) => {
     return yaml.load(data);
   }
   return null;
-};
+}
 
 const stringify = (tree, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
@@ -222,8 +225,8 @@ const formatTree = (tree, formatter) => {
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
   const resultObject = buildTree(
-    getDataByType(fileName1),
-    getDataByType(fileName2),
+    getParsedData(fileName1),
+    getParsedData(fileName2),
   );
 
   return formatTree(resultObject, formatter);
