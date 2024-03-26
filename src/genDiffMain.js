@@ -21,13 +21,6 @@ const sign = (type) => {
   return '  ';
 };
 
-const getParsedData = (fileName) => {
-  const dateType = path.extname(fileName).slice(1);
-  const filePath = path.resolve(fileName);
-  const data = fs.readFileSync(filePath, 'utf8');
-  return parsedDataByType(data, dateType);
-};
-
 const parsedDataByType = (data, dateType) => {
   if (dateType === 'json') {
     return JSON.parse(data);
@@ -36,7 +29,14 @@ const parsedDataByType = (data, dateType) => {
     return yaml.load(data);
   }
   return null;
-}
+};
+
+const getParsedData = (fileName) => {
+  const dateType = path.extname(fileName).slice(1);
+  const filePath = path.resolve(fileName);
+  const data = fs.readFileSync(filePath, 'utf8');
+  return parsedDataByType(data, dateType);
+};
 
 const stringify = (tree, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
