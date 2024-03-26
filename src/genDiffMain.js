@@ -218,7 +218,12 @@ const formatTree = (tree, formatter) => {
   }
 
   if (formatter === 'json') {
-    return json(tree, ' ', 4);
+    //console.log(tree);
+    //console.log(stringify(tree, ' ', 4));
+    console.log(json(tree, ' ', 4));
+    console.log(JSON.stringify(tree));
+    return JSON.stringify(tree);
+    //return json(tree, ' ', 4);
   }
   return '';
 };
