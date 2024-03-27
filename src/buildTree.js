@@ -26,11 +26,76 @@ const stringify = (value) => {
 
 const commonTree = (nodeArrayFirst, nodeArraySecond) => {
   const iter = (nodeArray1, nodeArray2, depth) => {
+    console.log(nodeArray1)
     if (nodeArray1.length === 0 && nodeArray2.length === 0) {
       return [];
     }
     const keys = _.union(nodeArray1.map((x) => x.key), nodeArray2.map((x) => x.key));
-    const lines1 = keys.reduce((accumulator, currentValue) => {
+    console.log(keys)
+    const lines1 = keys.flatMap((currentValue) => {
+      const objFromFirst = _.find(nodeArray1, (item) => item.key === currentValue);
+      const objFromSecond = _.find(nodeArray2, (item) => item.key === currentValue);
+      if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
+        return { ...objFromFirst, type: 'unchanged' };
+      }
+      if (objFromFirst && !objFromSecond) {
+        return { ...objFromFirst, type: 'deleted' };
+      }
+      if (!objFromFirst && objFromSecond) {
+        return { ...objFromSecond, type: 'added' };
+      }
+
+      if (objFromFirst && objFromSecond && !_.isEqual(objFromFirst, objFromSecond)) {
+        if (!_.isNil(objFromFirst.value) && !_.isNil(objFromSecond.value)) {
+          return { ...objFromSecond, oldValue: objFromFirst.value, type: 'changed' };
+        }
+
+        if (_.isNil(objFromFirst.value) && !_.isNil(objFromFirst.children)
+          && _.isNil(objFromSecond.value) && !_.isNil(objFromSecond.children)) {
+          return {
+            ...objFromFirst,
+            children: _.orderBy(
+              iter(objFromFirst.children, objFromSecond.children, depth + 1),
+              ['key'],
+              ['asc'],
+            ),
+            type: 'nested',
+          };
+        }
+
+        if (_.isNil(objFromFirst.value) && !_.isNil(objFromSecond.value)
+          && !_.isNil(objFromFirst.children) && _.isNil(objFromSecond.children)) {
+          return [{
+            ...objFromFirst,
+            children: _.orderBy(
+              iter(objFromFirst.children, objFromFirst.children, depth + 1),
+              ['key'],
+              ['asc'],
+            ),
+            type: 'deleted',
+          },
+          { ...objFromSecond, type: 'added' }];
+        }
+
+        if (_.isNil(objFromSecond.value) && !_.isNil(objFromFirst.value)
+          && !_.isNil(objFromSecond.children) && _.isNil(objFromFirst.children)) {
+            //{ ...objFromFirst, type: 'deleted' },
+          return [
+            { ...objFromFirst, type: 'deleted' },
+            {
+              ...objFromSecond,
+              children: _.orderBy(
+                iter(objFromSecond.children, objFromSecond.children, depth + 1),
+                ['key'],
+                ['asc'],
+              ),
+              type: 'added',
+            }];
+        }
+      }
+      return {};
+    });
+    /*const lines1 = keys.reduce((accumulator, currentValue) => {
       if (_.some(nodeArray1, (item) => item.key === currentValue)
         && _.some(nodeArray2, (item) => item.key === currentValue)
         && _.isEqual(
@@ -127,7 +192,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
         }
       }
       return [...accumulator];
-    }, []);
+    }, []);*/
     return lines1;
   };
 
