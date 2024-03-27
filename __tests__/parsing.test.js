@@ -16,12 +16,11 @@ test.each([
   );
 });
 
-/*test('parsing6', () => {
+test('parsing6', () => {
   const rez = genDiff('__fixtures__/json/file1.json', '__fixtures__/json/file2.json', 'json');
-  expect(JSON.parse(rez)["- follow"]).toEqual("false"); // eslint-disable-line
+  expect(JSON.parse(rez).find(x => x.key === 'follow').value).toEqual("false"); // eslint-disable-line
 });
 
 test('parsing7', () => {
-  expect(JSON.parse(genDiff('__fixtures__/json2/file1.json', '__fixtures__/json2/file2.json', 'json'))["  common"]["+ follow"]).toEqual("false"); // eslint-disable-line
-  expect(JSON.parse(genDiff('__fixtures__/json2/file1.json', '__fixtures__/json2/file2.json', 'json'))["+ group3"]["  fee"]).toEqual("100500"); // eslint-disable-line
-});*/
+  expect(JSON.parse(genDiff('__fixtures__/json2/file1.json', '__fixtures__/json2/file2.json', 'json')).find(x => x.key === 'common').children.find(x => x.key === 'follow').value).toEqual("false"); // eslint-disable-line
+});
