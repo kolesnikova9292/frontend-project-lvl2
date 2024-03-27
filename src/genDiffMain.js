@@ -170,44 +170,6 @@ const plain = (tree) => {
   return iter(tree);
 };
 
-const json = (tree, replacer = ' ', spacesCount = 1) => {
-  const iter = (currentValue, depth) => {
-    // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
-    if (!_.isObject(currentValue)) {
-      return `${currentValue}`;
-    }
-
-    const indentSize = depth * spacesCount - 2;
-    const currentIndent = replacer.repeat(indentSize);
-    const bracketIndent = replacer.repeat(indentSize - 2);
-    const lines = currentValue
-      .map(({
-        key, value, children, type, oldValue,
-      }) => {
-        if (!_.isNil(value)) {
-          if (type === 'changed') {
-            return [`${currentIndent}"- ${key}": "${iter(oldValue, depth + 1)}",`, `${currentIndent}"+ ${key}": "${iter(value, depth + 1)}",`].join('\n');
-          }
-          return `${currentIndent}"${sign(type)}${key}": "${iter(value, depth + 1)}",`;
-        }
-
-        if (!_.isNil(children)) {
-          return `${currentIndent}"${sign(type)}${key}": ${iter(children, depth + 1)},`;
-        }
-        return null;
-      });
-
-    return [
-      '{',
-      ...lines.slice(0, lines.length - 2),
-      lines[lines.length - 1].slice(0, -1),
-      `${bracketIndent}}`,
-    ].join('\n');
-  };
-
-  return iter(tree, 1);
-};
-
 const formatTree = (tree, formatter) => {
   if (formatter === 'stylish') {
     return stringify(tree, ' ', 4);
