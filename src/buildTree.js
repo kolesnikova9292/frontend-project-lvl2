@@ -24,11 +24,6 @@ const stringify = (value) => {
   return iter(value, 1);
 };
 
-const getElementByKey = (object, prop) => {
-  const index = object.map((x) => x.key).indexOf(prop);
-  return object[index];
-};
-
 const commonTree = (nodeArrayFirst, nodeArraySecond) => {
   const iter = (nodeArray1, nodeArray2, depth) => {
     if (nodeArray1.length === 0 && nodeArray2.length === 0) {
@@ -39,47 +34,47 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       if (_.some(nodeArray1, (item) => item.key === currentValue)
         && _.some(nodeArray2, (item) => item.key === currentValue)
         && _.isEqual(
-          getElementByKey(nodeArray1, currentValue),
-          getElementByKey(nodeArray2, currentValue),
+          _.find(nodeArray1, (item) => item.key === currentValue),
+          _.find(nodeArray2, (item) => item.key === currentValue),
         )
       ) {
-        return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'unchanged' }];
+        return [...accumulator, { ..._.find(nodeArray1, (item) => item.key === currentValue), type: 'unchanged' }];
       }
       if (_.some(nodeArray1, (item) => item.key === currentValue)
         && !_.some(nodeArray2, (item) => item.key === currentValue)) {
-        return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'deleted' }];
+        return [...accumulator, { ..._.find(nodeArray1, (item) => item.key === currentValue), type: 'deleted' }];
       }
       if (!_.some(nodeArray1, (item) => item.key === currentValue)
         && _.some(nodeArray2, (item) => item.key === currentValue)) {
-        return [...accumulator, { ...getElementByKey(nodeArray2, currentValue), type: 'added' }];
+        return [...accumulator, { ..._.find(nodeArray2, (item) => item.key === currentValue), type: 'added' }];
       }
 
       if (_.some(nodeArray1, (item) => item.key === currentValue)
         && _.some(nodeArray2, (item) => item.key === currentValue)
         && !_.isEqual(
-          getElementByKey(nodeArray1, currentValue),
-          getElementByKey(nodeArray2, currentValue),
+          _.find(nodeArray1, (item) => item.key === currentValue),
+          _.find(nodeArray2, (item) => item.key === currentValue),
         )) {
-        if (!_.isNil(getElementByKey(nodeArray1, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray2, currentValue).value)) {
+        if (!_.isNil(_.find(nodeArray1, (item) => item.key === currentValue).value)
+          && !_.isNil(_.find(nodeArray2, (item) => item.key === currentValue).value)) {
           return [...accumulator,
             {
-              ...getElementByKey(nodeArray2, currentValue),
-              oldValue: getElementByKey(nodeArray1, currentValue).value,
+              ..._.find(nodeArray2, (item) => item.key === currentValue),
+              oldValue: _.find(nodeArray1, (item) => item.key === currentValue).value,
               type: 'changed',
             }];
         }
 
-        if (_.isNil(getElementByKey(nodeArray1, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray1, currentValue).children)
-          && _.isNil(getElementByKey(nodeArray2, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray2, currentValue).children)) {
+        if (_.isNil(_.find(nodeArray1, (item) => item.key === currentValue).value)
+          && !_.isNil(_.find(nodeArray1, (item) => item.key === currentValue).children)
+          && _.isNil(_.find(nodeArray2, (item) => item.key === currentValue).value)
+          && !_.isNil(_.find(nodeArray2, (item) => item.key === currentValue).children)) {
           return [...accumulator, {
-            ...getElementByKey(nodeArray1, currentValue),
+            ..._.find(nodeArray1, (item) => item.key === currentValue),
             children: _.orderBy(
               iter(
-                getElementByKey(nodeArray1, currentValue).children,
-                getElementByKey(nodeArray2, currentValue).children,
+                _.find(nodeArray1, (item) => item.key === currentValue).children,
+                _.find(nodeArray2, (item) => item.key === currentValue).children,
                 depth + 1,
               ),
               ['key'],
@@ -89,16 +84,16 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
           }];
         }
 
-        if (_.isNil(getElementByKey(nodeArray1, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray2, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray1, currentValue).children)
-          && _.isNil(getElementByKey(nodeArray2, currentValue).children)) {
+        if (_.isNil(_.find(nodeArray1, (item) => item.key === currentValue).value)
+          && !_.isNil(_.find(nodeArray2, (item) => item.key === currentValue).value)
+          && !_.isNil(_.find(nodeArray1, (item) => item.key === currentValue).children)
+          && _.isNil(_.find(nodeArray2, (item) => item.key === currentValue).children)) {
           return [...accumulator, {
-            ...getElementByKey(nodeArray1, currentValue),
+            ..._.find(nodeArray1, (item) => item.key === currentValue),
             children: _.orderBy(
               iter(
-                getElementByKey(nodeArray1, currentValue).children,
-                getElementByKey(nodeArray1, currentValue).children,
+                _.find(nodeArray1, (item) => item.key === currentValue).children,
+                _.find(nodeArray1, (item) => item.key === currentValue).children,
                 depth + 1,
               ),
               ['key'],
@@ -106,22 +101,22 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
             ),
             type: 'deleted',
           },
-          { ...getElementByKey(nodeArray2, currentValue), type: 'added' },
+          { ..._.find(nodeArray2, (item) => item.key === currentValue), type: 'added' },
           ];
         }
 
-        if (_.isNil(getElementByKey(nodeArray2, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray1, currentValue).value)
-          && !_.isNil(getElementByKey(nodeArray2, currentValue).children)
-          && _.isNil(getElementByKey(nodeArray1, currentValue).children)) {
+        if (_.isNil(_.find(nodeArray2, (item) => item.key === currentValue).value)
+          && !_.isNil(_.find(nodeArray1, (item) => item.key === currentValue).value)
+          && !_.isNil(_.find(nodeArray2, (item) => item.key === currentValue).children)
+          && _.isNil(_.find(nodeArray1, (item) => item.key === currentValue).children)) {
           return [...accumulator,
-            { ...getElementByKey(nodeArray1, currentValue), type: 'deleted' },
+            { ..._.find(nodeArray1, (item) => item.key === currentValue), type: 'deleted' },
             {
-              ...getElementByKey(nodeArray2, currentValue),
+              ..._.find(nodeArray2, (item) => item.key === currentValue),
               children: _.orderBy(
                 iter(
-                  getElementByKey(nodeArray2, currentValue).children,
-                  getElementByKey(nodeArray2, currentValue).children,
+                  _.find(nodeArray2, (item) => item.key === currentValue).children,
+                  _.find(nodeArray2, (item) => item.key === currentValue).children,
                   depth + 1,
                 ),
                 ['key'],
