@@ -2,7 +2,7 @@ import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 import _ from 'lodash';
-import buildTree, { hasObjectThisProp } from './buildTree.js';
+import buildTree from './buildTree.js';
 
 const mapping = {
   added: (prop, value) => `Property '${prop}' was added with value: ${value}`,
@@ -85,7 +85,7 @@ const plain = (tree) => {
     } */
 
     const currentValueNew = currentValue.reduce((accumulator, current) => {
-      if (hasObjectThisProp(accumulator, current.key)) {
+      if (_.some(accumulator, (item) => item.key === current.key)) {
         const index = accumulator.findIndex(({ key }) => key === current.key);
         const itemAlreadyAdded = accumulator[index];
         if (itemAlreadyAdded.type === 'deleted' && current.type === 'added') {

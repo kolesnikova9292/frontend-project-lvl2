@@ -24,16 +24,6 @@ const stringify = (value) => {
   return iter(value, 1);
 };
 
-export const hasObjectThisProp = (object, prop) => {
-  if (object.map((x) => x.key).indexOf(prop) <= -1) {
-    return false;
-  }
-  if (object.map((x) => x.key).indexOf(prop) > -1) {
-    return true;
-  }
-  return false;
-};
-
 const getElementByKey = (object, prop) => {
   const index = object.map((x) => x.key).indexOf(prop);
   return object[index];
@@ -46,7 +36,10 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
     }
     const keys = _.union(nodeArray1.map((x) => x.key), nodeArray2.map((x) => x.key));
     const lines1 = keys.reduce((accumulator, currentValue) => {
-      if (hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
+      console.log(_.has(nodeArray1, currentValue))
+      console.log(nodeArray1)
+      console.log(currentValue)
+      if (_.some(nodeArray1,(item) => item.key === currentValue) && _.some(nodeArray2, (item) => item.key === currentValue)
         && _.isEqual(
           getElementByKey(nodeArray1, currentValue),
           getElementByKey(nodeArray2, currentValue),
@@ -54,16 +47,16 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       ) {
         return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'unchanged' }];
       }
-      if (hasObjectThisProp(nodeArray1, currentValue)
-        && !hasObjectThisProp(nodeArray2, currentValue)) {
+      if (_.some(nodeArray1, (item) => item.key === currentValue)
+        && !_.some(nodeArray2, (item) => item.key === currentValue)) {
         return [...accumulator, { ...getElementByKey(nodeArray1, currentValue), type: 'deleted' }];
       }
-      if (!hasObjectThisProp(nodeArray1, currentValue)
-        && hasObjectThisProp(nodeArray2, currentValue)) {
+      if (!_.some(nodeArray1, (item) => item.key === currentValue)
+        && _.some(nodeArray2, (item) => item.key === currentValue)) {
         return [...accumulator, { ...getElementByKey(nodeArray2, currentValue), type: 'added' }];
       }
 
-      if (hasObjectThisProp(nodeArray1, currentValue) && hasObjectThisProp(nodeArray2, currentValue)
+      if (_.some(nodeArray1, (item) => item.key === currentValue) && _.some(nodeArray2, (item) => item.key === currentValue)
         && !_.isEqual(
           getElementByKey(nodeArray1, currentValue),
           getElementByKey(nodeArray2, currentValue),
