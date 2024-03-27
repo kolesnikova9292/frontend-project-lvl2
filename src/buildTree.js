@@ -36,9 +36,6 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
     }
     const keys = _.union(nodeArray1.map((x) => x.key), nodeArray2.map((x) => x.key));
     const lines1 = keys.reduce((accumulator, currentValue) => {
-      console.log(_.has(nodeArray1, currentValue))
-      console.log(nodeArray1)
-      console.log(currentValue)
       if (_.some(nodeArray1,(item) => item.key === currentValue) && _.some(nodeArray2, (item) => item.key === currentValue)
         && _.isEqual(
           getElementByKey(nodeArray1, currentValue),
@@ -56,7 +53,8 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
         return [...accumulator, { ...getElementByKey(nodeArray2, currentValue), type: 'added' }];
       }
 
-      if (_.some(nodeArray1, (item) => item.key === currentValue) && _.some(nodeArray2, (item) => item.key === currentValue)
+      if (_.some(nodeArray1, (item) => item.key === currentValue)
+        && _.some(nodeArray2, (item) => item.key === currentValue)
         && !_.isEqual(
           getElementByKey(nodeArray1, currentValue),
           getElementByKey(nodeArray2, currentValue),
