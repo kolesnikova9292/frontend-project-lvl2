@@ -77,7 +77,6 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
 
         if (_.isNil(objFromSecond.value) && !_.isNil(objFromFirst.value)
           && !_.isNil(objFromSecond.children) && _.isNil(objFromFirst.children)) {
-            //{ ...objFromFirst, type: 'deleted' },
           return [
             { ...objFromFirst, type: 'deleted' },
             {
