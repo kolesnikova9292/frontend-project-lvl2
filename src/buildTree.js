@@ -91,6 +91,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
             }];
         }
       }
+      return [];
     });
     return lines1;
   };
