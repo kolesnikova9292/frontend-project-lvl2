@@ -127,8 +127,8 @@ const plain = (tree) => {
           type,
           keyPath(parentKey, key),
           getValueForPlain(value, children),
-          getValueForPlain(oldValue, children)
-        )
+          getValueForPlain(oldValue, children),
+        );
       });
 
     return [
