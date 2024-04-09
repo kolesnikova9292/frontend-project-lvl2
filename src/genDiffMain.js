@@ -4,6 +4,16 @@ import * as yaml from 'js-yaml';
 import _ from 'lodash';
 import buildTree from './buildTree.js';
 
+export const NodeType = {
+  added: 'added',
+  deleted: 'deleted',
+  changed: 'changed',
+  unchanged: 'unchanged',
+  nested: 'nested',
+}
+
+const complexValue = '[complex value]'
+
 const mapping = {
   added: (prop, value) => `Property '${prop}' was added with value: ${value}`,
   deleted: (prop) => `Property '${prop}' was removed`,
@@ -11,11 +21,52 @@ const mapping = {
   unchanged: () => null,
 };
 
+const plainLineForNode = (type, key, value, oldValue) => {
+  if (type === NodeType.deleted) {
+    return `Property '${key}' was removed`;
+  }
+
+  if (type === NodeType.added) {
+    return `Property '${key}' was added with value: ${value}`;
+  }
+
+  if (type === NodeType.changed) {
+    return `Property '${key}' was updated. From ${oldValue} to ${value}`;
+  }
+
+  if (type === NodeType.unchanged) {
+    return null;
+  }
+
+  if (type === NodeType.nested) {
+    return null;
+  }
+}
+
+const getValueForPlain = (value, children) => {
+
+  if(value === null || value === 'null') return null;
+
+  if (typeof value === 'object' || !value && !_.isNil(children)) {
+    return complexValue;
+  }
+
+  if (value === 'false' || value === 'true') {
+    return value;
+  }
+
+  if (typeof value === 'string' && !parseInt(value, 10) && value !== complexValue) {
+    return `'${value}'`;
+  }
+
+  return String(value);
+}
+
 const sign = (type) => {
-  if (type === 'added') {
+  if (type === NodeType.added) {
     return '+ ';
   }
-  if (type === 'deleted') {
+  if (type === NodeType.deleted) {
     return '- ';
   }
   return '  ';
@@ -54,7 +105,7 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
       key, value, children, type, oldValue,
     }) => {
       if (!_.isNil(value)) {
-        if (type === 'changed') {
+        if (type === NodeType.changed) {
           return [`${currentIndent}- ${key}: ${iter(oldValue, depth + 1)}`, `${currentIndent}+ ${key}: ${iter(value, depth + 1)}`].join('\n');
         }
         return `${currentIndent}${sign(type)}${key}: ${iter(value, depth + 1)}`;
@@ -88,12 +139,12 @@ const plain = (tree) => {
       if (_.some(accumulator, (item) => item.key === current.key)) {
         const index = accumulator.findIndex(({ key }) => key === current.key);
         const itemAlreadyAdded = accumulator[index];
-        if (itemAlreadyAdded.type === 'deleted' && current.type === 'added') {
+        if (itemAlreadyAdded.type === NodeType.deleted && current.type === NodeType.added) {
           if (itemAlreadyAdded.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
               {
-                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value,
+                ...itemAlreadyAdded, oldValue: complexValue, type: NodeType.changed, value: current.value,
               },
               ...accumulator.slice(index + 1),
             ];
@@ -102,19 +153,19 @@ const plain = (tree) => {
             return [
               ...accumulator.slice(0, index),
               {
-                ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: 'changed', value: '[complex value]',
+                ...itemAlreadyAdded, oldValue: itemAlreadyAdded.value, type: NodeType.changed, value: complexValue,
               },
               ...accumulator.slice(index + 1),
             ];
           }
         }
 
-        if (current.type === 'deleted' && itemAlreadyAdded.type === 'added') {
+        if (current.type === NodeType.deleted && itemAlreadyAdded.type === NodeType.added) {
           if (current.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
               {
-                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: itemAlreadyAdded.value,
+                ...itemAlreadyAdded, oldValue: complexValue, type: NodeType.changed, value: itemAlreadyAdded.value,
               },
               ...accumulator.slice(index + 1),
             ];
@@ -123,7 +174,7 @@ const plain = (tree) => {
             return [
               ...accumulator.slice(0, index),
               {
-                ...itemAlreadyAdded, oldValue: '[complex value]', type: 'changed', value: current.value,
+                ...itemAlreadyAdded, oldValue: complexValue, type: NodeType.changed, value: current.value,
               },
               ...accumulator.slice(index + 1),
             ];
@@ -134,11 +185,13 @@ const plain = (tree) => {
       return [...accumulator, current];
     }, []);
 
-    const lines = currentValueNew
+    /*const lines = currentValueNew
       .reduce((accumulator, current) => {
         const {
           key, value, children, type, oldValue,
         } = current;
+
+        console.log(current);
 
         const newKey = parentKey ? `${parentKey}.${key}` : key;
         const newValue = (parseInt(value, 10) || parseInt(value, 10) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
@@ -160,7 +213,38 @@ const plain = (tree) => {
           return [...accumulator, iter(children, newKey)];
         }
         return [...accumulator];
-      }, []);
+      }, []);*/
+
+    const lines = currentValueNew
+      .map((line) => {
+        const {
+          key, value, children, type, oldValue,
+        } = line;
+
+        console.log(key + ' ' + type + ' ' + value + ' ' + children);
+
+        const newKey = parentKey ? `${parentKey}.${key}` : key;
+        const newValue = (parseInt(value, 10) || parseInt(value, 10) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
+        const newOldValue = (parseInt(oldValue, 10) || parseInt(oldValue, 10) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : `'${oldValue}'`;
+
+        /*if (!_.isNil(value)) {
+          if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
+            return mapping[type](newKey, newValue, newOldValue);
+          }
+        }
+        if (!_.isNil(children) && type === 'added') {
+          return mapping[type](newKey, '[complex value]');
+        }
+        if (!_.isNil(children) && type === 'deleted') {
+          return mapping[type](newKey, '[complex value]');
+        }*/
+        if (!_.isNil(children) && type !== NodeType.added && type !== NodeType.deleted && type !== NodeType.changed) {
+          console.log(555)
+          return iter(children, newKey);
+        }
+
+        return plainLineForNode(type, newKey, getValueForPlain(value, children), getValueForPlain(oldValue, children))
+      });
 
     return [
       ...lines.filter(Boolean),
@@ -171,19 +255,20 @@ const plain = (tree) => {
 };
 
 const formatTree = (tree, formatter) => {
-  if (formatter === 'stylish') {
-    return stringify(tree, ' ', 4);
+  switch (formatter) {
+    case 'stylish':
+      return stringify(tree, ' ', 4);
+      break;
+    case 'plain':
+      return plain(tree);
+      break;
+    case 'json':
+      return JSON.stringify(tree);
+    default:
+      return '';
   }
-
-  if (formatter === 'plain') {
-    return plain(tree);
-  }
-
-  if (formatter === 'json') {
-    return JSON.stringify(tree);
-  }
-  return '';
-};
+  ;
+}
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
   const resultObject = buildTree(
