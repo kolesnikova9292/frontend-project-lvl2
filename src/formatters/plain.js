@@ -37,7 +37,7 @@ const getValueForPlain = (value, children) => {
     return value;
   }
 
-  if (typeof value === 'string' && !parseInt(value, 10) && value !== complexValue) {
+  if (typeof value === 'string' && !parseInt(value, 10) && value !== complexValue && value !== 0) {
     return `'${value}'`;
   }
 
