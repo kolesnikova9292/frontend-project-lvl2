@@ -1,10 +1,9 @@
 import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
-import _ from 'lodash';
 import buildTree from './buildTree.js';
-import { plain } from './formatters/plain.js';
-import { stringify } from './formatters/stylish.js';
+import plain from './formatters/plain.js';
+import stringify from './formatters/stylish.js';
 
 export const NodeType = {
   added: 'added',

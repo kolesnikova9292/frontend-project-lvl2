@@ -3,7 +3,6 @@ import { NodeType } from './genDiffMain.js';
 
 const stringify = (value) => {
   const iter = (currentValue, depth) => {
-    // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }

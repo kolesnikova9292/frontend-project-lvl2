@@ -1,17 +1,6 @@
 import _ from 'lodash';
 import { NodeType } from '../genDiffMain.js';
 
-export const stylishStyle = { replacer: ' ', spacesCount: 1 };
-
-const addStylishFormater = (
-  step = 1,
-  variable = '',
-  valueOfVariable = '',
-  addedOrRemovedOrTheSame = '',
-) => `${stylishStyle.replacer.repeat((step - 1) * (stylishStyle.spacesCount + 2))}`
-  + `${stylishStyle.replacer.repeat(step * stylishStyle.spacesCount)} ${addedOrRemovedOrTheSame} `
-  + `${variable ?? ''}${variable ? ': ' : ''}${valueOfVariable ?? ''}${variable ? '\n' : ''}`;
-
 const sign = (type) => {
   if (type === NodeType.added) {
     return '+ ';
@@ -24,12 +13,9 @@ const sign = (type) => {
 
 const stringify = (tree, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
-    // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }
-
-    // глубина * количество отступов — смещение влево.
 
     const indentSize = depth * spacesCount - 2;
     const currentIndent = replacer.repeat(indentSize);
@@ -60,4 +46,4 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
   return iter(tree, 1);
 };
 
-export { addStylishFormater as default, stringify };
+export default stringify;

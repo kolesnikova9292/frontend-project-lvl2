@@ -1,34 +1,6 @@
 import _ from 'lodash';
 import { NodeType } from '../genDiffMain.js';
 
-const addPlainFormatter = (variable, valueOfVariable, addedOrRemovedOrTheSame, updated) => {
-  if (updated === 'old') {
-    return `Property '${variable ?? ''}' was updated. From ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]' && valueOfVariable !== 'null' ? `'${valueOfVariable}'` : valueOfVariable}`;
-  }
-
-  if (updated === 'new') {
-    return ` to ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]' && valueOfVariable !== 'null' ? `'${valueOfVariable}'` : valueOfVariable}\n`;
-  }
-
-  if (addedOrRemovedOrTheSame === '-') {
-    return `Property '${variable ?? ''}' was removed\n`;
-  }
-
-  if (addedOrRemovedOrTheSame === '+') {
-    return `Property '${variable ?? ''}' was added with value: ${typeof valueOfVariable === 'string' && valueOfVariable !== '[complex value]' && valueOfVariable !== 'null' ? `'${valueOfVariable}'` : valueOfVariable}\n`;
-  }
-
-  if (addedOrRemovedOrTheSame === ' ') {
-    if (valueOfVariable.indexOf('Property') > -1) {
-      const regex = /Property '/g;
-      return valueOfVariable.replace(regex, `Property '${variable}.`);
-    }
-    return '';
-  }
-
-  return `Property '${variable ?? ''}' was added with value: ${valueOfVariable ?? ''}\n`;
-};
-
 const complexValue = '[complex value]';
 
 const plainLineForNode = (type, key, value, oldValue) => {
@@ -72,14 +44,10 @@ const getValueForPlain = (value, children) => {
   return String(value);
 }
 
+const keyPath = (parentKey, key) => parentKey ? `${parentKey}.${key}` : key;
+
 const plain = (tree) => {
   const iter = (currentValue, parentKey) => {
-    // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
-    /* if (!_.isObject(currentValue)) {
-      // return `${currentValue}`;
-      return mapping[currentValue.type](parentKey + '.' + key, value, oldValue);
-    } */
-
     const currentValueNew = currentValue.reduce((accumulator, current) => {
       if (_.some(accumulator, (item) => item.key === current.key)) {
         const index = accumulator.findIndex(({ key }) => key === current.key);
@@ -130,65 +98,17 @@ const plain = (tree) => {
       return [...accumulator, current];
     }, []);
 
-    /*const lines = currentValueNew
-      .reduce((accumulator, current) => {
-        const {
-          key, value, children, type, oldValue,
-        } = current;
-
-        console.log(current);
-
-        const newKey = parentKey ? `${parentKey}.${key}` : key;
-        const newValue = (parseInt(value, 10) || parseInt(value, 10) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
-        const newOldValue = (parseInt(oldValue, 10) || parseInt(oldValue, 10) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : `'${oldValue}'`;
-
-        if (!_.isNil(value)) {
-          if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
-            return [...accumulator, mapping[type](newKey, newValue, newOldValue)];
-          }
-          return accumulator;
-        }
-        if (!_.isNil(children) && type === 'added') {
-          return [...accumulator, mapping[type](newKey, '[complex value]')];
-        }
-        if (!_.isNil(children) && type === 'deleted') {
-          return [...accumulator, mapping[type](newKey, '[complex value]')];
-        }
-        if (!_.isNil(children)) {
-          return [...accumulator, iter(children, newKey)];
-        }
-        return [...accumulator];
-      }, []);*/
-
     const lines = currentValueNew
       .map((line) => {
         const {
           key, value, children, type, oldValue,
         } = line;
 
-        console.log(key + ' ' + type + ' ' + value + ' ' + children);
-
-        const newKey = parentKey ? `${parentKey}.${key}` : key;
-        const newValue = (parseInt(value, 10) || parseInt(value, 10) === 0 || value === 'true' || value === 'false' || value === 'null' || value === '[complex value]') ? value : `'${value}'`;
-        const newOldValue = (parseInt(oldValue, 10) || parseInt(oldValue, 10) === 0 || oldValue === 'true' || oldValue === 'false' || oldValue === 'null' || oldValue === '[complex value]') ? oldValue : `'${oldValue}'`;
-
-        /*if (!_.isNil(value)) {
-          if (type === 'added' || type === 'deleted' || type === 'changed' || type === 'unchanged') {
-            return mapping[type](newKey, newValue, newOldValue);
-          }
-        }
-        if (!_.isNil(children) && type === 'added') {
-          return mapping[type](newKey, '[complex value]');
-        }
-        if (!_.isNil(children) && type === 'deleted') {
-          return mapping[type](newKey, '[complex value]');
-        }*/
         if (!_.isNil(children) && type !== NodeType.added && type !== NodeType.deleted && type !== NodeType.changed) {
-          console.log(555)
-          return iter(children, newKey);
+          return iter(children, keyPath(parentKey, key));
         }
 
-        return plainLineForNode(type, newKey, getValueForPlain(value, children), getValueForPlain(oldValue, children))
+        return plainLineForNode(type, keyPath(parentKey, key), getValueForPlain(value, children), getValueForPlain(oldValue, children))
       });
 
     return [
@@ -199,4 +119,4 @@ const plain = (tree) => {
   return iter(tree);
 };
 
-export { addPlainFormatter as default, plain };
+export default plain;
