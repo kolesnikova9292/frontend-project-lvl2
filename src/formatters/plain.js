@@ -23,13 +23,13 @@ const plainLineForNode = (type, key, value, oldValue) => {
   if (type === NodeType.nested) {
     return null;
   }
-}
+  return null;
+};
 
 const getValueForPlain = (value, children) => {
+  if (value === null || value === 'null') return null;
 
-  if(value === null || value === 'null') return null;
-
-  if (typeof value === 'object' || !value && !_.isNil(children)) {
+  if (!value && !_.isNil(children) || typeof value === 'object') {
     return complexValue;
   }
 
@@ -42,9 +42,9 @@ const getValueForPlain = (value, children) => {
   }
 
   return String(value);
-}
+};
 
-const keyPath = (parentKey, key) => parentKey ? `${parentKey}.${key}` : key;
+const keyPath = (parentKey, key) => (parentKey ? `${parentKey}.${key}` : key);
 
 const plain = (tree) => {
   const iter = (currentValue, parentKey) => {
