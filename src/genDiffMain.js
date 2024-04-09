@@ -24,18 +24,19 @@ const getParsedData = (fileName) => {
 
 const formatTree = (tree, formatter) => {
   switch (formatter) {
-    case 'stylish':
+    case 'stylish': {
       return stringify(tree, ' ', 4);
       break;
-    case 'plain':
+    }
+    case 'plain': {
       return plain(tree);
       break;
+    }
     case 'json':
       return JSON.stringify(tree);
     default:
       return '';
-  }
-  ;
+  };
 }
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {

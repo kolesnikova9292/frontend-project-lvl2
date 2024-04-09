@@ -6,7 +6,7 @@ export const NodeType = {
   changed: 'changed',
   unchanged: 'unchanged',
   nested: 'nested',
-}
+};
 
 const stringify = (value) => {
   const iter = (currentValue, depth) => {
@@ -93,7 +93,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
                 ['key'],
                 ['asc'],
               ),
-              type: NodeType.added
+              type: NodeType.added,
             }];
         }
       }
