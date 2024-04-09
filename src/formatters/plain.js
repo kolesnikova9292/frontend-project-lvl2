@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { NodeType } from '../genDiffMain.js';
+import { NodeType } from '../buildTree.js';
 
 const complexValue = '[complex value]';
 

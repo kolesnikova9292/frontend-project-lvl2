@@ -1,5 +1,12 @@
 import _ from 'lodash';
-import { NodeType } from './genDiffMain.js';
+
+export const NodeType = {
+  added: 'added',
+  deleted: 'deleted',
+  changed: 'changed',
+  unchanged: 'unchanged',
+  nested: 'nested',
+}
 
 const stringify = (value) => {
   const iter = (currentValue, depth) => {

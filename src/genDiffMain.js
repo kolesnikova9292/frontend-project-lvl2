@@ -5,14 +5,6 @@ import buildTree from './buildTree.js';
 import plain from './formatters/plain.js';
 import stringify from './formatters/stylish.js';
 
-const NodeType = {
-  added: 'added',
-  deleted: 'deleted',
-  changed: 'changed',
-  unchanged: 'unchanged',
-  nested: 'nested',
-}
-
 const parsedDataByType = (data, dateType) => {
   if (dateType === 'json') {
     return JSON.parse(data);
@@ -54,5 +46,3 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish')
 
   return formatTree(resultObject, formatter);
 }
-
-export { NodeType };
