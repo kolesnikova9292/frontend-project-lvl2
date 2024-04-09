@@ -32,8 +32,8 @@ const formatTree = (tree, formatter) => {
       return JSON.stringify(tree);
     default:
       return '';
-  };
-}
+  }
+};
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
   const resultObject = buildTree(
