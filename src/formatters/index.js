@@ -2,21 +2,6 @@ import addStylishFormater, { stylishStyle } from './stylish.js';
 import addPlainFormatter from './plain.js';
 import addJsonFormater from './json.js';
 
-const chainResult = (formatter = 'stylish', result = '', nextChain = '') => {
-  if (formatter === 'stylish') {
-    return result + nextChain;
-  }
-
-  if (formatter === 'plain') {
-    return result + nextChain;
-  }
-
-  if (formatter === 'json') {
-    return `${result}"${nextChain.variable}": ${nextChain.value}, `;
-  }
-  return null;
-};
-
 const addFormating = (
   formatter = 'stylish',
   step = 1,
@@ -39,35 +24,4 @@ const addFormating = (
   return null;
 };
 
-const startResult = (formatter = 'stylish') => {
-  if (formatter === 'stylish') {
-    return '{\n';
-  }
-
-  if (formatter === 'plain') {
-    return '';
-  }
-
-  if (formatter === 'json') {
-    return '{';
-  }
-  return null;
-};
-
-const endResult = (formatter = 'stylish', result = '', step = 1) => {
-  if (formatter === 'stylish') {
-    return `${result}${stylishStyle.replacer.repeat(4 * step - 4)}}`;
-  }
-
-  if (formatter === 'plain') {
-    return result;
-  }
-
-  if (formatter === 'json') {
-    return `${result.slice(0, -2)} }`;
-  }
-  return null;
-};
-
 export default addFormating;
-export { startResult, endResult, chainResult };
