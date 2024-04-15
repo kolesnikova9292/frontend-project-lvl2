@@ -1,26 +1,26 @@
 import _ from 'lodash';
-import { NodeType } from '../buildTree.js';
+import { nodeType } from '../buildTree.js';
 
 const complexValue = '[complex value]';
 
 const plainLineForNode = (type, key, value, oldValue) => {
-  if (type === NodeType.deleted) {
+  if (type === nodeType.deleted) {
     return `Property '${key}' was removed`;
   }
 
-  if (type === NodeType.added) {
+  if (type === nodeType.added) {
     return `Property '${key}' was added with value: ${value}`;
   }
 
-  if (type === NodeType.changed) {
+  if (type === nodeType.changed) {
     return `Property '${key}' was updated. From ${oldValue} to ${value}`;
   }
 
-  if (type === NodeType.unchanged) {
+  if (type === nodeType.unchanged) {
     return null;
   }
 
-  if (type === NodeType.nested) {
+  if (type === nodeType.nested) {
     return null;
   }
   return null;
@@ -52,14 +52,14 @@ const plain = (tree) => {
       if (_.some(accumulator, (item) => item.key === current.key)) {
         const index = accumulator.findIndex(({ key }) => key === current.key);
         const itemAlreadyAdded = accumulator[index];
-        if (itemAlreadyAdded.type === NodeType.deleted && current.type === NodeType.added) {
+        if (itemAlreadyAdded.type === nodeType.deleted && current.type === nodeType.added) {
           if (itemAlreadyAdded.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
               {
                 ...itemAlreadyAdded,
                 oldValue: complexValue,
-                type: NodeType.changed,
+                type: nodeType.changed,
                 value: current.value,
               },
               ...accumulator.slice(index + 1),
@@ -71,7 +71,7 @@ const plain = (tree) => {
               {
                 ...itemAlreadyAdded,
                 oldValue: itemAlreadyAdded.value,
-                type: NodeType.changed,
+                type: nodeType.changed,
                 value: complexValue,
               },
               ...accumulator.slice(index + 1),
@@ -79,14 +79,14 @@ const plain = (tree) => {
           }
         }
 
-        if (current.type === NodeType.deleted && itemAlreadyAdded.type === NodeType.added) {
+        if (current.type === nodeType.deleted && itemAlreadyAdded.type === nodeType.added) {
           if (current.children?.length > 0) {
             return [
               ...accumulator.slice(0, index),
               {
                 ...itemAlreadyAdded,
                 oldValue: complexValue,
-                type: NodeType.changed,
+                type: nodeType.changed,
                 value: itemAlreadyAdded.value,
               },
               ...accumulator.slice(index + 1),
@@ -98,7 +98,7 @@ const plain = (tree) => {
               {
                 ...itemAlreadyAdded,
                 oldValue: complexValue,
-                type: NodeType.changed,
+                type: nodeType.changed,
                 value: current.value,
               },
               ...accumulator.slice(index + 1),
@@ -117,9 +117,9 @@ const plain = (tree) => {
         } = line;
 
         if (!_.isNil(children)
-          && type !== NodeType.added
-          && type !== NodeType.deleted
-          && type !== NodeType.changed) {
+          && type !== nodeType.added
+          && type !== nodeType.deleted
+          && type !== nodeType.changed) {
           return iter(children, keyPath(parentKey, key));
         }
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export const NodeType = {
+export const nodeType = {
   added: 'added',
   deleted: 'deleted',
   changed: 'changed',
@@ -41,18 +41,18 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       const objFromFirst = _.find(nodeArray1, (item) => item.key === currentValue);
       const objFromSecond = _.find(nodeArray2, (item) => item.key === currentValue);
       if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
-        return { ...objFromFirst, type: NodeType.unchanged };
+        return { ...objFromFirst, type: nodeType.unchanged };
       }
       if (objFromFirst && !objFromSecond) {
-        return { ...objFromFirst, type: NodeType.deleted };
+        return { ...objFromFirst, type: nodeType.deleted };
       }
       if (!objFromFirst && objFromSecond) {
-        return { ...objFromSecond, type: NodeType.added };
+        return { ...objFromSecond, type: nodeType.added };
       }
 
       if (objFromFirst && objFromSecond && !_.isEqual(objFromFirst, objFromSecond)) {
         if (!_.isNil(objFromFirst.value) && !_.isNil(objFromSecond.value)) {
-          return { ...objFromSecond, oldValue: objFromFirst.value, type: NodeType.changed };
+          return { ...objFromSecond, oldValue: objFromFirst.value, type: nodeType.changed };
         }
 
         if (_.isNil(objFromFirst.value) && !_.isNil(objFromFirst.children)
@@ -64,7 +64,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
               ['key'],
               ['asc'],
             ),
-            type: NodeType.nested,
+            type: nodeType.nested,
           };
         }
 
@@ -77,15 +77,15 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
               ['key'],
               ['asc'],
             ),
-            type: NodeType.deleted,
+            type: nodeType.deleted,
           },
-          { ...objFromSecond, type: NodeType.added }];
+          { ...objFromSecond, type: nodeType.added }];
         }
 
         if (_.isNil(objFromSecond.value) && !_.isNil(objFromFirst.value)
           && !_.isNil(objFromSecond.children) && _.isNil(objFromFirst.children)) {
           return [
-            { ...objFromFirst, type: NodeType.deleted },
+            { ...objFromFirst, type: nodeType.deleted },
             {
               ...objFromSecond,
               children: _.orderBy(
@@ -93,7 +93,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
                 ['key'],
                 ['asc'],
               ),
-              type: NodeType.added,
+              type: nodeType.added,
             }];
         }
       }

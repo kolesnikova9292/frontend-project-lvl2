@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import { NodeType } from '../buildTree.js';
+import { nodeType } from '../buildTree.js';
 
 const sign = (type) => {
-  if (type === NodeType.added) {
+  if (type === nodeType.added) {
     return '+ ';
   }
-  if (type === NodeType.deleted) {
+  if (type === nodeType.deleted) {
     return '- ';
   }
   return '  ';
@@ -24,7 +24,7 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
       key, value, children, type, oldValue,
     }) => {
       if (!_.isNil(value)) {
-        if (type === NodeType.changed) {
+        if (type === nodeType.changed) {
           return [`${currentIndent}- ${key}: ${iter(oldValue, depth + 1)}`, `${currentIndent}+ ${key}: ${iter(value, depth + 1)}`].join('\n');
         }
         return `${currentIndent}${sign(type)}${key}: ${iter(value, depth + 1)}`;
