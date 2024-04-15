@@ -2,8 +2,7 @@ import fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 import buildTree from './buildTree.js';
-import plain from './formatters/plain.js';
-import stringify from './formatters/stylish.js';
+import formatTree from './formatters/index.js';
 
 const parsedDataByType = (data, dateType) => {
   if (dateType === 'json') {
@@ -20,19 +19,6 @@ const getParsedData = (fileName) => {
   const filePath = path.resolve(fileName);
   const data = fs.readFileSync(filePath, 'utf8');
   return parsedDataByType(data, dateType);
-};
-
-const formatTree = (tree, formatter) => {
-  switch (formatter) {
-    case 'stylish':
-      return stringify(tree, ' ', 4);
-    case 'plain':
-      return plain(tree);
-    case 'json':
-      return JSON.stringify(tree);
-    default:
-      return '';
-  }
 };
 
 export default function genDiffMain(fileName1, fileName2, formatter = 'stylish') {
