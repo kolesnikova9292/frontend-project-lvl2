@@ -74,6 +74,8 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
     ].join('\n');
   };
 
+  console.log(iter(tree, 1))
+
   return iter(tree, 1);
 };
 
