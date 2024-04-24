@@ -9,7 +9,6 @@ const parsedDataByType = (data, dateType) => {
     return JSON.parse(data);
   }
   if (dateType === 'yaml' || dateType === 'yml') {
-    console.log(data)
     return yaml.load(data);
   }
   return null;
