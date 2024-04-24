@@ -1,8 +1,3 @@
-
-
-
-
-
 const result = '{\n'
   + '    common: {\n'
   + '      + follow: false\n'
@@ -67,7 +62,5 @@ const result = '{\n'
   + '    }\n'
   + '    language: js\n'
   + '}';
-
-
 
 export default result;
