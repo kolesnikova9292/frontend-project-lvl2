@@ -23,14 +23,14 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
     const lines = currentValue.map(({
       key, value, children, type, oldValue,
     }) => {
-      if (!_.isNil(value)) {
+      if (!_.isUndefined(value)) {
         if (type === nodeType.changed) {
           return [`${currentIndent}- ${key}: ${iter(oldValue, depth + 1)}`, `${currentIndent}+ ${key}: ${iter(value, depth + 1)}`].join('\n');
         }
         return `${currentIndent}${sign(type)}${key}: ${iter(value, depth + 1)}`;
       }
 
-      if (!_.isNil(children)) {
+      if (!_.isUndefined(children)) {
         return `${currentIndent}${sign(type)}${key}: ${iter(children, depth + 1)}`;
       }
       return '';
