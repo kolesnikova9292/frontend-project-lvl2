@@ -37,7 +37,6 @@ const stringifyValue = (value, currentDepth, replacer = ' ', spacesCount = 1) =>
 
 const stringify = (tree, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
-    console.log(currentValue)
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }
@@ -52,7 +51,6 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
       return stringifyValue(currentValue, depth, replacer, spacesCount);
     }
 
-    console.log(currentValue)
     const lines = currentValue.map(({
       key, value, children, type, oldValue,
     }) => {
