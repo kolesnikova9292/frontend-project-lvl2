@@ -61,7 +61,7 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
         return `${currentIndent}${sign(type)}${key}: ${iter(value, depth + 1)}`;
       }
 
-      if (!_.isNil(children)) {
+      if (!_.isUndefined(children) && children.length > 0) {
         return `${currentIndent}${sign(type)}${key}: ${iter(children, depth + 1)}`;
       }
       return '';
