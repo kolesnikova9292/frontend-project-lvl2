@@ -11,6 +11,30 @@ const sign = (type) => {
   return '  ';
 };
 
+const stringifyValue = (value, currentDepth, replacer = ' ', spacesCount = 1) => {
+  const iter = (currentValue, depth) => {
+    // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
+    if (!_.isObject(currentValue)) {
+      return `${currentValue}`;
+    }
+
+    const indentSize = depth * spacesCount;
+    const currentIndent = replacer.repeat(indentSize);
+    const bracketIndent = replacer.repeat(indentSize - spacesCount);
+    const lines = Object
+      .entries(currentValue)
+      .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 1)}`);
+
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
+  };
+
+  return iter(value, currentDepth);
+};
+
 const stringify = (tree, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
     if (!_.isObject(currentValue)) {
@@ -20,6 +44,12 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
     const indentSize = depth * spacesCount - 2;
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - 2);
+
+    if (_.isPlainObject(currentValue)) {
+      //return JSON.stringify(currentValue);
+      return stringifyValue(currentValue, depth, replacer, spacesCount);
+    }
+
     const lines = currentValue.map(({
       key, value, children, type, oldValue,
     }) => {
