@@ -23,18 +23,14 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       });
     } else if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
       result.push({ key, value: objFromFirst, type: nodeType.unchanged });
-    }
-    else if (!_.isUndefined(objFromFirst) && _.isUndefined(objFromSecond)) {
+    } else if (!_.isUndefined(objFromFirst) && _.isUndefined(objFromSecond)) {
       result.push({ key, value: objFromFirst, type: nodeType.deleted });
-    }
-    else if (_.isUndefined(objFromFirst) && !_.isUndefined(objFromSecond)) {
+    } else if (_.isUndefined(objFromFirst) && !_.isUndefined(objFromSecond)) {
       result.push({ key, value: objFromSecond, type: nodeType.added });
-    }
-
-    else if (
-      !_.isUndefined(objFromFirst) &&
-      !_.isUndefined(objFromSecond) &&
-      !_.isEqual(objFromFirst, objFromSecond
+    } else if (
+      !_.isUndefined(objFromFirst)
+      && !_.isUndefined(objFromSecond)
+      && !_.isEqual(objFromFirst, objFromSecond
       )) {
       result.push({ key, value: objFromSecond, oldValue: objFromFirst, type: nodeType.changed });
     }
