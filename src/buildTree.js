@@ -33,7 +33,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       && !_.isEqual(objFromFirst, objFromSecond)
     ) {
       result.push({
-        key, value: objFromSecond, oldValue: objFromFirst, type: nodeType.changed
+        key, value: objFromSecond, oldValue: objFromFirst, type: nodeType.changed,
       });
     }
   }
