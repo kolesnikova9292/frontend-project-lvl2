@@ -2,6 +2,7 @@ import stringify from './stylish.js';
 import plain from './plain.js';
 
 const formatTree = (tree, formatter) => {
+  console.log(formatter)
   switch (formatter) {
     case 'stylish':
       return stringify(tree, ' ', 4);

@@ -27,7 +27,7 @@ export default function genDiffMain(fileName1, fileName2, formatter = 'stylish')
     getParsedData(fileName2),
   );
 
-  console.log(resultObject)
+  //console.log(resultObject)
 
   return formatTree(resultObject, formatter);
 }
