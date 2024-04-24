@@ -16,9 +16,11 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
     const objFromSecond = nodeArraySecond[key];
 
     if (_.isPlainObject(objFromFirst) && _.isPlainObject(objFromSecond)) {
-      result.push({ key,
+      result.push({
+        key,
         children: commonTree(objFromFirst, objFromSecond),
-        type: nodeType.nested });
+        type: nodeType.nested
+      });
     }
 
     else if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
@@ -31,7 +33,11 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       result.push({ key, value: objFromSecond, type: nodeType.added });
     }
 
-    else if (!_.isUndefined(objFromFirst) && !_.isUndefined(objFromSecond) && !_.isEqual(objFromFirst, objFromSecond)) {
+    else if (
+      !_.isUndefined(objFromFirst) &&
+      !_.isUndefined(objFromSecond) &&
+      !_.isEqual(objFromFirst, objFromSecond
+      )) {
       result.push({ key, value: objFromSecond, oldValue: objFromFirst, type: nodeType.changed });
     }
   }
