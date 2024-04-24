@@ -10,7 +10,7 @@ const formatTree = (tree, formatter) => {
     case 'json':
       return JSON.stringify(tree);
     default:
-      return '';
+      return stringify(tree, ' ', 4);
   }
 };
 
