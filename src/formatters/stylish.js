@@ -46,7 +46,6 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
     const bracketIndent = replacer.repeat(indentSize - 2);
 
     if (_.isPlainObject(currentValue)) {
-      //return JSON.stringify(currentValue);
       return stringifyValue(currentValue, depth, replacer, spacesCount);
     }
 
