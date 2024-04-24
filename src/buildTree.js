@@ -19,11 +19,9 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
       result.push({
         key,
         children: commonTree(objFromFirst, objFromSecond),
-        type: nodeType.nested
+        type: nodeType.nested,
       });
-    }
-
-    else if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
+    } else if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
       result.push({ key, value: objFromFirst, type: nodeType.unchanged });
     }
     else if (!_.isUndefined(objFromFirst) && _.isUndefined(objFromSecond)) {
