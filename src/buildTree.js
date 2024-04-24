@@ -11,7 +11,7 @@ export const nodeType = {
 const commonTree = (nodeArrayFirst, nodeArraySecond) => {
   const keys = _.sortBy(_.union(_.keys(nodeArrayFirst), _.keys(nodeArraySecond)));
   const result = [];
-  for (const key of keys) {
+  keys.forEach(key => {
     const objFromFirst = nodeArrayFirst[key];
     const objFromSecond = nodeArraySecond[key];
 
@@ -36,7 +36,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
         key, value: objFromSecond, oldValue: objFromFirst, type: nodeType.changed,
       });
     }
-  }
+  });
   return result;
 };
 
