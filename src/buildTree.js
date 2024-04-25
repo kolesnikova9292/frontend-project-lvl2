@@ -10,23 +10,18 @@ export const nodeType = {
 
 const commonTree = (nodeArrayFirst, nodeArraySecond) => {
   const keys = _.sortBy(_.union(_.keys(nodeArrayFirst), _.keys(nodeArraySecond)));
-  const result = [];
   return keys.map((key) => {
     const objFromFirst = nodeArrayFirst[key];
     const objFromSecond = nodeArraySecond[key];
 
     if (_.isPlainObject(objFromFirst) && _.isPlainObject(objFromSecond)) {
-      /*result.push({
-        key,
-        children: commonTree(objFromFirst, objFromSecond),
-        type: nodeType.nested,
-      });*/
-      return  {
+      return {
         key,
         children: commonTree(objFromFirst, objFromSecond),
         type: nodeType.nested,
       };
-    } else if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
+    }
+    if (objFromFirst && objFromSecond && _.isEqual(objFromFirst, objFromSecond)) {
       return { key, value: objFromFirst, type: nodeType.unchanged };
     } else if (!_.isUndefined(objFromFirst) && _.isUndefined(objFromSecond)) {
       return { key, value: objFromFirst, type: nodeType.deleted };
@@ -41,6 +36,7 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
         key, value: objFromSecond, oldValue: objFromFirst, type: nodeType.changed,
       };
     }
+    return null;
   });
   //return result;
 };
