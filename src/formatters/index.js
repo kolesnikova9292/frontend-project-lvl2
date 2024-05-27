@@ -4,7 +4,7 @@ import plain from './plain.js';
 const formatTree = (tree, formatter) => {
   switch (formatter) {
     case 'stylish':
-      return stringify(tree, ' ', 4);
+      return stringify(tree);
     case 'plain':
       return plain(tree);
     case 'json':

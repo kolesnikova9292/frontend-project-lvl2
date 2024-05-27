@@ -11,7 +11,7 @@ const parsedDataByType = (data, dateType) => {
   if (dateType === 'yaml' || dateType === 'yml') {
     return yaml.load(data);
   }
-  return null;
+  return new Error('Not appropriate type of data');
 };
 
 const getParsedData = (fileName) => {

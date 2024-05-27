@@ -13,7 +13,6 @@ const sign = (type) => {
 
 const stringifyValue = (value, currentDepth, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, depth) => {
-    // альтернативный вариант: (typeof currentValue !== 'object' || currentValue === null)
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }
@@ -35,7 +34,7 @@ const stringifyValue = (value, currentDepth, replacer = ' ', spacesCount = 1) =>
   return iter(value, currentDepth);
 };
 
-const stringify = (tree, replacer = ' ', spacesCount = 1) => {
+const stringify = (tree, replacer = ' ', spacesCount = 4) => {
   const iter = (currentValue, depth) => {
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
@@ -49,18 +48,16 @@ const stringify = (tree, replacer = ' ', spacesCount = 1) => {
       return stringifyValue(currentValue, depth, replacer, spacesCount);
     }
 
-    const lines = currentValue.map(({
-      key, value, children, type, oldValue,
-    }) => {
-      if (!_.isUndefined(value)) {
-        if (type === nodeType.changed) {
-          return [`${currentIndent}- ${key}: ${iter(oldValue, depth + 1)}`, `${currentIndent}+ ${key}: ${iter(value, depth + 1)}`].join('\n');
+    const lines = currentValue.map((node) => {
+      if (!_.isUndefined(node?.value)) {
+        if (node?.type === nodeType.changed) {
+          return [`${currentIndent}- ${node?.key}: ${iter(node?.oldValue, depth + 1)}`, `${currentIndent}+ ${node?.key}: ${iter(node?.value, depth + 1)}`].join('\n');
         }
-        return `${currentIndent}${sign(type)}${key}: ${iter(value, depth + 1)}`;
+        return `${currentIndent}${sign(node?.type)}${node?.key}: ${iter(node?.value, depth + 1)}`;
       }
 
-      if (!_.isUndefined(children)) {
-        return `${currentIndent}${sign(type)}${key}: ${iter(children, depth + 1)}`;
+      if (!_.isUndefined(node?.children)) {
+        return `${currentIndent}${sign(node?.type)}${node?.key}: ${iter(node?.children, depth + 1)}`;
       }
       return '';
     });

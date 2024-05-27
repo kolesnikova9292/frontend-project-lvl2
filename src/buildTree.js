@@ -43,8 +43,8 @@ const commonTree = (nodeArrayFirst, nodeArraySecond) => {
   });
 };
 
-const buildTree = (json1, json2) => {
-  const commonTreeResult = commonTree(json1, json2);
+const buildTree = (parsedData1, parsedData2) => {
+  const commonTreeResult = commonTree(parsedData1, parsedData2);
   return _.orderBy(commonTreeResult, ['key'], ['asc']);
 };
 
